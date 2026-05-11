@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.user import User as UserModel
 from app.schemas.user_schema import UserRegister, UserResponse
+from app.utils.dependencies import get_current_user
 from app.utils.security import hash_password
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -24,3 +25,8 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
 	db.refresh(db_user)
 
 	return db_user
+
+
+@router.get("/me", response_model=UserResponse)
+def read_current_user(current_user: UserModel = Depends(get_current_user)):
+	return current_user
