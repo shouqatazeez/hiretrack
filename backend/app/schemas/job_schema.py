@@ -12,7 +12,7 @@ class JobApplicationBase(BaseModel):
 
 
 class JobApplicationCreate(JobApplicationBase):
-	user_id: int = Field(..., description="User ID owning the application")
+	user_id: Optional[int] = Field(None, description="User ID owning the application")
 	applied_at: Optional[datetime] = Field(None, description="When the application was submitted")
 
 
