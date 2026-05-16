@@ -14,6 +14,7 @@ function App() {
           <img src={heroImg} className="base" width="170" height="179" alt="" />
           <img src={reactLogo} className="framework" alt="React logo" />
           <img src={viteLogo} className="vite" alt="Vite logo" />
+          
         </div>
         <div>
           <h1>Get started</h1>
@@ -28,6 +29,7 @@ function App() {
         >
           Count is {count}
         </button>
+      
       </section>
 
       <div className="ticks"></div>
@@ -115,6 +117,7 @@ function App() {
 
       <div className="ticks"></div>
       <section id="spacer"></section>
+      
     </>
   )
 }
