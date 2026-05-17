@@ -121,14 +121,13 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  border-inline: 0;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+  display: block;
   box-sizing: border-box;
 }
 
@@ -255,10 +254,18 @@ code {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;}
-  body {
-    @apply bg-background text-foreground;}
-  button:not(:disabled), [role="button"]:not(:disabled) {
-    cursor: pointer;}
+    @apply border-border outline-ring/50;
+  }
+
   html {
-    @apply font-sans;}}
+    @apply font-sans;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground;
+  }
+
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
