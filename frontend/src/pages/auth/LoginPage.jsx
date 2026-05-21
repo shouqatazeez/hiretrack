@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen bg-zinc-950">
       <div className="flex w-full items-center justify-center px-6 py-12 lg:w-[45%] lg:px-12 xl:px-20">
-        <div className="w-full max-w-[380px]">
+        <div className="w-full max-w-95">
           <div className="mb-10 flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white">
               <Briefcase className="h-4.5 w-4.5 text-zinc-950" />
@@ -103,7 +103,7 @@ export default function LoginPage() {
           }}
         />
 
-        <div className="relative z-10 max-w-[380px] space-y-6 text-center">
+        <div className="relative z-10 max-w-95 space-y-6 text-center">
           <p className="text-xl font-medium leading-relaxed tracking-tight text-zinc-200">
             Stay organized during your job search.
           </p>
