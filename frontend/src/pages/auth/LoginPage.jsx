@@ -1,9 +1,43 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Briefcase, Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Briefcase, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
 
 export default function LoginPage() {
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError(null)
+    setLoading(true)
+
+    try {
+      await login(formData.email, formData.password)
+      navigate('/dashboard')
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <main className="flex min-h-screen bg-zinc-950">
@@ -27,8 +61,14 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-5">
-            <div className="space-y-2 ">
+          {error && (
+            <div className="mb-5 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div className="space-y-2">
               <label
                 htmlFor="email"
                 className="text-[0.8125rem] font-medium text-zinc-300"
@@ -37,29 +77,37 @@ export default function LoginPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
-                className="h-11 w-full mt-1 rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={loading}
+                className="h-11 w-full mt-1 rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80 disabled:opacity-50"
               />
             </div>
 
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="text-[0.8125rem] font-medium text-zinc-300 "
+                className="text-[0.8125rem] font-medium text-zinc-300"
               >
                 Password
               </label>
               <div className="relative mt-1">
                 <input
                   id="password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   autoComplete="current-password"
                   required
-                  className="h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 pr-11 pl-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80"
+                  value={formData.password}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 pr-11 pl-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80 disabled:opacity-50"
                 />
                 <button
                   type="button"
@@ -74,10 +122,20 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="flex  mb-3.5 h-11 w-full items-center justify-center gap-2 rounded-lg bg-white text-[0.8125rem] font-semibold text-zinc-950 transition-colors hover:bg-zinc-200"
+              disabled={loading}
+              className="flex mb-3.5 h-11 w-full items-center justify-center gap-2 rounded-lg bg-white text-[0.8125rem] font-semibold text-zinc-950 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Sign in
-              <ArrowRight size={15} />
+              {loading ? (
+                <>
+                  <Loader2 size={15} className="animate-spin" />
+                  Signing in…
+                </>
+              ) : (
+                <>
+                  Sign in
+                  <ArrowRight size={15} />
+                </>
+              )}
             </button>
           </form>
 
@@ -102,12 +160,10 @@ export default function LoginPage() {
             backgroundSize: '64px 64px',
           }}
         />
-
         <div className="relative z-10 max-w-95 space-y-6 text-center">
           <p className="text-xl font-medium leading-relaxed tracking-tight text-zinc-200">
             Stay organized during your job search.
           </p>
-
           <p className="text-base leading-relaxed text-zinc-400">
             Monitor applications, interviews, and offers through a clean hiring pipeline dashboard.
           </p>
