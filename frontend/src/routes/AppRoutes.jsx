@@ -17,7 +17,7 @@ function LegacyJobDetailsRedirect() {
 export default function AppRoutes() {
 	return (
 		<Routes>
-			<Route path="/" element={<Navigate to="/dashboard" replace />} />
+			<Route path="/" element={<Navigate to="/login" replace />} />
 
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
@@ -39,7 +39,7 @@ export default function AppRoutes() {
 			<Route path="/jobs/new" element={<Navigate to="/dashboard/jobs/new" replace />} />
 			<Route path="/jobs/:jobId" element={<LegacyJobDetailsRedirect />} />
 
-			<Route path="*" element={<Navigate to="/dashboard" replace />} />
+			<Route path="*" element={<Navigate to="/login" replace />} />
 		</Routes>
 	)
 }
