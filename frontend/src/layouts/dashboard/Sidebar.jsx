@@ -1,6 +1,7 @@
 import { Briefcase, CirclePlus, LayoutDashboard, LogOut, X } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { useAuth } from '../../context/AuthContext'
 
 const navItems = [
 	{
@@ -23,8 +24,10 @@ const navItems = [
 
 export default function Sidebar({ isOpen, onClose }) {
 	const navigate = useNavigate()
+	const { logout, user } = useAuth()
 
 	function handleLogout() {
+		logout()
 		onClose()
 		navigate('/login', { replace: true })
 	}
@@ -80,14 +83,17 @@ export default function Sidebar({ isOpen, onClose }) {
 
 				<div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
 					<p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Session</p>
-					<p className="mt-2 text-sm text-slate-600">Keep job tracking and follow-ups organized in one place.</p>
+					<p className="mt-2 text-sm font-medium text-slate-800 truncate">
+						{user?.full_name ?? 'Guest'}
+					</p>
+					<p className="text-xs text-slate-400 truncate">{user?.email ?? ''}</p>
 					<button
 						type="button"
-						className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-800"
+						className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-800 active:scale-95"
 						onClick={handleLogout}
 					>
 						<LogOut className="h-4 w-4" />
-						Logout
+						Sign out
 					</button>
 				</div>
 			</div>
