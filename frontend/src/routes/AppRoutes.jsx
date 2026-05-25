@@ -6,6 +6,7 @@ import JobsPage from '../pages/jobs/JobsPage.jsx'
 import AddJobPage from '../pages/jobs/AddJobPage.jsx'
 import JobDetailsPage from '../pages/jobs/JobDetailsPage.jsx'
 import MainLayout from '../layouts/dashboard/MainLayout.jsx'
+import ProtectedRoute from '../components/ProtectedRoute.jsx'
 
 function LegacyJobDetailsRedirect() {
 	const { jobId } = useParams()
@@ -20,7 +21,14 @@ export default function AppRoutes() {
 
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
-			<Route path="/dashboard" element={<MainLayout />}>
+			<Route
+				path="/dashboard"
+				element={
+					<ProtectedRoute>
+						<MainLayout />
+					</ProtectedRoute>
+				}
+			>
 				<Route index element={<DashboardPage />} />
 				<Route path="jobs" element={<JobsPage />} />
 				<Route path="jobs/new" element={<AddJobPage />} />
