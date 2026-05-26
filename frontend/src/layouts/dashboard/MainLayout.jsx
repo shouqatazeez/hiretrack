@@ -7,7 +7,7 @@ export default function MainLayout() {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
 	return (
-		<div className="min-h-screen bg-slate-50">
+		<div className="min-h-screen bg-slate-100">
 			<Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
 			{isSidebarOpen && (

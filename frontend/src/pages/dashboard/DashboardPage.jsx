@@ -76,9 +76,11 @@ export default function DashboardPage() {
 				<StatCard label="Offers"             value={offers}     icon={CirclePlus} loading={loading} />
 			</div>
 
-			<div>
-				<p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">Quick Actions</p>
-				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+			<div className="pt-1">
+				<p className="mb-5 text-xs font-semibold uppercase tracking-widest text-slate-400">
+					Quick Actions
+				</p>
+				<div className=" mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<QuickActionCard
 						to="/dashboard/jobs/new"
 						label="Add a New Job"

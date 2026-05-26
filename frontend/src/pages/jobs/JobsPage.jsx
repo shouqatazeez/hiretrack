@@ -123,7 +123,7 @@ export default function JobsPage() {
 					{jobs.map((job) => (
 						<article
 							key={job.id}
-							className="flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md"
+							className="flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
 						>
 							<CompanyAvatar name={job.company_name} />
 

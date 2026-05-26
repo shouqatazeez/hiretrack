@@ -59,7 +59,7 @@ export default function AddJobPage() {
   }
 
   return (
-    <section className="space-y-6">
+    <section className="mx-auto w-full max-w-2xl space-y-6">
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Create</p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Add a new job</h1>

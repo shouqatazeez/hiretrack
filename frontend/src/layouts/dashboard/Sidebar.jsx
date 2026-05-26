@@ -26,7 +26,7 @@ export default function Sidebar({ isOpen, onClose }) {
 	return (
 		<aside
 			className={cn(
-				'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-300 lg:translate-x-0',
+				'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200/80 bg-white shadow-sm transition-transform duration-300 lg:translate-x-0',
 				isOpen ? 'translate-x-0' : '-translate-x-full',
 			)}
 		>
