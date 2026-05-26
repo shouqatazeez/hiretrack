@@ -4,3 +4,8 @@ export const fetchJobs = async () => {
   const response = await api.get('/jobs/applications')
   return response.data
 }
+
+export const createJob = async (data) => {
+  const response = await api.post('/jobs/applications', data)
+  return response.data
+}
