@@ -6,7 +6,7 @@ import { fetchJobs } from '../../services/jobService'
 
 function StatCard({ label, value, icon: Icon, loading }) {
 	return (
-		<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+		<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
 			<div className="flex items-center justify-between">
 				<p className="text-sm font-medium text-slate-500">{label}</p>
 				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100">
@@ -55,16 +55,14 @@ export default function DashboardPage() {
 			.finally(() => setLoading(false))
 	}, [])
 
-	const total        = jobs.length
-	const interviews   = jobs.filter((j) => j.status === 'interviewing').length
-	const offers       = jobs.filter((j) => j.status === 'offered').length
+	const total      = jobs.length
+	const interviews = jobs.filter((j) => j.status === 'interviewing').length
+	const offers     = jobs.filter((j) => j.status === 'offered').length
 
 	return (
 		<div className="space-y-6">
-			{/* Welcome banner */}
 			<div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-				<p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Overview</p>
-				<h2 className="mt-2 text-2xl font-semibold text-slate-900">
+				<h2 className="text-2xl font-semibold text-slate-900">
 					Welcome back, {firstName} 👋
 				</h2>
 				<p className="mt-1 text-sm text-slate-500">
@@ -72,14 +70,12 @@ export default function DashboardPage() {
 				</p>
 			</div>
 
-			{/* Stat cards */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-				<StatCard label="Total Applications" value={total}      icon={Briefcase}   loading={loading} />
-				<StatCard label="Interviews"          value={interviews} icon={TrendingUp}  loading={loading} />
-				<StatCard label="Offers"              value={offers}     icon={CirclePlus}  loading={loading} />
+				<StatCard label="Total Applications" value={total}      icon={Briefcase}  loading={loading} />
+				<StatCard label="Interviews"         value={interviews} icon={TrendingUp} loading={loading} />
+				<StatCard label="Offers"             value={offers}     icon={CirclePlus} loading={loading} />
 			</div>
 
-			{/* Quick actions */}
 			<div>
 				<p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">Quick Actions</p>
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

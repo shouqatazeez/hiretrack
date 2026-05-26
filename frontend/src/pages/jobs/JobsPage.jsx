@@ -99,9 +99,9 @@ export default function JobsPage() {
 
 			{/* Empty state */}
 			{!loading && !error && jobs.length === 0 && (
-				<div className="rounded-xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm">
-					<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
-						<CirclePlus className="h-6 w-6 text-slate-400" />
+				<div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
+					<div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-slate-100">
+						<CirclePlus className="h-5 w-5 text-slate-400" />
 					</div>
 					<p className="text-sm font-semibold text-slate-700">No applications yet</p>
 					<p className="mt-1 text-sm text-slate-400">

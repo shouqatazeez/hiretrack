@@ -189,15 +189,16 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div className="relative hidden w-[55%] items-center justify-center border-l border-zinc-800 bg-zinc-900/50 lg:flex">
+      <div className="relative hidden w-[55%] items-center justify-center border-l border-zinc-700/40 bg-zinc-900/50 lg:flex">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
               'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
             backgroundSize: '64px 64px',
           }}
         />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.04)_0%,_transparent_70%)]" />
         <div className="relative z-10 max-w-95 space-y-6 text-center">
           <p className="text-xl font-medium leading-relaxed tracking-tight text-zinc-200">
             Start your hiring journey with clarity.
