@@ -121,8 +121,9 @@ export default function JobsPage() {
 			{!loading && !error && jobs.length > 0 && (
 				<div className="space-y-3">
 					{jobs.map((job) => (
-						<article
+						<Link
 							key={job.id}
+							to={`/dashboard/jobs/${job.id}`}
 							className="flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
 						>
 							<CompanyAvatar name={job.company_name} />
@@ -135,6 +136,7 @@ export default function JobsPage() {
 										href={job.job_url}
 										target="_blank"
 										rel="noopener noreferrer"
+										onClick={(e) => e.stopPropagation()}
 										className="mt-0.5 inline-block text-xs text-slate-400 underline underline-offset-4 transition hover:text-slate-600"
 									>
 										View posting ↗
@@ -146,7 +148,7 @@ export default function JobsPage() {
 							</div>
 
 							<StatusBadge status={job.status} />
-						</article>
+						</Link>
 					))}
 				</div>
 			)}
