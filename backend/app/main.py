@@ -15,7 +15,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://hiretrack-wine-nine.vercel.app",
+        "https://myhiretrack.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
