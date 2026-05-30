@@ -133,10 +133,10 @@ export default function JobDetailsPage() {
                 href={job.job_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 underline underline-offset-4 transition hover:text-slate-900"
+                className="mt-2 inline-flex max-w-full items-center gap-1.5 break-all text-sm font-medium text-slate-700 underline underline-offset-4 transition hover:text-slate-900"
               >
-                {job.job_url}
-                <ExternalLink className="h-3.5 w-3.5" />
+                <span className="break-all">{job.job_url}</span>
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
               </a>
             </div>
           )}
@@ -163,7 +163,7 @@ function DetailCard({ icon: Icon, label, value }) {
           {label}
         </p>
       </div>
-      <p className="mt-3 text-base font-medium text-slate-900">{value}</p>
+      <p className="mt-3 break-words text-base font-medium text-slate-900">{value}</p>
     </div>
   )
 }

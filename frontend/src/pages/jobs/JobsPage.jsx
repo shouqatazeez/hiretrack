@@ -147,7 +147,9 @@ export default function JobsPage() {
 								</p>
 							</div>
 
-							<StatusBadge status={job.status} />
+							<div className="shrink-0">
+								<StatusBadge status={job.status} />
+							</div>
 						</Link>
 					))}
 				</div>
