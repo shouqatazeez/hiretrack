@@ -60,8 +60,8 @@ export default function RegisterPage() {
         <div className="w-full max-w-95">
 
           <div className="mb-10 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white">
-              <Briefcase className="h-4.5 w-4.5 text-zinc-950" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+              <Briefcase className="h-4.5 w-4.5 text-primary-foreground" />
             </div>
             <span className="text-sm font-semibold tracking-wide text-zinc-300">
               HireTrack
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                 value={formData.full_name}
                 onChange={handleChange}
                 disabled={loading}
-                className="mt-1 h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80 disabled:opacity-50"
+                className="mt-1 h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:bg-zinc-900/80 disabled:opacity-50"
               />
             </div>
 
@@ -123,7 +123,7 @@ export default function RegisterPage() {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={loading}
-                className="mt-1 h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80 disabled:opacity-50"
+                className="mt-1 h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:bg-zinc-900/80 disabled:opacity-50"
               />
             </div>
 
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                   value={formData.password}
                   onChange={handleChange}
                   disabled={loading}
-                  className="h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 pr-11 pl-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-zinc-600 focus:bg-zinc-900/80 disabled:opacity-50"
+                  className="h-11 w-full rounded-lg border border-zinc-800 bg-zinc-900 pr-11 pl-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:bg-zinc-900/80 disabled:opacity-50"
                 />
                 <button
                   type="button"
@@ -159,7 +159,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mb-3.5 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-white text-[0.8125rem] font-semibold text-zinc-950 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mb-3.5 flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-[0.8125rem] font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <>
