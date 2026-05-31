@@ -76,7 +76,7 @@ export default function JobsPage() {
 				</div>
 				<Link
 					to="/dashboard/jobs/new"
-					className="inline-flex items-center gap-2 self-start rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 sm:self-auto"
+					className="inline-flex items-center gap-2 self-start rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 sm:self-auto"
 				>
 					<CirclePlus className="h-4 w-4" />
 					Add Job
@@ -109,7 +109,7 @@ export default function JobsPage() {
 					</p>
 					<Link
 						to="/dashboard/jobs/new"
-						className="mt-4 inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+						className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
 					>
 						<CirclePlus className="h-4 w-4" />
 						Add your first job
