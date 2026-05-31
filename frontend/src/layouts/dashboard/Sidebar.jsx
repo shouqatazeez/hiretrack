@@ -32,8 +32,8 @@ export default function Sidebar({ isOpen, onClose }) {
 		>
 			<div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-100 px-5">
 				<div className="flex items-center gap-2.5">
-					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-900">
-						<Briefcase className="h-3.5 w-3.5 text-white" />
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary">
+						<Briefcase className="h-3.5 w-3.5 text-primary-foreground" />
 					</div>
 					<span className="text-sm font-semibold tracking-tight text-slate-900">HireTrack</span>
 				</div>
@@ -64,14 +64,14 @@ export default function Sidebar({ isOpen, onClose }) {
 										cn(
 											'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150',
 											isActive
-												? 'bg-slate-900 text-white'
+												? 'bg-primary text-primary-foreground'
 												: 'text-slate-600 hover:bg-slate-100 hover:text-slate-900',
 										)
 									}
 								>
 									{({ isActive }) => (
 										<>
-											<Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-600')} />
+											<Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-primary-foreground' : 'text-slate-400 group-hover:text-slate-600')} />
 											<span>{item.label}</span>
 										</>
 									)}
@@ -84,7 +84,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
 			<div className="shrink-0 border-t border-slate-100 p-4">
 				<div className="flex items-center gap-3">
-					<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white">
+					<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
 						{initials}
 					</div>
 					<div className="min-w-0 flex-1">

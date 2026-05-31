@@ -53,7 +53,7 @@ export default function Navbar({ onMenuClick }) {
 					<span className="text-xs text-slate-400">{user?.email ?? ''}</span>
 				</div>
 
-				<div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white">
+				<div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
 					{initials}
 				</div>
 

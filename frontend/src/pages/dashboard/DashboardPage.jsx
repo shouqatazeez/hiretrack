@@ -30,8 +30,8 @@ function QuickActionCard({ label, description, to, icon: Icon }) {
 			to={to}
 			className="group flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-slate-300 hover:shadow-md"
 		>
-			<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 transition group-hover:bg-slate-800">
-				<Icon className="h-5 w-5 text-white" />
+			<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary transition group-hover:bg-primary/90">
+				<Icon className="h-5 w-5 text-primary-foreground" />
 			</div>
 			<div>
 				<p className="text-sm font-semibold text-slate-900">{label}</p>
