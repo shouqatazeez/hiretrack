@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import LandingPage from '../pages/landing/LandingPage.jsx'
 import LoginPage from '../pages/auth/LoginPage.jsx'
 import RegisterPage from '../pages/auth/RegisterPage.jsx'
 import DashboardPage from '../pages/dashboard/DashboardPage.jsx'
@@ -17,7 +18,7 @@ function LegacyJobDetailsRedirect() {
 export default function AppRoutes() {
 	return (
 		<Routes>
-			<Route path="/" element={<Navigate to="/login" replace />} />
+			<Route path="/" element={<LandingPage />} />
 
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
