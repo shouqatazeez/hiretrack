@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Briefcase, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
-import { registerUser } from '../../services/authService'
+import { useAuth } from '../../context/AuthContext'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
+  const { register } = useAuth()
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -32,22 +33,11 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      await registerUser({
-        full_name: formData.full_name,
-        email: formData.email,
-        password: formData.password,
-      })
-
+      await register(formData.email, formData.full_name, formData.password)
       setSuccess(true)
-      setTimeout(() => navigate('/login'), 2000)
+      setTimeout(() => navigate('/dashboard'), 1500)
     } catch (err) {
-      const serverMessage = err?.response?.data?.detail
-
-      if (Array.isArray(serverMessage)) {
-        setError(serverMessage[0]?.msg || 'Validation error. Please check your inputs.')
-      } else {
-        setError(serverMessage || 'Something went wrong. Please try again.')
-      }
+      setError(err.message || 'Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -79,7 +69,7 @@ export default function RegisterPage() {
 
           {success && (
             <div className="mb-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-400">
-              🎉 Account created! Redirecting you to login…
+              🎉 Account created! Logging you in and redirecting to dashboard…
             </div>
           )}
 
