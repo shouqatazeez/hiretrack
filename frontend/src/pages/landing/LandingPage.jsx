@@ -16,9 +16,6 @@ import {
   ChevronDown,
   Quote,
   Sparkles,
-  Mail,
-  Globe,
-  MessageCircle,
 } from 'lucide-react'
 
 const valueProps = [
@@ -152,10 +149,6 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
 ]
 
-/* ----------------------------------------------------------------------------
- * Reusable layout primitives — one container width + one heading rhythm.
- * -------------------------------------------------------------------------- */
-
 function Container({ as: Tag = 'div', className, children }) {
   return (
     <Tag className={cn('mx-auto w-full max-w-6xl px-6', className)}>{children}</Tag>
@@ -168,11 +161,11 @@ function SectionHeading({ eyebrow, title, description, className }) {
       <p className="text-xs font-semibold uppercase tracking-widest text-primary">
         {eyebrow}
       </p>
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-50 sm:text-4xl">
+      <h2 className="mt-4 mb-3 text-3xl font-semibold tracking-tight text-zinc-50 sm:text-4xl">
         {title}
       </h2>
       {description && (
-        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-zinc-400">
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-zinc-400">
           {description}
         </p>
       )}
@@ -324,27 +317,27 @@ export default function LandingPage() {
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden ">
+      <section className="relative overflow-hidden">
         <GridBackground />
-        <div className=" pointer-events-none absolute left-1/2 top-0 h-[500px] w-[1000px] max-w-full -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklch,var(--color-primary)_18%,transparent)_0%,transparent_70%)] blur-2xl " />
-        <Container className="relative flex flex-col items-center pt-20 pb-20 text-center sm:pt-28 sm:pb-28" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3.5 py-1.5 text-xs font-medium text-zinc-400" style={{ margin: '0 auto' }}>
+        <div className="pointer-events-none absolute left-1/2 top-0 h-125 w-250 max-w-full -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklch,var(--color-primary)_18%,transparent)_0%,transparent_70%)] blur-2xl" />
+        <Container className="relative flex flex-col items-center pt-20 pb-0 text-center sm:pt-28 sm:pb-0">
+          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3.5 py-1.5 text-xs font-medium text-zinc-400">
             <span className="flex h-1.5 w-1.5 rounded-full bg-primary" />
             Your job search, finally organized
           </span>
 
-          <h1 className="mt-7 max-w-3xl text-center text-4xl font-semibold leading-[1.1] tracking-tight text-zinc-50 sm:text-5xl md:text-6xl" style={{ textAlign: 'center', margin: '1.75rem auto 0 auto' }}>
+          <h1 className="mt-7 mb-2 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight text-zinc-50 sm:text-5xl md:text-6xl">
             Track every application from{' '}
             <span className="text-zinc-400">applied</span> to{' '}
             <span className="text-primary">offer</span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-center text-lg leading-relaxed text-zinc-300 sm:text-xl" style={{ textAlign: 'center', margin: '1.5rem auto 0 auto' }}>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300 sm:text-xl">
             One clean dashboard for your entire job hunt. No scattered tabs, no
             forgotten follow-ups, no guessing where things stand.
           </p>
 
-          <div className="mt-10 flex max-w-md flex-col items-center justify-center gap-3 sm:max-w-none sm:flex-row" style={{ margin: '2.5rem auto 0 auto' }}>
+          <div className="mt-10 flex max-w-md flex-col items-center justify-center gap-3 sm:max-w-none sm:flex-row">
             <Link
               to="/register"
               className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto"
@@ -360,7 +353,7 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div className="mt-7 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-zinc-400 sm:max-w-none" style={{ margin: '1.75rem auto 0 auto' }}>
+          <div className="mt-7 flex max-w-md flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-zinc-400 sm:max-w-none">
             {['Free to start', 'No credit card required', 'Set up in under a minute'].map(
               (item) => (
                 <span key={item} className="flex items-center gap-1.5">
@@ -426,9 +419,8 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* Stat-style proof bar */}
       <section className="border-y border-zinc-800/60 bg-zinc-900/20">
-        <Container className="flex flex-col items-center justify-between gap-6 py-10 text-center sm:flex-row sm:text-left">
+        <Container className="flex flex-col items-center justify-center gap-x-8 gap-y-4 py-10 text-center sm:flex-row">
           <p className="text-sm font-medium text-zinc-300">
             Trusted by job seekers to stay organized through every stage
           </p>
@@ -442,20 +434,19 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* Features / value props */}
-      <section id="features" className="py-20 sm:py-24">
+      <section id="features" className="pt-12 pb-20 sm:pt-16 sm:pb-24">
         <Container>
-          <SectionHeading
+          <SectionHeading 
             eyebrow="Features"
-            title="Built for the search, not the spreadsheet"
-            description="Most people run their job search out of a spreadsheet that falls apart by week two. HireTrack replaces it with a focused workspace that keeps your search organized — add a role in seconds, move it through your pipeline, and see your momentum at a glance."
+            title="Everything you need to land your next role"
+            description="Stop managing your career out of a spreadsheet. HireTrack is a dedicated workspace built to keep your pipeline organized, your notes centralized, and your job search moving forward."
           />
 
-          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-800/60 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {valueProps.map((feature) => (
               <div
                 key={feature.title}
-                className="group flex flex-col bg-zinc-950 p-8 transition-colors hover:bg-zinc-900/60"
+                className="group flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/30 p-8 transition-colors hover:bg-zinc-900/60"
               >
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 transition-colors group-hover:border-zinc-700">
                   <feature.icon className="h-5 w-5 text-zinc-300" />
@@ -472,7 +463,6 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* How it works */}
       <section id="how-it-works" className="border-t border-zinc-800/60 py-20 sm:py-24">
         <Container>
           <SectionHeading
@@ -531,7 +521,6 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* FAQ */}
       <section id="faq" className="border-t border-zinc-800/60 py-20 sm:py-24">
         <Container>
           <SectionHeading eyebrow="FAQ" title="Questions, answered" />
@@ -549,7 +538,6 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* CTA */}
       <section className="border-t border-zinc-800/60 py-20 sm:py-24">
         <Container>
           <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/40 p-8 sm:p-12">
@@ -599,7 +587,6 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-zinc-800/60 py-10">
         <Container>
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
@@ -615,18 +602,6 @@ export default function LandingPage() {
                 </a>
               ))}
             </nav>
-            <div className="flex items-center gap-3">
-              {[Mail, Globe, MessageCircle].map((Icon, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-800 text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-100"
-                  aria-label="Social link"
-                >
-                  <Icon size={15} />
-                </a>
-              ))}
-            </div>
           </div>
           <div className="mt-6 border-t border-zinc-800/60 pt-6 text-center">
             <p className="text-xs text-zinc-500">
