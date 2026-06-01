@@ -16,6 +16,9 @@ import {
   ChevronDown,
   Quote,
   Sparkles,
+  Search,
+  Trophy,
+  XCircle,
 } from 'lucide-react'
 
 const valueProps = [
@@ -32,10 +35,10 @@ const valueProps = [
       'Total applications, active interviews, and offers at a glance. No scattered tabs, no guessing where things stand.',
   },
   {
-    icon: Bell,
-    title: 'Never miss a follow-up',
+    icon: Search,
+    title: 'Find applications instantly',
     description:
-      'Keep notes and next steps on every role so nothing slips through the cracks again.',
+      'Search and filter your applications in real-time by title, company, or status as your pipeline grows.',
   },
   {
     icon: Clock,
@@ -66,7 +69,7 @@ const steps = [
   {
     number: '02',
     title: 'Add your applications',
-    description: 'Log every role you apply to with company, status, and notes that keep you organized.',
+    description: 'Log every role you apply to with company and status to keep your pipeline organized.',
   },
   {
     number: '03',
@@ -78,7 +81,7 @@ const steps = [
 const testimonials = [
   {
     quote:
-      'I went from 30 browser tabs and a broken spreadsheet to one dashboard. I finally knew which applications needed a follow-up — and it landed me two interviews that week.',
+      'I went from 30 browser tabs and a broken spreadsheet to one dashboard. I finally knew exactly where each application stood — and it landed me two interviews that week.',
     name: 'Priya M.',
     role: 'Frontend Engineer',
   },
@@ -90,7 +93,7 @@ const testimonials = [
   },
   {
     quote:
-      'I stopped letting applications fall through the cracks. The notes and status pipeline are exactly what I needed.',
+      'I stopped letting applications fall through the cracks. The real-time status pipeline is exactly what I needed.',
     name: 'Sara K.',
     role: 'Marketing Lead',
   },
@@ -111,17 +114,17 @@ const faqs = [
   {
     question: 'How is this better than a spreadsheet?',
     answer:
-      'HireTrack is purpose-built for job searching. Instead of fighting with rows and columns, you get a visual pipeline, a live dashboard, and notes on every role — all in one place that stays organized as your search grows.',
+      'HireTrack is purpose-built for job searching. Instead of fighting with rows and columns, you get a visual pipeline, a live dashboard, and real-time search capabilities — all in one place that stays organized as your search grows.',
   },
   {
     question: 'Can I track unlimited applications?',
     answer:
-      "Yes. Add as many roles as you're applying to, with company, status, and notes on each.",
+      "Yes. Add as many roles as you're applying to, with company and status for each.",
   },
   {
     question: 'Is my data private?',
     answer:
-      'Always. Your applications and notes are locked to your account behind secure authentication. Your search is yours alone.',
+      'Always. Your applications are locked to your account behind secure authentication. Your search is yours alone.',
   },
   {
     question: 'How long does setup take?',
@@ -139,7 +142,7 @@ const benefits = [
   'Unlimited application tracking',
   'Status pipeline from applied to offer',
   'Clean dashboard with live stats',
-  'Notes and details on every role',
+  'Real-time search and filter capabilities',
 ]
 
 const navLinks = [
@@ -373,11 +376,12 @@ export default function LandingPage() {
                   <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
                   <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
                 </div>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {[
                     { label: 'Total Applications', value: '24', icon: Briefcase },
-                    { label: 'Interviews', value: '6', icon: BarChart3 },
-                    { label: 'Offers', value: '2', icon: Check },
+                    { label: 'Interviewing', value: '6', icon: Clock },
+                    { label: 'Offers', value: '2', icon: Trophy },
+                    { label: 'Rejected', value: '1', icon: XCircle },
                   ].map((stat) => (
                     <div
                       key={stat.label}
@@ -439,7 +443,7 @@ export default function LandingPage() {
           <SectionHeading 
             eyebrow="Features"
             title="Everything you need to land your next role"
-            description="Stop managing your career out of a spreadsheet. HireTrack is a dedicated workspace built to keep your pipeline organized, your notes centralized, and your job search moving forward."
+            description="Stop managing your career out of a spreadsheet. HireTrack is a dedicated workspace built to keep your pipeline organized, your search efficient, and your job search moving forward."
           />
 
           <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
