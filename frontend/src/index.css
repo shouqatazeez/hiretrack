@@ -4,6 +4,7 @@
 @import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -239,7 +240,13 @@ code {
     @apply min-h-screen bg-background text-foreground;
   }
 
-  button:not(:disabled), [role="button"]:not(:disabled) {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
   }
 }
