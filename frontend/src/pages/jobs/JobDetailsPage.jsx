@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil } from 'lucide-react'
-import { getJobById } from '../../services/jobService'
+import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil, Trash2 } from 'lucide-react'
+import { deleteJob, getJobById } from '../../services/jobService'
 
 const STATUS_CONFIG = {
   applied:      { label: 'Applied',      class: 'bg-blue-900/25 text-blue-300 ring-blue-800/40' },
@@ -41,6 +41,9 @@ export default function JobDetailsPage() {
   const [job, setJob] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState(null)
 
   useEffect(() => {
     async function loadJob() {
@@ -65,6 +68,22 @@ export default function JobDetailsPage() {
 
     loadJob()
   }, [jobId])
+
+  const handleDelete = async () => {
+    try {
+      setDeleting(true)
+      setDeleteError(null)
+      await deleteJob(jobId)
+      setShowConfirmModal(false)
+      navigate('/dashboard/jobs')
+    } catch (err) {
+      setDeleteError(
+        err?.response?.data?.detail ?? 'Failed to delete job. Please try again.'
+      )
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   return (
     <section className="space-y-6">
@@ -117,6 +136,14 @@ export default function JobDetailsPage() {
                   <Pencil className="h-4 w-4" />
                   Edit
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmModal(true)}
+                  className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-rose-800/60 bg-rose-950/20 px-4 text-sm font-semibold text-rose-300 transition hover:bg-rose-950/40 hover:text-rose-200"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </button>
               </div>
             </div>
           </div>
@@ -156,6 +183,54 @@ export default function JobDetailsPage() {
             <span className="mx-2">·</span>
             <span>Updated {formatDate(job.updated_at)}</span>
           </div>
+
+          {showConfirmModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+              <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                <h2 className="text-xl font-semibold text-zinc-50">Delete Job Application</h2>
+                <p className="mt-3 text-sm text-zinc-400">
+                  Are you sure you want to delete your application for{' '}
+                  <span className="font-semibold text-zinc-200">{job.job_title}</span> at{' '}
+                  <span className="font-semibold text-zinc-200">{job.company_name}</span>? This action cannot be undone.
+                </p>
+
+                {deleteError && (
+                  <div className="mt-4 rounded-lg border border-rose-700/40 bg-rose-900/40 px-4 py-3 text-sm text-rose-300">
+                    {deleteError}
+                  </div>
+                )}
+
+                <div className="mt-6 flex justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowConfirmModal(false)
+                      setDeleteError(null)
+                    }}
+                    disabled={deleting}
+                    className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-800/80 bg-zinc-900 px-4 text-sm font-medium text-zinc-100 transition hover:bg-zinc-800 disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-rose-600 px-4 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:opacity-50"
+                  >
+                    {deleting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Deleting…
+                      </>
+                    ) : (
+                      'Delete'
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </section>
