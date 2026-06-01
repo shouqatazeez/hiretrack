@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2 } from 'lucide-react'
+import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil } from 'lucide-react'
 import { getJobById } from '../../services/jobService'
 
 const STATUS_CONFIG = {
-  applied:      { label: 'Applied',      class: 'bg-blue-50 text-blue-600 ring-blue-100' },
-  interviewing: { label: 'Interviewing', class: 'bg-amber-50 text-amber-600 ring-amber-100' },
-  offered:      { label: 'Offered',      class: 'bg-emerald-50 text-emerald-700 ring-emerald-100' },
-  rejected:     { label: 'Rejected',     class: 'bg-red-50 text-red-500 ring-red-100' },
-  withdrawn:    { label: 'Withdrawn',    class: 'bg-slate-100 text-slate-500 ring-slate-200' },
+  applied:      { label: 'Applied',      class: 'bg-blue-900/25 text-blue-300 ring-blue-800/40' },
+  interviewing: { label: 'Interviewing', class: 'bg-amber-900/25 text-amber-300 ring-amber-800/40' },
+  offered:      { label: 'Offered',      class: 'bg-emerald-900/25 text-emerald-300 ring-emerald-800/40' },
+  rejected:     { label: 'Rejected',     class: 'bg-rose-900/25 text-rose-300 ring-rose-800/40' },
+  withdrawn:    { label: 'Withdrawn',    class: 'bg-zinc-800/40 text-zinc-300 ring-zinc-700/40' },
 }
 
 function StatusBadge({ status }) {
@@ -71,43 +71,53 @@ export default function JobDetailsPage() {
       <button
         type="button"
         onClick={() => navigate('/dashboard/jobs')}
-        className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
+        className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition hover:text-zinc-50"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to jobs
       </button>
 
       {loading && (
-        <div className="flex items-center justify-center rounded-xl border border-slate-200 bg-white p-12 shadow-sm">
-          <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
-          <span className="ml-2 text-sm text-slate-500">Loading job details…</span>
+        <div className="flex items-center justify-center rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-12 shadow-lg">
+          <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+          <span className="ml-2 text-sm text-zinc-400">Loading job details…</span>
         </div>
       )}
 
       {error && !loading && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-600">
+        <div className="rounded-2xl border border-rose-700/40 bg-rose-900/40 p-5 text-sm text-rose-300">
           {error}
         </div>
       )}
 
       {!loading && !error && job && (
         <>
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-base font-semibold text-slate-700">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-zinc-800/60 text-base font-semibold text-zinc-100">
                   {job.company_name?.[0]?.toUpperCase() ?? '?'}
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
                     {job.company_name}
                   </p>
-                  <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
+                  <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-50">
                     {job.job_title}
                   </h1>
                 </div>
               </div>
-              <StatusBadge status={job.status} />
+              <div className="flex items-center gap-3">
+                <StatusBadge status={job.status} />
+                <button
+                  type="button"
+                  onClick={() => navigate(`/dashboard/jobs/${job.id}/edit`)}
+                  className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                >
+                  <Pencil className="h-4 w-4" />
+                  Edit
+                </button>
+              </div>
             </div>
           </div>
 
@@ -125,23 +135,23 @@ export default function JobDetailsPage() {
           </div>
 
           {job.job_url && (
-            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+            <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
                 Job posting
               </p>
               <a
                 href={job.job_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-flex max-w-full items-center gap-1.5 break-all text-sm font-medium text-slate-700 underline underline-offset-4 transition hover:text-slate-900"
+                className="mt-2 inline-flex max-w-full items-center gap-1.5 break-all text-sm font-medium text-zinc-100 underline underline-offset-4 transition hover:text-zinc-50"
               >
                 <span className="break-all">{job.job_url}</span>
-                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                <ExternalLink className="h-3.5 w-3.5 shrink-0 text-zinc-300" />
               </a>
             </div>
           )}
 
-          <div className="rounded-xl border border-slate-200 bg-white p-6 text-xs text-slate-400 shadow-sm">
+          <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 text-xs text-zinc-400 shadow-sm">
             <span>Created {formatDate(job.created_at)}</span>
             <span className="mx-2">·</span>
             <span>Updated {formatDate(job.updated_at)}</span>
@@ -154,16 +164,16 @@ export default function JobDetailsPage() {
 
 function DetailCard({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg">
       <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100">
-          <Icon className="h-4 w-4 text-slate-600" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800/60">
+          <Icon className="h-4 w-4 text-zinc-300" />
         </div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
           {label}
         </p>
       </div>
-      <p className="mt-3 break-words text-base font-medium text-slate-900">{value}</p>
+      <p className="mt-3 wrap-break-word text-base font-medium text-zinc-50">{value}</p>
     </div>
   )
 }

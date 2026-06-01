@@ -3,10 +3,11 @@ import { matchPath, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 const titleMap = [
-	{ path: '/dashboard',            title: 'Dashboard'   },
-	{ path: '/dashboard/jobs',       title: 'Jobs'        },
-	{ path: '/dashboard/jobs/new',   title: 'Add Job'     },
-	{ path: '/dashboard/jobs/:jobId',title: 'Job Details' },
+	{ path: '/dashboard',                 title: 'Dashboard'   },
+	{ path: '/dashboard/jobs',            title: 'Jobs'        },
+	{ path: '/dashboard/jobs/new',        title: 'Add Job'     },
+	{ path: '/dashboard/jobs/:jobId/edit',title: 'Edit Job'    },
+	{ path: '/dashboard/jobs/:jobId',     title: 'Job Details' },
 ]
 
 function getPageTitle(pathname) {
