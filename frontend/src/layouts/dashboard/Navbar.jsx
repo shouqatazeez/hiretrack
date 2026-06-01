@@ -30,27 +30,27 @@ export default function Navbar({ onMenuClick }) {
 	}
 
 	return (
-		<header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 sm:px-6 lg:px-8">
+		<header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-zinc-800/80 bg-zinc-950/85 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
 			{/* Left: hamburger + page title */}
 			<div className="flex items-center gap-3">
 				<button
 					type="button"
 					onClick={onMenuClick}
-					className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 lg:hidden"
+					className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-100 lg:hidden"
 					aria-label="Open sidebar"
 				>
 					<Menu className="h-4.5 w-4.5" />
 				</button>
-				<h1 className="text-base font-semibold text-slate-900">{pageTitle}</h1>
+				<h1 className="text-base font-semibold text-zinc-50">{pageTitle}</h1>
 			</div>
 
 			{/* Right: user name + avatar + logout */}
 			<div className="flex items-center gap-3">
 				<div className="hidden flex-col items-end sm:flex">
-					<span className="text-sm font-medium leading-tight text-slate-800">
+					<span className="text-sm font-medium leading-tight text-zinc-100">
 						{user?.full_name ?? 'User'}
 					</span>
-					<span className="text-xs text-slate-400">{user?.email ?? ''}</span>
+					<span className="text-xs text-zinc-500">{user?.email ?? ''}</span>
 				</div>
 
 				<div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
@@ -60,7 +60,7 @@ export default function Navbar({ onMenuClick }) {
 				<button
 					type="button"
 					onClick={handleLogout}
-					className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+					className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-100"
 					aria-label="Sign out"
 				>
 					<LogOut className="h-4 w-4" />
