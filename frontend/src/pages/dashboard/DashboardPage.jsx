@@ -26,37 +26,37 @@ function StatCard({ label, value, icon: Icon, loading, highlight }) {
 		<div
 			className={
 				highlight
-					? 'rounded-2xl border border-primary/30 bg-linear-to-br from-primary to-emerald-700 p-5 shadow-lg shadow-primary/10 transition hover:shadow-xl'
-					: 'rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg shadow-black/10 transition hover:border-zinc-700 hover:shadow-xl'
+					? 'rounded-2xl border border-primary/30 bg-linear-to-br from-primary to-emerald-700 p-4 shadow-md shadow-primary/10 transition hover:shadow-lg'
+					: 'rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-md shadow-black/10 transition hover:border-zinc-700 hover:shadow-lg'
 			}
 		>
 			<div className="flex items-center justify-between">
-				<p className={highlight ? 'text-sm font-medium text-primary-foreground/80' : 'text-sm font-medium text-zinc-400'}>
+				<p className={highlight ? 'text-xs font-medium text-primary-foreground/80' : 'text-xs font-medium text-zinc-400'}>
 					{label}
 				</p>
 				<div
 					className={
 						highlight
-							? 'flex h-8 w-8 items-center justify-center rounded-lg bg-white/15'
-							: 'flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800'
+							? 'flex h-7 w-7 items-center justify-center rounded-md bg-white/15'
+							: 'flex h-7 w-7 items-center justify-center rounded-md bg-zinc-800'
 					}
 				>
-					<Icon className={highlight ? 'h-4 w-4 text-primary-foreground' : 'h-4 w-4 text-zinc-300'} />
+					<Icon className={highlight ? 'h-3.5 w-3.5 text-primary-foreground' : 'h-3.5 w-3.5 text-zinc-300'} />
 				</div>
 			</div>
 			<p
 				className={
 					highlight
-						? 'mt-3 text-3xl font-semibold tracking-tight text-primary-foreground sm:text-[2.15rem]'
-						: 'mt-3 text-3xl font-semibold tracking-tight text-zinc-50 sm:text-[2.15rem]'
+						? 'mt-2 text-2xl font-semibold tracking-tight text-primary-foreground sm:text-[1.75rem]'
+						: 'mt-2 text-2xl font-semibold tracking-tight text-zinc-50 sm:text-[1.75rem]'
 				}
 			>
 				{loading ? (
 					<span
 						className={
 							highlight
-								? 'inline-block h-8 w-10 animate-pulse rounded-md bg-white/25'
-								: 'inline-block h-8 w-10 animate-pulse rounded-md bg-zinc-700'
+								? 'inline-block h-7 w-9 animate-pulse rounded bg-white/25'
+								: 'inline-block h-7 w-9 animate-pulse rounded bg-zinc-700'
 						}
 					/>
 				) : (
@@ -218,7 +218,7 @@ export default function DashboardPage() {
 							</Link>
 						</div>
 					) : (
-						<ul className="mt-4 divide-y divide-slate-100">
+						<ul className="mt-4 divide-y divide-zinc-800/80">
 							{recentJobs.map((job) => (
 								<li key={job.id}>
 									<Link
