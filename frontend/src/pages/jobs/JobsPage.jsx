@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CirclePlus } from 'lucide-react'
+import { CirclePlus, Search } from 'lucide-react'
 import { fetchJobs } from '../../services/jobService'
 
 const STATUS_CONFIG = {
@@ -48,6 +48,7 @@ export default function JobsPage() {
 	const [jobs, setJobs]       = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError]     = useState(null)
+	const [searchQuery, setSearchQuery] = useState('')
 
 	useEffect(() => {
 		async function loadJobs() {
@@ -62,6 +63,16 @@ export default function JobsPage() {
 		}
 		loadJobs()
 	}, [])
+
+	const filteredJobs = jobs.filter((job) => {
+		const query = searchQuery.toLowerCase()
+		const statusLabel = STATUS_CONFIG[job.status]?.label?.toLowerCase() ?? job.status?.toLowerCase() ?? ''
+		return (
+			job.company_name?.toLowerCase().includes(query) ||
+			job.job_title?.toLowerCase().includes(query) ||
+			statusLabel.includes(query)
+		)
+	})
 
 	return (
 		<div className="space-y-6 text-zinc-100">
@@ -82,21 +93,30 @@ export default function JobsPage() {
 				</Link>
 			</div>
 
-			{/* Loading skeletons */}
+			{!loading && !error && jobs.length > 0 && (
+				<div className="relative">
+					<Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+					<input
+						type="text"
+						placeholder="Search applications by company or job title..."
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 pl-10 pr-4 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+					/>
+				</div>
+			)}
+
 			{loading && (
 				<div className="space-y-3">
 					{[1, 2, 3].map((n) => <SkeletonCard key={n} />)}
 				</div>
 			)}
 
-			{/* Error state */}
 			{error && (
 				<div className="rounded-xl border border-rose-700/40 bg-rose-900/40 p-5 text-sm text-rose-300">
 					{error}
 				</div>
 			)}
-
-			{/* Empty state */}
 			{(!loading && !error && jobs.length === 0) && (
 				<div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/75 p-8 text-center shadow-lg">
 					<div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-800">
@@ -116,10 +136,28 @@ export default function JobsPage() {
 				</div>
 			)}
 
-			{/* Job list */}
-			{!loading && !error && jobs.length > 0 && (
+			{(!loading && !error && jobs.length > 0 && filteredJobs.length === 0) && (
+				<div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/75 p-8 text-center shadow-lg animate-in fade-in duration-200">
+					<div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-800">
+						<Search className="h-5 w-5 text-zinc-400" />
+					</div>
+					<p className="text-sm font-semibold text-zinc-300">No matching applications</p>
+					<p className="mt-1 text-sm text-zinc-400">
+						Try adjusting your keywords or clearing the search.
+					</p>
+					<button
+						type="button"
+						onClick={() => setSearchQuery('')}
+						className="mt-4 inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-800"
+					>
+						Clear search
+					</button>
+				</div>
+			)}
+
+			{!loading && !error && filteredJobs.length > 0 && (
 				<div className="space-y-3">
-						{jobs.map((job) => (
+						{filteredJobs.map((job) => (
 							<Link
 								key={job.id}
 								to={`/dashboard/jobs/${job.id}`}
