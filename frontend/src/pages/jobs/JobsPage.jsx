@@ -8,8 +8,16 @@ const STATUS_CONFIG = {
 	interviewing: { label: 'Interviewing', class: 'bg-amber-500/10 text-amber-300 ring-amber-500/20' },
 	offered:      { label: 'Offered',      class: 'bg-primary/10 text-primary ring-primary/20' },
 	rejected:     { label: 'Rejected',     class: 'bg-rose-500/10 text-rose-300 ring-rose-500/20' },
-	withdrawn:    { label: 'Withdrawn',    class: 'bg-zinc-800 text-zinc-400 ring-zinc-700' },
+	withdrawn:    { class: 'bg-zinc-800 text-zinc-400 ring-zinc-700', label: 'Withdrawn' },
 }
+
+const FILTER_OPTIONS = [
+	{ value: 'all', label: 'All' },
+	{ value: 'applied', label: 'Applied' },
+	{ value: 'interviewing', label: 'Interviewing' },
+	{ value: 'offered', label: 'Offer' },
+	{ value: 'rejected', label: 'Rejected' },
+]
 
 function StatusBadge({ status }) {
 	const config = STATUS_CONFIG[status] ?? { label: status, class: 'bg-slate-100 text-slate-500 ring-slate-200' }
@@ -49,6 +57,7 @@ export default function JobsPage() {
 	const [loading, setLoading] = useState(true)
 	const [error, setError]     = useState(null)
 	const [searchQuery, setSearchQuery] = useState('')
+	const [statusFilter, setStatusFilter] = useState('all')
 
 	useEffect(() => {
 		async function loadJobs() {
@@ -67,11 +76,14 @@ export default function JobsPage() {
 	const filteredJobs = jobs.filter((job) => {
 		const query = searchQuery.toLowerCase()
 		const statusLabel = STATUS_CONFIG[job.status]?.label?.toLowerCase() ?? job.status?.toLowerCase() ?? ''
-		return (
+		const matchesSearch =
 			job.company_name?.toLowerCase().includes(query) ||
 			job.job_title?.toLowerCase().includes(query) ||
 			statusLabel.includes(query)
-		)
+
+		const matchesFilter = statusFilter === 'all' || job.status === statusFilter
+
+		return matchesSearch && matchesFilter
 	})
 
 	return (
@@ -94,15 +106,28 @@ export default function JobsPage() {
 			</div>
 
 			{!loading && !error && jobs.length > 0 && (
-				<div className="relative">
-					<Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-					<input
-						type="text"
-						placeholder="Search applications by company or job title..."
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-						className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 pl-10 pr-4 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-					/>
+				<div className="flex flex-col gap-3 sm:flex-row">
+					<div className="relative flex-1">
+						<Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+						<input
+							type="text"
+							placeholder="Search applications by company or job title..."
+							value={searchQuery}
+							onChange={(e) => setSearchQuery(e.target.value)}
+							className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 pl-10 pr-4 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+						/>
+					</div>
+					<select
+						value={statusFilter}
+						onChange={(e) => setStatusFilter(e.target.value)}
+						className="h-11 rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-4 text-sm text-zinc-50 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 min-w-[160px]"
+					>
+						{FILTER_OPTIONS.map((opt) => (
+							<option key={opt.value} value={opt.value} className="bg-zinc-900 text-zinc-50">
+								{opt.label}
+							</option>
+						))}
+					</select>
 				</div>
 			)}
 
@@ -143,14 +168,17 @@ export default function JobsPage() {
 					</div>
 					<p className="text-sm font-semibold text-zinc-300">No matching applications</p>
 					<p className="mt-1 text-sm text-zinc-400">
-						Try adjusting your keywords or clearing the search.
+						Try adjusting your search query, changing the status filter, or resetting all filters.
 					</p>
 					<button
 						type="button"
-						onClick={() => setSearchQuery('')}
+						onClick={() => {
+							setSearchQuery('')
+							setStatusFilter('all')
+						}}
 						className="mt-4 inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-800"
 					>
-						Clear search
+						Reset filters
 					</button>
 				</div>
 			)}
