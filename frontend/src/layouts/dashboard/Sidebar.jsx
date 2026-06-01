@@ -64,14 +64,14 @@ export default function Sidebar({ isOpen, onClose }) {
 										cn(
 											'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150',
 											isActive
-												? 'bg-primary text-primary-foreground'
+												? 'bg-primary/10 text-primary border-l-2 border-primary rounded-l-none'
 												: 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100',
 										)
 									}
 								>
 									{({ isActive }) => (
 										<>
-											<Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-primary-foreground' : 'text-zinc-500 group-hover:text-zinc-300')} />
+											<Icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-primary' : 'text-zinc-500 group-hover:text-zinc-300')} />
 											<span>{item.label}</span>
 										</>
 									)}
