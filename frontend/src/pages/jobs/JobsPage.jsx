@@ -17,6 +17,7 @@ const FILTER_OPTIONS = [
 	{ value: 'interviewing', label: 'Interviewing' },
 	{ value: 'offered', label: 'Offer' },
 	{ value: 'rejected', label: 'Rejected' },
+	{ value: 'withdrawn', label: 'Withdrawn' },
 ]
 
 function StatusBadge({ status }) {
