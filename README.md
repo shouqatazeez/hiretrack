@@ -1,211 +1,175 @@
-<div align="center">
+# HireTrack
 
-# 🚀 HireTrack
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge&logo=vercel)](https://myhiretrack.vercel.app/)
+[![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8-purple?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
+[![JWT](https://img.shields.io/badge/JWT-Auth-black?style=flat-square&logo=jsonwebtokens)](https://jwt.io/)
 
-### Your Job Search Command Center
-
-[![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![JWT](https://img.shields.io/badge/JWT_Auth-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
-[![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
-
-<br/>
-
-A **full-stack job application tracking platform** that helps you organize, monitor, and analyze your entire job search from one place. Stop losing track of applications in spreadsheets — HireTrack gives you a real-time dashboard, powerful filtering, and complete CRUD management for every application you submit.
-
-<br/>
-
-[**🌐 Live Demo**](https://myhiretrack.vercel.app) · [**📖 API Docs**](https://myhiretrack.vercel.app/api/docs) · [**🐛 Report Bug**](https://github.com/yourusername/hiretrack/issues) · [**💡 Request Feature**](https://github.com/yourusername/hiretrack/issues)
-
-</div>
-
-<br/>
+HireTrack is a modern full-stack job application tracking platform designed to help job seekers manage and monitor their entire job search process from one centralized dashboard. It enables users to log applications, track statuses, filter by progress, and view real-time analytics—replacing messy spreadsheets with a clean, purpose-built tool.
 
 ---
 
-<br/>
+## Live Demo & API Documentation
 
-## 📸 Screenshots
-
-> **Add your screenshots here** — Replace the placeholder paths below with actual screenshots of your deployed app.
-
-<div align="center">
-
-| Dashboard | Job Applications |
-|:-:|:-:|
-| *Dashboard with real-time analytics* | *Applications list with search & filters* |
-
-| Job Details | Swagger API Docs |
-|:-:|:-:|
-| *Individual application detail view* | *Auto-generated interactive API documentation* |
-
-</div>
-
-<br/>
+* **Live Demo:** [https://myhiretrack.vercel.app/](https://myhiretrack.vercel.app/)
+* **Swagger UI (Interactive API Docs):** [https://hiretrack-api.vercel.app/docs](https://hiretrack-api.vercel.app/docs)
+* **ReDoc (Alternative API Docs):** [https://hiretrack-api.vercel.app/redoc](https://hiretrack-api.vercel.app/redoc)
 
 ---
 
-<br/>
+## Screenshots
 
-## ✨ Features
+### Landing Page
+![Landing Page](screenshots/landing.png)
 
-<table>
-<tr>
-<td width="50%">
+### Authentication (Login)
+![Login Page](screenshots/login.png)
 
-### 🔐 Authentication & Security
-- JWT-based login & registration
-- Automatic login after sign-up
-- Protected routes with token verification
-- Secure password hashing with bcrypt
+### Dashboard Analytics
+![Dashboard Page](screenshots/dashboard.png)
 
-</td>
-<td width="50%">
+### Jobs Dashboard (Applications List)
+![Jobs Page](screenshots/jobs.png)
 
-### 📊 Dashboard & Analytics
-- Real-time application statistics
-- Status breakdown (Applied, Interviewing, Offered, Rejected)
-- Applications submitted in the last 7 days
-- Recent applications quick view
+### Add New Job
+![Add Job Page](screenshots/add_job.png)
 
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 📝 Job Management
-- Full CRUD operations for applications
-- Track company, role, URL, status & dates
-- Detailed individual job view
-- Quick status updates
-
-</td>
-<td width="50%">
-
-### 🔍 Search & Filter
-- Real-time search across all applications
-- Filter by application status
-- Responsive design for all screen sizes
-- Clean, modern UI with Tailwind CSS
-
-</td>
-</tr>
-</table>
-
-<br/>
+### Job Details & Management
+![Job Details Page](screenshots/job_details.png)
 
 ---
 
-<br/>
+## Features
 
-## 🛠️ Tech Stack
+### User Authentication
+- Secure registration and login using **JWT tokens**.
+- Automatic login after successful registration.
+- Password hashing with **bcrypt** for security.
+- Protected routes ensuring only authenticated users can access the platform.
 
-<table>
-<tr>
-<td align="center" width="25%"><strong>Frontend</strong></td>
-<td align="center" width="25%"><strong>Backend</strong></td>
-<td align="center" width="25%"><strong>Database</strong></td>
-<td align="center" width="25%"><strong>DevOps</strong></td>
-</tr>
-<tr>
-<td valign="top">
+### Dashboard Analytics
+- Real-time statistics showing **total applications** submitted.
+- Applications submitted in the **last 7 days**.
+- Color-coded **status breakdown** (Applied, Interviewing, Offered, Rejected, Withdrawn).
+- Quick view of the **5 most recent applications**.
 
-- React 19
-- Vite
-- Tailwind CSS v4
-- React Router v7
-- React Hook Form
-- Zod Validation
-- Axios
-- Radix UI
-- Lucide Icons
+### Job Application Management
+- Full **CRUD operations** (Create, Read, Update, Delete) for job applications.
+- Track **company name**, **job title**, **application URL**, **status**, and **dates**.
+- Dedicated **job details page** for each application.
+- Quick status updates directly from the applications list.
 
-</td>
-<td valign="top">
+### Search & Filtering
+- **Real-time search** across all job applications.
+- **Filter by status** (All, Applied, Interviewing, Offered, Rejected, Withdrawn).
+- Instant results with client-side filtering.
 
-- FastAPI
-- SQLAlchemy ORM
-- Pydantic Schemas
-- Python-dotenv
-- Passlib (bcrypt)
-- PyJWT
-- Uvicorn
+### Modern UI/UX
+- Clean, responsive design built with **Tailwind CSS v4**.
+- Works seamlessly on mobile, tablet, and desktop.
+- Beautiful dark theme with smooth animations.
+- Intuitive navigation and user-friendly interface.
 
-</td>
-<td valign="top">
-
-- PostgreSQL (Production)
-- SQLite (Development)
-
-</td>
-<td valign="top">
-
-- Vercel (Hosting)
-- Git & GitHub
-
-</td>
-</tr>
-</table>
-
-<br/>
+### API Documentation
+- Auto-generated **Swagger UI** available at `/docs`.
+- Interactive **ReDoc** documentation at `/redoc`.
+- Fully documented endpoints for easy API exploration.
 
 ---
 
-<br/>
+## Tech Stack
 
-## 📐 Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Client (Browser)                         │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │  HTTPS
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     React SPA (Vite + Tailwind)                 │
-│  ┌────────────┐  ┌────────────────┐  ┌───────────────────────┐  │
-│  │ React Router│  │  Auth Context  │  │ Axios + Interceptors  │  │
-│  └────────────┘  └────────────────┘  └───────────────────────┘  │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │  REST API + Bearer Token
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     FastAPI Backend (Python)                     │
-│  ┌──────────┐  ┌──────────────┐  ┌────────────┐  ┌──────────┐  │
-│  │Auth Routes│  │  Job Routes  │  │ Dashboard  │  │ Schemas  │  │
-│  └──────────┘  └──────────────┘  └────────────┘  └──────────┘  │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   SQLAlchemy ORM Layer                    │   │
-│  └──────────────────────────────────────────────────────────┘   │
-└──────────────────────────────┬──────────────────────────────────┘
-                               │  SQL Queries
-                               ▼
-┌─────────────────────────────────────────────────────────────────┐
-│              PostgreSQL (Prod) / SQLite (Dev)                   │
-│         ┌──────────────┐    ┌─────────────────────┐             │
-│         │  users table  │    │ job_applications     │             │
-│         └──────────────┘    └─────────────────────┘             │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-<br/>
+| Category | Technology |
+|----------|------------|
+| **Frontend** | React 19, Vite |
+| **Styling** | Tailwind CSS 4, Radix UI |
+| **Forms & Validation** | React Hook Form, Zod |
+| **HTTP Client** | Axios |
+| **Routing** | React Router DOM 7 |
+| **Icons** | Lucide React |
+| **Backend** | FastAPI (Python) |
+| **ORM** | SQLAlchemy |
+| **Authentication** | JWT (PyJWT + Passlib) |
+| **Database** | PostgreSQL (Production), SQLite (Development) |
+| **Deployment** | Vercel |
 
 ---
 
-<br/>
+## Getting Started
 
-## 📂 Project Structure
+### Prerequisites
+- Python 3.10 or higher
+- Node.js (v18 or higher)
+- npm
+- PostgreSQL account (optional — SQLite works for local development)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/shouqatazeez/hiretrack.git
+   cd hiretrack
+   ```
+
+2. **Backend setup**
+   ```bash
+   cd backend
+   python -m venv venv
+   venv\Scripts\activate              # Windows
+   # source venv/bin/activate         # macOS / Linux
+   pip install -r requirements.txt
+   ```
+
+3. **Configure backend environment variables**
+
+   Create a `.env` file in the `backend/` directory:
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/hiretrack_db
+   SECRET_KEY=your_secret_key_here
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   ```
+
+4. **Start the backend server**
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   Navigate to `http://127.0.0.1:8000/docs` to see the API documentation.
+
+5. **Frontend setup**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+6. **Configure frontend environment variables**
+
+   Create a `.env.local` file in the `frontend/` directory:
+   ```env
+   VITE_API_BASE_URL=http://127.0.0.1:8000
+   ```
+
+7. **Start the frontend development server**
+   ```bash
+   npm run dev
+   ```
+
+8. **Open in browser**
+
+   Navigate to `http://localhost:5173`
+
+---
+
+## Project Structure
 
 ```
 hiretrack/
-│
-├── backend/                        # FastAPI Backend Service
+├── backend/                        # FastAPI Backend
 │   ├── app/
 │   │   ├── core/                   # Config & database connection
-│   │   │   ├── config.py           # Environment variable loader
+│   │   │   ├── config.py           # Environment variables
 │   │   │   └── database.py         # SQLAlchemy engine & session
 │   │   ├── models/                 # Database models
 │   │   │   ├── user.py             # User model
@@ -217,187 +181,120 @@ hiretrack/
 │   │   │   └── dashboard.py        # Analytics & recent apps
 │   │   ├── schemas/                # Pydantic request/response schemas
 │   │   ├── services/               # Business logic layer
-│   │   ├── utils/                  # Security helpers & dependencies
+│   │   ├── utils/                  # Security & auth dependencies
 │   │   └── main.py                 # App entrypoint & CORS config
 │   ├── requirements.txt
 │   └── .env
 │
-├── frontend/                       # React Frontend Client
+├── frontend/                       # React Frontend
 │   ├── src/
 │   │   ├── components/             # Reusable UI components
 │   │   ├── context/                # Auth context provider
 │   │   ├── hooks/                  # Custom React hooks
 │   │   ├── layouts/                # Page layout wrappers
-│   │   ├── pages/                  # Route-level page components
+│   │   ├── pages/                  # Page components
+│   │   │   ├── auth/
+│   │   │   │   ├── LoginPage.jsx
+│   │   │   │   └── RegisterPage.jsx
+│   │   │   ├── dashboard/
+│   │   │   │   └── DashboardPage.jsx
+│   │   │   ├── jobs/
+│   │   │   │   ├── AddJobPage.jsx
+│   │   │   │   ├── EditJobPage.jsx
+│   │   │   │   ├── JobDetailsPage.jsx
+│   │   │   │   └── JobsPage.jsx
+│   │   │   └── landing/
+│   │   │       └── LandingPage.jsx
 │   │   ├── routes/                 # Route definitions
 │   │   ├── services/               # Axios API layer
 │   │   │   ├── api.js              # Axios instance & interceptors
 │   │   │   ├── authService.js      # Auth API calls
 │   │   │   └── jobService.js       # Job CRUD API calls
-│   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   ├── App.jsx                 # Main app component
+│   │   └── main.jsx                # Entry point
 │   ├── package.json
-│   └── vite.config.js
+│   ├── vite.config.js
+│   └── vercel.json                 # Vercel deployment config
 │
 └── README.md
 ```
 
-<br/>
+---
+
+## API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/auth/register` | No | Create a new user account |
+| `POST` | `/auth/login` | No | Authenticate and receive JWT |
+| `POST` | `/auth/token` | No | OAuth2-compatible token endpoint |
+| `GET` | `/auth/me` | Yes | Get current user profile |
+
+### Job Applications
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/jobs/applications` | Yes | Create a new job application |
+| `GET` | `/jobs/applications` | Yes | List all user applications |
+| `GET` | `/jobs/applications/{id}` | Yes | Get application details |
+| `PUT` | `/jobs/applications/{id}` | Yes | Update an application |
+| `DELETE` | `/jobs/applications/{id}` | Yes | Delete an application |
+
+### Dashboard
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/dashboard/stats` | Yes | Aggregated application metrics |
+| `GET` | `/dashboard/recent-applications` | Yes | Last 5 applications added |
 
 ---
 
-<br/>
-
-## ⚡ Getting Started
-
-### Prerequisites
-
-| Requirement | Version |
-|:---|:---|
-| Python | 3.10+ |
-| Node.js | 18+ |
-| PostgreSQL | 14+ *(optional — SQLite works for dev)* |
-
-### 1 · Clone
-
-```bash
-git clone https://github.com/yourusername/hiretrack.git
-cd hiretrack
-```
-
-### 2 · Backend
-
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate              # Windows
-# source venv/bin/activate         # macOS / Linux
-pip install -r requirements.txt
-```
-
-Create `backend/.env`:
-
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/hiretrack_db
-SECRET_KEY=your-secret-key-here
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-```
-
-Start the server:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-> Backend runs at **http://127.0.0.1:8000** — Swagger docs at **http://127.0.0.1:8000/docs**
-
-### 3 · Frontend
-
-```bash
-cd frontend
-npm install
-```
-
-Create `frontend/.env.local`:
-
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
-```
-
-Start the dev server:
-
-```bash
-npm run dev
-```
-
-> Frontend runs at **http://localhost:5173**
-
-<br/>
-
----
-
-<br/>
-
-## 📡 API Reference
-
-> Full interactive docs available at `/docs` (Swagger UI) and `/redoc` (ReDoc) when the backend is running.
-
-### Auth Endpoints
-
-| Method | Endpoint | Auth | Description |
-|:---:|:---|:---:|:---|
-| `POST` | `/auth/register` | ❌ | Create a new user account |
-| `POST` | `/auth/login` | ❌ | Authenticate and receive JWT |
-| `POST` | `/auth/token` | ❌ | OAuth2-compatible token endpoint |
-| `GET` | `/auth/me` | ✅ | Get current user profile |
-
-### Job Application Endpoints
-
-| Method | Endpoint | Auth | Description |
-|:---:|:---|:---:|:---|
-| `POST` | `/jobs/applications` | ✅ | Create a new job application |
-| `GET` | `/jobs/applications` | ✅ | List all user applications |
-| `GET` | `/jobs/applications/{id}` | ✅ | Get application details |
-| `PUT` | `/jobs/applications/{id}` | ✅ | Update an application |
-| `DELETE` | `/jobs/applications/{id}` | ✅ | Delete an application |
-
-### Dashboard Endpoints
-
-| Method | Endpoint | Auth | Description |
-|:---:|:---|:---:|:---|
-| `GET` | `/dashboard/stats` | ✅ | Aggregated application metrics |
-| `GET` | `/dashboard/recent-applications` | ✅ | Last 5 applications added |
-
-<br/>
-
----
-
-<br/>
-
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] Kanban board view with drag-and-drop status management
-- [ ] Resume/CV file upload and attachment per application
+- [ ] Resume/CV file upload per application
 - [ ] Email notifications for interview reminders
-- [ ] Google Calendar integration for interview scheduling
+- [ ] Google Calendar integration for scheduling
 - [ ] Export applications to CSV / Excel
 - [ ] Dark/Light theme toggle
 - [ ] Application notes and activity timeline
-- [ ] Multi-user team workspaces
-
-<br/>
 
 ---
 
-<br/>
+## Contributing
 
-## 🤝 Contributing
-
-Contributions are welcome! If you'd like to improve HireTrack:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-<br/>
 
 ---
 
-<br/>
+## License
 
-## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+---
 
-<br/>
+## Contact
 
-<div align="center">
+**Shouqat Azeez**
+- GitHub: [@shouqatazeez](https://github.com/shouqatazeez)
 
-**Built with ❤️ by [Shouqat](https://github.com/yourusername)**
+---
 
-[⬆ Back to Top](#-hiretrack)
+## Acknowledgments
 
-</div>
+- [React](https://react.dev/) - UI Library
+- [Vite](https://vitejs.dev/) - Build Tool
+- [FastAPI](https://fastapi.tiangolo.com/) - Backend Framework
+- [SQLAlchemy](https://www.sqlalchemy.org/) - ORM
+- [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
+- [Radix UI](https://www.radix-ui.com/) - Headless UI Primitives
+- [Lucide Icons](https://lucide.dev/) - Icon Library
+- [Vercel](https://vercel.com/) - Deployment Platform
