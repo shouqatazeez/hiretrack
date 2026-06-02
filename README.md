@@ -9,6 +9,8 @@
 
 HireTrack is a modern full-stack job application tracking platform designed to help job seekers manage and monitor their entire job search process from one centralized dashboard. It enables users to log applications, track statuses, filter by progress, and view real-time analytics—replacing messy spreadsheets with a clean, purpose-built tool.
 
+![HireTrack Dashboard](screenshots/dashboard.png)
+
 ---
 
 ## Live Demo & API Documentation
@@ -26,9 +28,6 @@ HireTrack is a modern full-stack job application tracking platform designed to h
 
 ### Authentication (Login)
 ![Login Page](screenshots/login.png)
-
-### Dashboard Analytics
-![Dashboard Page](screenshots/dashboard.png)
 
 ### Jobs Dashboard (Applications List)
 ![Jobs Page](screenshots/jobs.png)
