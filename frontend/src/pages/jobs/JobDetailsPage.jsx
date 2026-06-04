@@ -4,22 +4,22 @@ import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil, Trash2 }
 import { deleteJob, getJobById } from '../../services/jobService'
 
 const STATUS_CONFIG = {
-  applied:      { label: 'Applied',      class: 'bg-blue-900/25 text-blue-300 ring-blue-800/40' },
-  interviewing: { label: 'Interviewing', class: 'bg-amber-900/25 text-amber-300 ring-amber-800/40' },
-  offered:      { label: 'Offered',      class: 'bg-emerald-900/25 text-emerald-300 ring-emerald-800/40' },
-  rejected:     { label: 'Rejected',     class: 'bg-rose-900/25 text-rose-300 ring-rose-800/40' },
-  withdrawn:    { label: 'Withdrawn',    class: 'bg-zinc-800/40 text-zinc-300 ring-zinc-700/40' },
+  applied:      { label: 'Applied',      bg: 'bg-blue-500/10 text-blue-400', dot: 'bg-blue-500' },
+  interviewing: { label: 'Interviewing', bg: 'bg-amber-500/10 text-amber-400', dot: 'bg-amber-500' },
+  offered:      { label: 'Offered',      bg: 'bg-emerald-500/10 text-emerald-400', dot: 'bg-emerald-500' },
+  rejected:     { label: 'Rejected',     bg: 'bg-rose-500/10 text-rose-400', dot: 'bg-rose-500' },
+  withdrawn:    { label: 'Withdrawn',    bg: 'bg-zinc-800/50 text-zinc-400', dot: 'bg-zinc-500' },
 }
 
 function StatusBadge({ status }) {
   const config = STATUS_CONFIG[status] ?? {
     label: status,
-    class: 'bg-slate-100 text-slate-500 ring-slate-200',
+    bg: 'bg-zinc-800/50 text-zinc-400',
+    dot: 'bg-zinc-500',
   }
   return (
-    <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${config.class}`}
-    >
+    <span className={`inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold leading-5 ${config.bg}`}>
+      <span className={`inline-block h-1.5 w-1.5 rounded-full ${config.dot}`} />
       {config.label}
     </span>
   )

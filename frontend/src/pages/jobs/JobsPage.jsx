@@ -2,13 +2,20 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CirclePlus, Search } from 'lucide-react'
 import { fetchJobs } from '../../services/jobService'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '../../components/ui/select'
 
 const STATUS_CONFIG = {
-	applied:      { label: 'Applied',      class: 'bg-sky-500/10 text-sky-300 ring-sky-500/20' },
-	interviewing: { label: 'Interviewing', class: 'bg-amber-500/10 text-amber-300 ring-amber-500/20' },
-	offered:      { label: 'Offered',      class: 'bg-primary/10 text-primary ring-primary/20' },
-	rejected:     { label: 'Rejected',     class: 'bg-rose-500/10 text-rose-300 ring-rose-500/20' },
-	withdrawn:    { class: 'bg-zinc-800 text-zinc-400 ring-zinc-700', label: 'Withdrawn' },
+	applied:      { label: 'Applied',      bg: 'bg-blue-500/10 text-blue-400', dot: 'bg-blue-500' },
+	interviewing: { label: 'Interviewing', bg: 'bg-amber-500/10 text-amber-400', dot: 'bg-amber-500' },
+	offered:      { label: 'Offered',      bg: 'bg-emerald-500/10 text-emerald-400', dot: 'bg-emerald-500' },
+	rejected:     { label: 'Rejected',     bg: 'bg-rose-500/10 text-rose-400', dot: 'bg-rose-500' },
+	withdrawn:    { label: 'Withdrawn',    bg: 'bg-zinc-800/50 text-zinc-400', dot: 'bg-zinc-500' },
 }
 
 const FILTER_OPTIONS = [
@@ -21,9 +28,14 @@ const FILTER_OPTIONS = [
 ]
 
 function StatusBadge({ status }) {
-	const config = STATUS_CONFIG[status] ?? { label: status, class: 'bg-slate-100 text-slate-500 ring-slate-200' }
+	const config = STATUS_CONFIG[status] ?? {
+		label: status,
+		bg: 'bg-zinc-800/50 text-zinc-400',
+		dot: 'bg-zinc-500',
+	}
 	return (
-		<span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${config.class}`}>
+		<span className={`inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold leading-5 ${config.bg}`}>
+			<span className={`inline-block h-1.5 w-1.5 rounded-full ${config.dot}`} />
 			{config.label}
 		</span>
 	)
@@ -94,7 +106,11 @@ export default function JobsPage() {
 					<p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Applications</p>
 					<h2 className="mt-1 text-2xl font-semibold text-zinc-50">Your Job Tracker</h2>
 					<p className="mt-0.5 text-sm text-zinc-400">
-						{loading ? 'Loading...' : `${jobs.length} ${jobs.length === 1 ? 'application' : 'applications'} tracked`}
+						{loading ? (
+							<span className="inline-block h-4 w-28 animate-pulse rounded bg-zinc-800" />
+						) : (
+							`${jobs.length} ${jobs.length === 1 ? 'application' : 'applications'} tracked`
+						)}
 					</p>
 				</div>
 				<Link
@@ -115,20 +131,21 @@ export default function JobsPage() {
 							placeholder="Search applications by company or job title..."
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
-							className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 pl-10 pr-4 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+							className="h-8 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 pl-10 pr-4 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors hover:border-zinc-700 hover:bg-zinc-800/40 focus:border-primary dark:focus:border-emerald-400 focus:ring-2 focus:ring-primary/20 dark:focus:ring-emerald-400/20"
 						/>
 					</div>
-					<select
-						value={statusFilter}
-						onChange={(e) => setStatusFilter(e.target.value)}
-						className="h-11 rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-4 text-sm text-zinc-50 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 min-w-[160px]"
-					>
-						{FILTER_OPTIONS.map((opt) => (
-							<option key={opt.value} value={opt.value} className="bg-zinc-900 text-zinc-50">
-								{opt.label}
-							</option>
-						))}
-					</select>
+					<Select value={statusFilter} onValueChange={setStatusFilter}>
+						<SelectTrigger className="h-8 min-w-[160px] rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-4 text-sm text-zinc-50 transition-colors hover:border-zinc-700 hover:bg-zinc-800/40 data-[state=open]:border-primary dark:data-[state=open]:border-emerald-400 data-[state=open]:ring-2 data-[state=open]:ring-primary/20 dark:data-[state=open]:ring-emerald-400/20 focus-visible:border-primary dark:focus-visible:border-emerald-400 focus-visible:ring-primary/20 dark:focus-visible:ring-emerald-400/20">
+							<SelectValue placeholder="Filter by status" />
+						</SelectTrigger>
+						<SelectContent className="rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl shadow-black/30">
+							{FILTER_OPTIONS.map((opt) => (
+								<SelectItem key={opt.value} value={opt.value} className="text-zinc-300 focus:bg-primary/15 focus:text-zinc-50 data-[state=checked]:text-primary dark:data-[state=checked]:text-emerald-400 data-[state=checked]:font-semibold">
+									{opt.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
 			)}
 
@@ -190,7 +207,7 @@ export default function JobsPage() {
 							<Link
 								key={job.id}
 								to={`/dashboard/jobs/${job.id}`}
-								className="flex items-start gap-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-700 hover:shadow-xl"
+								className="flex items-start gap-4 rounded-xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-sm transition-colors duration-200 hover:border-primary/50 hover:bg-zinc-900"
 							>
 								<CompanyAvatar name={job.company_name} />
 
