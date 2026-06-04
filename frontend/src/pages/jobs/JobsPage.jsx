@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { CirclePlus, Search } from 'lucide-react'
-import { fetchJobs } from '../../services/jobService'
+import { Link, useNavigate } from 'react-router-dom'
+import { CirclePlus, Search, MoreVertical, Pencil, Trash2 } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { fetchJobs, deleteJob } from '../../services/jobService'
+
 import {
 	Select,
 	SelectContent,
@@ -9,6 +11,23 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../../components/ui/select'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '../../components/ui/dropdown-menu'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '../../components/ui/alert-dialog'
 
 const STATUS_CONFIG = {
 	applied:      { label: 'Applied',      bg: 'bg-blue-500/10 text-blue-400', dot: 'bg-blue-500' },
@@ -78,12 +97,100 @@ function SkeletonTopCard() {
 	)
 }
 
+function JobCardMenu({ jobId, onDelete }) {
+	const navigate = useNavigate()
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+
+	const handleEditJob = () => {
+		navigate(`/dashboard/jobs/${jobId}/edit`)
+	}
+
+	const handleDeleteJob = async () => {
+		try {
+			await deleteJob(jobId)
+			onDelete(jobId)
+			toast.success('Job deleted successfully')
+		} catch (err) {
+			toast.error('Failed to delete job. Please try again.')
+		} finally {
+			setShowDeleteDialog(false)
+		}
+	}
+
+	return (
+		<div
+			onClick={(e) => {
+				e.stopPropagation()
+				e.preventDefault()
+			}}
+			onKeyDown={(e) => {
+				e.stopPropagation()
+			}}
+			onPointerDown={(e) => {
+				e.stopPropagation()
+			}}
+		>
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<button
+						type="button"
+						id={`job-menu-trigger-${jobId}`}
+						className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 outline-none transition-colors hover:bg-zinc-800 hover:text-zinc-200 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-1 focus-visible:ring-offset-zinc-900"
+						aria-label="Job actions"
+					>
+						<MoreVertical className="h-4 w-4" />
+					</button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align="end" sideOffset={4}>
+					<DropdownMenuItem
+						id={`job-edit-${jobId}`}
+						onSelect={handleEditJob}
+						className="gap-2"
+					>
+						<Pencil className="h-4 w-4" />
+						Edit Job
+					</DropdownMenuItem>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem
+						id={`job-delete-${jobId}`}
+						variant="destructive"
+						onSelect={(e) => {
+							e.preventDefault()
+							setShowDeleteDialog(true)
+						}}
+						className="gap-2"
+					>
+						<Trash2 className="h-4 w-4" />
+						Delete Job
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+
+			<AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Are you sure you want to delete this job?</AlertDialogTitle>
+						<AlertDialogDescription>
+							This action cannot be undone. This will permanently delete the job application and all associated data.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction onClick={handleDeleteJob}>Delete</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</div>
+	)
+}
+
 export default function JobsPage() {
 	const [jobs, setJobs]       = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError]     = useState(null)
 	const [searchQuery, setSearchQuery] = useState('')
 	const [statusFilter, setStatusFilter] = useState('all')
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		async function loadJobs() {
@@ -98,6 +205,10 @@ export default function JobsPage() {
 		}
 		loadJobs()
 	}, [])
+
+	const handleDeleteJob = (deletedId) => {
+		setJobs((prev) => prev.filter((job) => job.id !== deletedId))
+	}
 
 	const filteredJobs = jobs.filter((job) => {
 		const query = searchQuery.toLowerCase()
@@ -217,10 +328,18 @@ export default function JobsPage() {
 			{!loading && !error && filteredJobs.length > 0 && (
 				<div className="space-y-3">
 						{filteredJobs.map((job) => (
-							<Link
+							<div
 								key={job.id}
-								to={`/dashboard/jobs/${job.id}`}
-								className="flex items-start gap-4 rounded-xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-sm transition-colors duration-200 hover:border-primary/50 hover:bg-zinc-900"
+								role="button"
+								tabIndex={0}
+								onClick={() => navigate(`/dashboard/jobs/${job.id}`)}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.preventDefault()
+										navigate(`/dashboard/jobs/${job.id}`)
+									}
+								}}
+								className="flex items-start gap-4 rounded-xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-sm transition-colors duration-200 hover:border-primary/50 hover:bg-zinc-900 cursor-pointer"
 							>
 								<CompanyAvatar name={job.company_name} />
 
@@ -243,10 +362,11 @@ export default function JobsPage() {
 									</p>
 								</div>
 
-								<div className="shrink-0">
+								<div className="flex shrink-0 items-center gap-2">
 									<StatusBadge status={job.status} />
+									<JobCardMenu jobId={job.id} onDelete={handleDeleteJob} />
 								</div>
-							</Link>
+							</div>
 						))}
 				</div>
 			)}
