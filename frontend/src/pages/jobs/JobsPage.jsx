@@ -52,7 +52,7 @@ function CompanyAvatar({ name }) {
 
 function SkeletonCard() {
 	return (
-		<div className="animate-pulse rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg">
+		<div className="animate-pulse rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-lg">
 			<div className="flex items-start gap-4">
 				<div className="h-10 w-10 rounded-lg bg-zinc-800" />
 				<div className="flex-1 space-y-2">
@@ -61,6 +61,19 @@ function SkeletonCard() {
 				</div>
 				<div className="h-5 w-20 rounded-full bg-zinc-800" />
 			</div>
+		</div>
+	)
+}
+
+function SkeletonTopCard() {
+	return (
+		<div className="flex flex-col gap-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-lg sm:flex-row sm:items-center sm:justify-between animate-pulse">
+			<div className="space-y-2">
+				<div className="h-3 w-16 rounded bg-zinc-800" />
+				<div className="h-5 w-36 rounded bg-zinc-700" />
+				<div className="h-4 w-28 rounded bg-zinc-800" />
+			</div>
+			<div className="h-8 w-24 rounded-lg bg-zinc-800 self-start sm:self-auto" />
 		</div>
 	)
 }
@@ -101,26 +114,26 @@ export default function JobsPage() {
 
 	return (
 		<div className="space-y-6 text-zinc-100">
-			<div className="flex flex-col gap-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg sm:flex-row sm:items-center sm:justify-between">
-				<div>
-					<p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Applications</p>
-					<h2 className="mt-1 text-2xl font-semibold text-zinc-50">Your Job Tracker</h2>
-					<p className="mt-0.5 text-sm text-zinc-400">
-						{loading ? (
-							<span className="inline-block h-4 w-28 animate-pulse rounded bg-zinc-800" />
-						) : (
-							`${jobs.length} ${jobs.length === 1 ? 'application' : 'applications'} tracked`
-						)}
-					</p>
+			{loading ? (
+				<SkeletonTopCard />
+			) : (
+				<div className="flex flex-col gap-4 rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-lg sm:flex-row sm:items-center sm:justify-between">
+					<div>
+						<p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Applications</p>
+						<h2 className="mt-1 text-2xl font-semibold text-zinc-50">Your Job Tracker</h2>
+						<p className="mt-0.5 text-sm text-zinc-400">
+							{`${jobs.length} ${jobs.length === 1 ? 'application' : 'applications'} tracked`}
+						</p>
+					</div>
+					<Link
+						to="/dashboard/jobs/new"
+						className="inline-flex h-8 items-center gap-1.5 self-start rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 sm:self-auto"
+					>
+						<CirclePlus className="h-4 w-4" />
+						Add Job
+					</Link>
 				</div>
-				<Link
-					to="/dashboard/jobs/new"
-					className="inline-flex items-center gap-2 self-start rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 sm:self-auto"
-				>
-					<CirclePlus className="h-4 w-4" />
-					Add Job
-				</Link>
-			</div>
+			)}
 
 			{!loading && !error && jobs.length > 0 && (
 				<div className="flex flex-col gap-3 sm:flex-row">
@@ -207,7 +220,7 @@ export default function JobsPage() {
 							<Link
 								key={job.id}
 								to={`/dashboard/jobs/${job.id}`}
-								className="flex items-start gap-4 rounded-xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-sm transition-colors duration-200 hover:border-primary/50 hover:bg-zinc-900"
+								className="flex items-start gap-4 rounded-xl border border-zinc-800/80 bg-zinc-900/75 p-4 shadow-sm transition-colors duration-200 hover:border-primary/50 hover:bg-zinc-900"
 							>
 								<CompanyAvatar name={job.company_name} />
 
