@@ -107,6 +107,7 @@ export default function DashboardPage() {
 		status,
 		label: STATUS_CONFIG[status].label,
 		bar: STATUS_CONFIG[status].bar,
+		indicator: STATUS_CONFIG[status].indicator,
 		count: jobs.filter((j) => j.status === status).length,
 	})).filter((entry) => entry.count > 0)
 
@@ -114,7 +115,6 @@ export default function DashboardPage() {
 		.sort((a, b) => new Date(b.applied_at) - new Date(a.applied_at))
 		.slice(0, 5)
 
-	// Calculate last 7 days of application metrics
 	const chartData = (() => {
 		const data = []
 		for (let i = 6; i >= 0; i--) {
@@ -151,7 +151,6 @@ export default function DashboardPage() {
 				<StatCard label="Rejected" value={rejected} icon={XCircle} loading={loading} />
 			</div>
 
-			{/* Chart & Status Grid */}
 			<div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
 				<div className="xl:col-span-3">
 					{loading ? (
@@ -200,7 +199,7 @@ export default function DashboardPage() {
 										</div>
 										<Progress
 											value={pct}
-											className={cn("h-2 bg-zinc-800 [&_[data-slot=progress-indicator]]:bg-linear-to-r", `[&_[data-slot=progress-indicator]]:${entry.bar}`)}
+											className={cn("h-2 bg-zinc-800", entry.indicator)}
 										/>
 									</div>
 								)
@@ -210,7 +209,6 @@ export default function DashboardPage() {
 				</Card>
 			</div>
 
-			{/* Recent Applications & Quick Actions */}
 			<div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
 				<Card className="border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg shadow-black/10 xl:col-span-3">
 					<div className="flex items-center justify-between pb-4">

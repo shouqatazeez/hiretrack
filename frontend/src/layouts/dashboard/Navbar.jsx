@@ -32,7 +32,6 @@ export default function Navbar({ onMenuClick }) {
 
 	return (
 		<header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-zinc-800/80 bg-zinc-950/85 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
-			{/* Left: hamburger + page title */}
 			<div className="flex items-center gap-3">
 				<button
 					type="button"
@@ -45,8 +44,7 @@ export default function Navbar({ onMenuClick }) {
 				<h1 className="text-base font-semibold text-zinc-50">{pageTitle}</h1>
 			</div>
 
-			{/* Right: user name + avatar + logout */}
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-3 lg:hidden">
 				<div className="hidden flex-col items-end sm:flex">
 					<span className="text-sm font-medium leading-tight text-zinc-100">
 						{user?.full_name ?? 'User'}
