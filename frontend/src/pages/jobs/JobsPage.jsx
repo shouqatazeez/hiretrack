@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { CirclePlus, Search, MoreVertical, Pencil, Trash2 } from 'lucide-react'
+import { CirclePlus, Search, MoreVertical, Pencil, Trash2, Eye } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { fetchJobs, deleteJob } from '../../services/jobService'
 
@@ -15,7 +15,6 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../../components/ui/dropdown-menu'
 import {
@@ -141,7 +140,15 @@ function JobCardMenu({ jobId, onDelete }) {
 						<MoreVertical className="h-4 w-4" />
 					</button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" sideOffset={4}>
+				<DropdownMenuContent side="left" align="start" sideOffset={8} className="w-36">
+					<DropdownMenuItem
+						id={`job-view-${jobId}`}
+						onSelect={() => navigate(`/dashboard/jobs/${jobId}`)}
+						className="gap-2"
+					>
+						<Eye className="h-4 w-4" />
+						View Details
+					</DropdownMenuItem>
 					<DropdownMenuItem
 						id={`job-edit-${jobId}`}
 						onSelect={handleEditJob}
@@ -150,7 +157,6 @@ function JobCardMenu({ jobId, onDelete }) {
 						<Pencil className="h-4 w-4" />
 						Edit Job
 					</DropdownMenuItem>
-					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						id={`job-delete-${jobId}`}
 						variant="destructive"
