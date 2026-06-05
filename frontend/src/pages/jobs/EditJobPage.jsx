@@ -30,6 +30,40 @@ function toDateInputValue(value) {
   return date.toISOString().slice(0, 10)
 }
 
+function SkeletonEditJob() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      {/* Header Card Shimmer */}
+      <Card>
+        <CardHeader className="text-left space-y-2">
+          <div className="h-3 w-12 rounded bg-zinc-700" />
+          <div className="h-6 w-32 rounded bg-zinc-700" />
+          <div className="h-4 w-64 rounded bg-zinc-800" />
+        </CardHeader>
+      </Card>
+
+      {/* Form Card Shimmer */}
+      <Card>
+        <CardContent className="space-y-6 pt-8">
+          <div className="space-y-5">
+            {[1, 2, 3, 4, 5].map((idx) => (
+              <div key={idx} className="space-y-2">
+                <div className="h-4 w-28 rounded bg-zinc-700" />
+                <div className="h-11 w-full rounded bg-zinc-800" />
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <div className="h-11 w-24 rounded bg-zinc-800" />
+            <div className="h-11 w-32 rounded bg-zinc-800" />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export default function EditJobPage() {
   const { jobId } = useParams()
   const navigate = useNavigate()
@@ -110,10 +144,7 @@ export default function EditJobPage() {
   if (fetching) {
     return (
       <section className="mx-auto w-full max-w-2xl">
-        <Card className="flex items-center justify-center p-12">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">Loading job details…</span>
-        </Card>
+        <SkeletonEditJob />
       </section>
     )
   }
@@ -140,7 +171,7 @@ export default function EditJobPage() {
             <div className="space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="company_name">
-                  Company name <span className="text-destructive">*</span>
+                  Company Name <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="company_name"
@@ -152,13 +183,13 @@ export default function EditJobPage() {
                   value={formData.company_name}
                   onChange={handleChange}
                   disabled={saving}
-                  className="h-11 bg-zinc-900/50"
+                  className="h-11 bg-zinc-900/50 mt-1.5"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="job_title">
-                  Job title <span className="text-destructive">*</span>
+                  Job Title <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="job_title"
@@ -170,7 +201,7 @@ export default function EditJobPage() {
                   value={formData.job_title}
                   onChange={handleChange}
                   disabled={saving}
-                  className="h-11 bg-zinc-900/50"
+                  className="h-11 bg-zinc-900/50 mt-1.5"
                 />
               </div>
 
@@ -183,10 +214,10 @@ export default function EditJobPage() {
                   onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))}
                   disabled={saving}
                 >
-                  <SelectTrigger id="status" className="h-11 w-full justify-between bg-zinc-900/50 border-input text-zinc-50">
+                  <SelectTrigger id="status" className="h-11 w-full justify-between bg-zinc-900/50 border-input text-zinc-50 mt-1.5">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
-                  <SelectContent className="border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl shadow-black/30">
+                  <SelectContent className="border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl shadow-black/30 ">
                     {STATUS_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value} className="text-zinc-300 focus:bg-primary/15 focus:text-zinc-50 data-[state=checked]:text-primary dark:data-[state=checked]:text-emerald-400">
                         {option.label}
@@ -198,7 +229,7 @@ export default function EditJobPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="applied_at">
-                  Applied on
+                  Applied On
                 </Label>
                 <Input
                   id="applied_at"
@@ -207,13 +238,13 @@ export default function EditJobPage() {
                   value={formData.applied_at}
                   onChange={handleChange}
                   disabled={saving}
-                  className="h-11 bg-zinc-900/50 scheme-dark"
+                  className="h-11 bg-zinc-900/50 scheme-dark mt-1.5"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="job_url">
-                  Job posting URL <span className="text-muted-foreground">(optional)</span>
+                  Job Posting URL <span className="text-muted-foreground">(optional)</span>
                 </Label>
                 <Input
                   id="job_url"
@@ -223,7 +254,7 @@ export default function EditJobPage() {
                   value={formData.job_url}
                   onChange={handleChange}
                   disabled={saving}
-                  className="h-11 bg-zinc-900/50"
+                  className="h-11 bg-zinc-900/50 mt-1.5"
                 />
               </div>
             </div>
