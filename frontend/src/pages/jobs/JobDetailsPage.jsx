@@ -1,7 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil, Trash2 } from 'lucide-react'
+import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil, Trash2, MoreVertical } from 'lucide-react'
 import { deleteJob, getJobById } from '../../services/jobService'
+import { Button } from '../../components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../../components/ui/dropdown-menu'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../../components/ui/alert-dialog'
 
 const STATUS_CONFIG = {
   applied:      { label: 'Applied',      bg: 'bg-blue-500/10 text-blue-400', dot: 'bg-blue-500' },
@@ -34,6 +51,54 @@ function formatDate(value) {
   })
 }
 
+function SkeletonJobDetails() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      {/* Header Card Shimmer */}
+      <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-4 w-full sm:w-auto">
+            <div className="h-12 w-12 rounded-lg bg-zinc-800" />
+            <div className="space-y-2 flex-1 min-w-[150px]">
+              <div className="h-3 w-20 rounded bg-zinc-700" />
+              <div className="h-5 w-36 rounded bg-zinc-700" />
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-6 w-20 rounded-full bg-zinc-800" />
+            <div className="h-9 w-16 rounded-lg bg-zinc-800" />
+            <div className="h-9 w-20 rounded-lg bg-zinc-800" />
+          </div>
+        </div>
+      </div>
+
+      {/* Grid Shimmer */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-zinc-800" />
+            <div className="h-3 w-16 rounded bg-zinc-700" />
+          </div>
+          <div className="h-4 w-32 rounded bg-zinc-800" />
+        </div>
+        <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-zinc-800" />
+            <div className="h-3 w-20 rounded bg-zinc-700" />
+          </div>
+          <div className="h-4 w-24 rounded bg-zinc-800" />
+        </div>
+      </div>
+
+      {/* Additional Card Shimmer */}
+      <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg space-y-3">
+        <div className="h-3 w-24 rounded bg-zinc-700" />
+        <div className="h-4 w-1/2 rounded bg-zinc-800" />
+      </div>
+    </div>
+  )
+}
+
 export default function JobDetailsPage() {
   const { jobId } = useParams()
   const navigate = useNavigate()
@@ -44,6 +109,9 @@ export default function JobDetailsPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState(null)
+
+  const hasBeenUpdated = job && job.updated_at && job.created_at &&
+    (new Date(job.updated_at).getTime() - new Date(job.created_at).getTime() > 1000)
 
   useEffect(() => {
     async function loadJob() {
@@ -96,12 +164,7 @@ export default function JobDetailsPage() {
         Back to jobs
       </button>
 
-      {loading && (
-        <div className="flex items-center justify-center rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-12 shadow-lg">
-          <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
-          <span className="ml-2 text-sm text-zinc-400">Loading job details…</span>
-        </div>
-      )}
+      {loading && <SkeletonJobDetails />}
 
       {error && !loading && (
         <div className="rounded-2xl border border-rose-700/40 bg-rose-900/40 p-5 text-sm text-rose-300">
@@ -128,22 +191,34 @@ export default function JobDetailsPage() {
               </div>
               <div className="flex items-center gap-3">
                 <StatusBadge status={job.status} />
-                <button
-                  type="button"
-                  onClick={() => navigate(`/dashboard/jobs/${job.id}/edit`)}
-                  className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
-                >
-                  <Pencil className="h-4 w-4" />
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmModal(true)}
-                  className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-rose-800/60 bg-rose-950/20 px-4 text-sm font-semibold text-rose-300 transition hover:bg-rose-950/40 hover:text-rose-200"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon-lg"
+                      className="text-zinc-400 hover:text-zinc-50 border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800"
+                    >
+                      <MoreVertical className="h-4 w-4" />
+                      <span className="sr-only">Open menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-36 border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl">
+                    <DropdownMenuItem
+                      onClick={() => navigate(`/dashboard/jobs/${job.id}/edit`)}
+                      className="gap-2 cursor-pointer focus:bg-zinc-800 focus:text-zinc-50"
+                    >
+                      <Pencil className="h-4 w-4" />
+                      Edit Job
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setShowConfirmModal(true)}
+                      className="gap-2 cursor-pointer text-rose-400 focus:bg-rose-950/30 focus:text-rose-300"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Delete Job
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>
@@ -180,57 +255,60 @@ export default function JobDetailsPage() {
 
           <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 text-xs text-zinc-400 shadow-sm">
             <span>Created {formatDate(job.created_at)}</span>
-            <span className="mx-2">·</span>
-            <span>Updated {formatDate(job.updated_at)}</span>
+            {hasBeenUpdated && (
+              <>
+                <span className="mx-2">·</span>
+                <span>Updated {formatDate(job.updated_at)}</span>
+              </>
+            )}
           </div>
 
-          {showConfirmModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-              <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-                <h2 className="text-xl font-semibold text-zinc-50">Delete Job Application</h2>
-                <p className="mt-3 text-sm text-zinc-400">
+          <AlertDialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Job Application</AlertDialogTitle>
+                <AlertDialogDescription>
                   Are you sure you want to delete your application for{' '}
                   <span className="font-semibold text-zinc-200">{job.job_title}</span> at{' '}
                   <span className="font-semibold text-zinc-200">{job.company_name}</span>? This action cannot be undone.
-                </p>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
 
-                {deleteError && (
-                  <div className="mt-4 rounded-lg border border-rose-700/40 bg-rose-900/40 px-4 py-3 text-sm text-rose-300">
-                    {deleteError}
-                  </div>
-                )}
-
-                <div className="mt-6 flex justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowConfirmModal(false)
-                      setDeleteError(null)
-                    }}
-                    disabled={deleting}
-                    className="inline-flex h-10 items-center justify-center rounded-lg border border-zinc-800/80 bg-zinc-900 px-4 text-sm font-medium text-zinc-100 transition hover:bg-zinc-800 disabled:opacity-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    disabled={deleting}
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-rose-600 px-4 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:opacity-50"
-                  >
-                    {deleting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Deleting…
-                      </>
-                    ) : (
-                      'Delete'
-                    )}
-                  </button>
+              {deleteError && (
+                <div className="rounded-lg border border-rose-700/40 bg-rose-900/40 px-4 py-3 text-sm text-rose-300">
+                  {deleteError}
                 </div>
-              </div>
-            </div>
-          )}
+              )}
+
+              <AlertDialogFooter>
+                <AlertDialogCancel
+                  disabled={deleting}
+                  onClick={() => {
+                    setShowConfirmModal(false)
+                    setDeleteError(null)
+                  }}
+                >
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  disabled={deleting}
+                  onClick={async (e) => {
+                    e.preventDefault()
+                    await handleDelete()
+                  }}
+                >
+                  {deleting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Deleting…
+                    </>
+                  ) : (
+                    'Delete'
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </>
       )}
     </section>
