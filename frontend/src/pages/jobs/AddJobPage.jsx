@@ -3,6 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { createJob } from '../../services/jobService'
 
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../components/ui/card'
+import { Label } from '../../components/ui/label'
+import { Input } from '../../components/ui/input'
+import { Button } from '../../components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../components/ui/select'
+
 const STATUS_OPTIONS = [
   { value: 'applied',      label: 'Applied' },
   { value: 'interviewing', label: 'Interviewing' },
@@ -59,121 +71,129 @@ export default function AddJobPage() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-2xl space-y-6 text-zinc-100">
-      <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
-        <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Create</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-50">Add a new job</h1>
-        <p className="mt-1 text-sm text-zinc-400">Track a new application by filling in the details below.</p>
-      </div>
+    <section className="mx-auto w-full max-w-2xl space-y-6">
+      <Card>
+        <CardHeader className="text-left">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Create</p>
+          <CardTitle className="mt-1">Add a new job</CardTitle>
+          <CardDescription className="mb-5 ">Track a new application by filling in the details below.</CardDescription>
+        </CardHeader>
+      </Card>
 
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
-        {error && (
-          <div className="mb-5 rounded-lg border border-rose-700/40 bg-rose-900/40 px-4 py-3 text-sm text-rose-300">
-            {error}
-          </div>
-        )}
-
-        <div className="space-y-5">
-          <div className="space-y-2">
-            <label htmlFor="company_name" className="text-sm font-medium text-zinc-100">
-              Company name <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="company_name"
-              name="company_name"
-              type="text"
-              placeholder="e.g. Acme Corp"
-              required
-              maxLength={255}
-              value={formData.company_name}
-              onChange={handleChange}
-              disabled={loading}
-              className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-3.5 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="job_title" className="text-sm font-medium text-zinc-100">
-              Job title <span className="text-red-500">*</span>
-            </label>
-            <input
-              id="job_title"
-              name="job_title"
-              type="text"
-              placeholder="e.g. Senior Frontend Engineer"
-              required
-              maxLength={255}
-              value={formData.job_title}
-              onChange={handleChange}
-              disabled={loading}
-              className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-3.5 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="status" className="text-sm font-medium text-zinc-100">
-              Status <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="status"
-              name="status"
-              required
-              value={formData.status}
-              onChange={handleChange}
-              disabled={loading}
-              className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-3.5 text-sm text-zinc-50 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            >
-              {STATUS_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="job_url" className="text-sm font-medium text-zinc-100">
-              Job posting URL <span className="text-slate-400">(optional)</span>
-            </label>
-            <input
-              id="job_url"
-              name="job_url"
-              type="url"
-              placeholder="https://..."
-              value={formData.job_url}
-              onChange={handleChange}
-              disabled={loading}
-              className="h-11 w-full rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-3.5 text-sm text-zinc-50 placeholder:text-zinc-500 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            />
-          </div>
-        </div>
-
-        <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            disabled={loading}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-zinc-800/80 bg-zinc-900/75 px-5 text-sm font-medium text-zinc-100 transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Saving…
-              </>
-            ) : (
-              'Add Job'
+      <form onSubmit={handleSubmit}>
+        <Card>
+          <CardContent className="space-y-6 pt-8">
+            {error && (
+              <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                {error}
+              </div>
             )}
-          </button>
-        </div>
+
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="company_name">
+                  Company Name <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="company_name"
+                  name="company_name"
+                  type="text"
+                  placeholder="e.g. Acme Corp"
+                  required
+                  maxLength={255}
+                  value={formData.company_name}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="h-11 bg-zinc-900/50 mt-1.5"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="job_title">
+                  Job Title <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="job_title"
+                  name="job_title"
+                  type="text"
+                  placeholder="e.g. Senior Frontend Engineer"
+                  required
+                  maxLength={255}
+                  value={formData.job_title}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="h-11 bg-zinc-900/50 mt-1.5"
+                />
+              </div>
+
+              <div className="space-y-2 ">
+                <Label htmlFor="status">
+                  Status <span className="text-destructive">*</span>
+                </Label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))}
+                  disabled={loading}
+                >
+                  <SelectTrigger id="status" className="h-11 w-full justify-between bg-zinc-900/50 border-input text-zinc-50 mt-1.5">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent className="border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl shadow-black/30">
+                    {STATUS_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value} className="text-zinc-300 focus:bg-primary/15 focus:text-zinc-50 data-[state=checked]:text-primary dark:data-[state=checked]:text-emerald-400">
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="job_url">
+                  Job Posting URL <span className="text-muted-foreground">(optional)</span>
+                </Label>
+                <Input
+                  id="job_url"
+                  name="job_url"
+                  type="url"
+                  placeholder="https://..."
+                  value={formData.job_url}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="h-11 bg-zinc-900/50 mt-1.5"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate(-1)}
+                disabled={loading}
+                className="h-11 px-5"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="h-11 px-5 font-semibold"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Saving…
+                  </>
+                ) : (
+                  'Add Job'
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </form>
     </section>
   )
