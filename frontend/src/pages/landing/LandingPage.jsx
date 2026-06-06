@@ -20,7 +20,15 @@ import {
   Trophy,
   XCircle,
   FileText,
+  CalendarClock,
+  Plus,
+  RotateCcw,
 } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card'
+import { Progress } from '../../components/ui/progress'
+import { Badge } from '../../components/ui/badge'
+import { Avatar, AvatarFallback } from '../../components/ui/avatar'
+import ActivityChart from '../../components/dashboard/ActivityChart'
 
 function Github({ size = 24, className, ...props }) {
   return (
@@ -39,6 +47,28 @@ function Github({ size = 24, className, ...props }) {
     >
       <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
       <path d="M9 18c-4.51 2-5-2-7-2" />
+    </svg>
+  )
+}
+
+function Linkedin({ size = 24, className, ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect width="4" height="12" x="2" y="9" />
+      <circle cx="4" cy="4" r="2" />
     </svg>
   )
 }
@@ -204,7 +234,10 @@ function Logo() {
       <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
         <Briefcase className="h-4.5 w-4.5 text-primary-foreground" />
       </div>
-      <span className="text-sm font-semibold tracking-wide text-zinc-100">HireTrack</span>
+      <div className="flex flex-col text-left">
+        <span className="text-sm font-semibold tracking-wide text-zinc-100 leading-none">HireTrack</span>
+        <span className="text-[10px] text-zinc-500 tracking-wide font-medium mt-1 leading-none">Job Tracker</span>
+      </div>
     </Link>
   )
 }
@@ -257,13 +290,335 @@ function FaqItem({ faq, isOpen, onToggle }) {
   )
 }
 
+const STATUS_CONFIG = {
+  applied:      { label: 'Applied',      badge: 'bg-blue-500/10 text-blue-400', dot: 'bg-blue-500', bar: 'bg-blue-500', indicator: '[&_[data-slot=progress-indicator]]:!bg-blue-500' },
+  interviewing: { label: 'Interviewing', badge: 'bg-amber-500/10 text-amber-400', dot: 'bg-amber-500', bar: 'bg-amber-400', indicator: '[&_[data-slot=progress-indicator]]:!bg-amber-500' },
+  offered:      { label: 'Offered',      badge: 'bg-emerald-500/10 text-emerald-400', dot: 'bg-emerald-500', bar: 'bg-emerald-500', indicator: '[&_[data-slot=progress-indicator]]:!bg-emerald-500' },
+  rejected:     { label: 'Rejected',     badge: 'bg-rose-500/10 text-rose-400', dot: 'bg-rose-500', bar: 'bg-rose-500', indicator: '[&_[data-slot=progress-indicator]]:!bg-rose-500' },
+  withdrawn:    { label: 'Withdrawn',    badge: 'bg-zinc-800/50 text-zinc-400', dot: 'bg-zinc-500', bar: 'bg-zinc-500', indicator: '[&_[data-slot=progress-indicator]]:!bg-zinc-500' },
+}
+
+const PIPELINE_ORDER = ['applied', 'interviewing', 'offered', 'rejected', 'withdrawn']
+
+function StatusBadge({ status }) {
+  const config = STATUS_CONFIG[status] ?? {
+    label: status,
+    badge: 'bg-zinc-800/50 text-zinc-400',
+    dot: 'bg-zinc-500',
+  }
+  return (
+    <Badge
+      variant="outline"
+      className={cn("inline-flex items-center gap-x-1.5 h-auto px-2.5 py-1 text-xs font-semibold leading-5 border-none", config.badge)}
+    >
+      <span className={cn("inline-block h-1.5 w-1.5 rounded-full", config.dot)} />
+      {config.label}
+    </Badge>
+  )
+}
+
+function formatDate(value) {
+  if (!value) return '—'
+  return new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+const INITIAL_DEMO_JOBS = [
+  { id: '1', job_title: 'Senior Frontend Engineer', company_name: 'Vercel', status: 'interviewing', applied_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '2', job_title: 'Product Designer', company_name: 'Linear', status: 'offered', applied_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '3', job_title: 'Full Stack Developer', company_name: 'Stripe', status: 'applied', applied_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '4', job_title: 'Software Engineer', company_name: 'Google', status: 'applied', applied_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: '5', job_title: 'Backend Engineer', company_name: 'Supabase', status: 'rejected', applied_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+]
+
+function InteractiveDemoDashboard() {
+  const [jobs, setJobs] = useState(INITIAL_DEMO_JOBS)
+  const [filter, setFilter] = useState('all')
+  const [companyName, setCompanyName] = useState('')
+  const [jobTitle, setJobTitle] = useState('')
+  const [status, setStatus] = useState('applied')
+  const [error, setError] = useState('')
+
+  const total = jobs.length
+  const interviews = jobs.filter((j) => j.status === 'interviewing').length
+  const offers = jobs.filter((j) => j.status === 'offered').length
+  const rejected = jobs.filter((j) => j.status === 'rejected').length
+
+  const counts = PIPELINE_ORDER.map((s) => ({
+    status: s,
+    label: STATUS_CONFIG[s].label,
+    bar: STATUS_CONFIG[s].bar,
+    indicator: STATUS_CONFIG[s].indicator,
+    count: jobs.filter((j) => j.status === s).length,
+  })).filter((entry) => entry.count > 0)
+
+  const chartData = (() => {
+    const data = []
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      const dateStr = d.toISOString().split('T')[0]
+      const label = d.toLocaleDateString('en-US', { weekday: 'short' })
+      const count = jobs.filter((j) => j.applied_at && j.applied_at.startsWith(dateStr)).length
+      data.push({ label, count, dateStr })
+    }
+    return data
+  })()
+
+  const handleAddJob = (e) => {
+    e.preventDefault()
+    if (!companyName.trim() || !jobTitle.trim()) {
+      setError('Please fill in both fields')
+      return
+    }
+    setError('')
+    const newJob = {
+      id: String(Date.now()),
+      job_title: jobTitle,
+      company_name: companyName,
+      status: status,
+      applied_at: new Date().toISOString(),
+    }
+    setJobs([newJob, ...jobs])
+    setCompanyName('')
+    setJobTitle('')
+    setStatus('applied')
+  }
+
+  const handleReset = () => {
+    setJobs(INITIAL_DEMO_JOBS)
+    setFilter('all')
+    setCompanyName('')
+    setJobTitle('')
+    setStatus('applied')
+    setError('')
+  }
+
+  const filteredJobs = filter === 'all' ? jobs : jobs.filter((j) => j.status === filter)
+
+  return (
+    <div className="rounded-xl border border-zinc-800 bg-zinc-950/80 p-4 sm:p-6 text-left w-full select-none">
+      <div className="mb-6 flex items-center justify-between border-b border-zinc-800/80 pb-4">
+        <div className="flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-full bg-rose-500 animate-pulse" />
+          <span className="h-3 w-3 rounded-full bg-amber-500" />
+          <span className="h-3 w-3 rounded-full bg-emerald-500" />
+          <span className="ml-2 text-xs font-semibold text-zinc-500 tracking-wider uppercase">Interactive Demo</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+            title="Reset to default data"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            <span>Reset Demo</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-6">
+        {[
+          { label: 'Total Applications', value: total, icon: Briefcase, filterKey: 'all', highlight: true },
+          { label: 'Interviewing', value: interviews, icon: CalendarClock, filterKey: 'interviewing' },
+          { label: 'Offers', value: offers, icon: Trophy, filterKey: 'offered' },
+          { label: 'Rejected', value: rejected, icon: XCircle, filterKey: 'rejected' },
+        ].map((stat) => {
+          const isActive = filter === stat.filterKey
+          return (
+            <button
+              key={stat.label}
+              onClick={() => setFilter(isActive ? 'all' : stat.filterKey)}
+              className={cn(
+                "transition hover:shadow-lg p-4 border rounded-3xl text-zinc-100 text-left cursor-pointer transition-all",
+                stat.highlight && !isActive && "border-primary/30 bg-linear-to-br from-primary/80 to-emerald-800/80 shadow-md shadow-primary/10 text-primary-foreground",
+                isActive && "border-primary ring-2 ring-primary/30 bg-zinc-900 shadow-md",
+                !stat.highlight && !isActive && "border-zinc-800 bg-zinc-900/75"
+              )}
+            >
+              <div className="flex flex-row items-center justify-between space-y-0 p-0">
+                <p className={cn(
+                  "text-xs font-medium text-zinc-400",
+                  stat.highlight && !isActive && "text-primary-foreground/85",
+                  isActive && "text-primary/90"
+                )}>
+                  {stat.label}
+                </p>
+                <div
+                  className={cn(
+                    "flex h-7 w-7 items-center justify-center rounded-md bg-zinc-800",
+                    stat.highlight && !isActive && "bg-white/15",
+                    isActive && "bg-primary/20"
+                  )}
+                >
+                  <stat.icon className={cn(
+                    "h-3.5 w-3.5 text-zinc-300",
+                    stat.highlight && !isActive && "text-primary-foreground",
+                    isActive && "text-primary"
+                  )} />
+                </div>
+              </div>
+              <div className="p-0 mt-2">
+                <div className="text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
+                  {stat.value}
+                </div>
+              </div>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        <div className="lg:col-span-3">
+          <ActivityChart data={chartData} />
+        </div>
+        <Card className="border border-zinc-800 bg-zinc-900/50 p-5 shadow-lg shadow-black/10 lg:col-span-2">
+          <div className="flex items-center justify-between pb-4">
+            <h3 className="text-sm font-semibold text-zinc-50">Application Status</h3>
+            <span className="text-xs font-medium text-zinc-500">{total} total</span>
+          </div>
+          <div className="space-y-4">
+            {counts.map((entry) => {
+              const pct = Math.round((entry.count / total) * 105 / 105)
+              const pctVal = Math.round((entry.count / total) * 100)
+              return (
+                <div key={entry.status} className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-medium text-zinc-300">{entry.label}</span>
+                    <span className="text-zinc-500">
+                      {entry.count} · {pctVal}%
+                    </span>
+                  </div>
+                  <Progress
+                    value={pctVal}
+                    className={cn("h-2 bg-zinc-850", entry.indicator)}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <Card className="border border-zinc-800 bg-zinc-900/50 p-5 shadow-lg shadow-black/10 lg:col-span-3">
+          <div className="flex items-center justify-between pb-4">
+            <h3 className="text-sm font-semibold text-zinc-50">
+              {filter === 'all' ? 'Recent Applications' : `${STATUS_CONFIG[filter]?.label ?? filter} Applications`}
+            </h3>
+            {filter !== 'all' && (
+              <button
+                onClick={() => setFilter('all')}
+                className="text-xs text-primary hover:underline"
+              >
+                Clear filter
+              </button>
+            )}
+          </div>
+          {filteredJobs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-800 py-8 text-center bg-zinc-950/20">
+              <p className="text-xs font-medium text-zinc-400">No applications match this filter</p>
+            </div>
+          ) : (
+            <ul className="divide-y divide-zinc-800/80 max-h-[260px] overflow-y-auto pr-1">
+              {filteredJobs.map((job) => (
+                <li key={job.id} className="py-2.5 first:pt-0 last:pb-0">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarFallback className="rounded-lg bg-zinc-800 text-xs font-semibold text-zinc-300">
+                        {job.company_name?.[0]?.toUpperCase() ?? '?'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs font-semibold text-zinc-100">{job.job_title}</p>
+                      <p className="truncate text-[11px] text-zinc-500">
+                        {job.company_name} · {formatDate(job.applied_at)}
+                      </p>
+                    </div>
+                    <StatusBadge status={job.status} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        <Card className="border border-zinc-800 bg-zinc-900/50 p-5 shadow-lg shadow-black/10 lg:col-span-2">
+          <div className="pb-3">
+            <h3 className="text-sm font-semibold text-zinc-50 flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              Try tracking a job
+            </h3>
+            <p className="text-[11px] text-zinc-500 mt-0.5">
+              Add a mock role to test the dashboard updates.
+            </p>
+          </div>
+          <form onSubmit={handleAddJob} className="space-y-3">
+            <div>
+              <label htmlFor="companyName" className="block text-[10px] font-medium text-zinc-400 mb-1">
+                Company Name
+              </label>
+              <input
+                id="companyName"
+                type="text"
+                required
+                placeholder="e.g. OpenAI"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className="w-full rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1.5 text-xs text-zinc-100 placeholder:text-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label htmlFor="jobTitle" className="block text-[10px] font-medium text-zinc-400 mb-1">
+                Job Title
+              </label>
+              <input
+                id="jobTitle"
+                type="text"
+                required
+                placeholder="e.g. Research Engineer"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                className="w-full rounded-md border border-zinc-800 bg-zinc-950 px-2.5 py-1.5 text-xs text-zinc-100 placeholder:text-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label htmlFor="status" className="block text-[10px] font-medium text-zinc-400 mb-1">
+                Status
+              </label>
+              <select
+                id="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full rounded-md border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-xs text-zinc-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                <option value="applied">Applied</option>
+                <option value="interviewing">Interviewing</option>
+                <option value="offered">Offered</option>
+                <option value="rejected">Rejected</option>
+                <option value="withdrawn">Withdrawn</option>
+              </select>
+            </div>
+            {error && <p className="text-[10px] text-rose-500 font-medium">{error}</p>}
+            <button
+              type="submit"
+              className="w-full flex h-8.5 items-center justify-center gap-1 rounded-md bg-primary text-[11px] font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <Plus className="h-3.5 w-3.5 animate-pulse" />
+              <span>Add to Dashboard</span>
+            </button>
+          </form>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [openFaq, setOpenFaq] = useState(0)
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-300">
-      {/* Header */}
       <header className="sticky top-0 z-50 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur-xl">
         <Container className="flex h-16 items-center justify-between">
           <Logo />
@@ -341,7 +696,6 @@ export default function LandingPage() {
         )}
       </header>
 
-      {/* Hero */}
       <section className="relative overflow-hidden">
         <GridBackground />
         <div className="pointer-events-none absolute left-1/2 top-0 h-125 w-250 max-w-full -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklch,var(--color-primary)_18%,transparent)_0%,transparent_70%)] blur-2xl" />
@@ -389,56 +743,9 @@ export default function LandingPage() {
             )}
           </div>
 
-          {/* Dashboard preview */}
           <div className="relative mx-auto mt-16 max-w-4xl w-full">
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-2 shadow-2xl backdrop-blur">
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950/80 p-5 sm:p-6">
-                <div className="mb-5 flex items-center gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {[
-                    { label: 'Total Applications', value: '24', icon: Briefcase },
-                    { label: 'Interviewing', value: '6', icon: Clock },
-                    { label: 'Offers', value: '2', icon: Trophy },
-                    { label: 'Rejected', value: '1', icon: XCircle },
-                  ].map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4 text-left"
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs font-medium text-zinc-500">{stat.label}</p>
-                        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-zinc-800">
-                          <stat.icon className="h-3.5 w-3.5 text-zinc-400" />
-                        </div>
-                      </div>
-                      <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-100">
-                        {stat.value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-3 space-y-2">
-                  {[
-                    { role: 'Frontend Engineer · Vercel', status: 'Interviewing', tone: 'text-amber-400 bg-amber-400/10' },
-                    { role: 'Product Designer · Linear', status: 'Offer', tone: 'text-primary bg-primary/10' },
-                    { role: 'Fullstack Developer · Stripe', status: 'Applied', tone: 'text-zinc-300 bg-zinc-700/40' },
-                  ].map((row) => (
-                    <div
-                      key={row.role}
-                      className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-left"
-                    >
-                      <span className="text-sm text-zinc-300">{row.role}</span>
-                      <span className={cn('rounded-full px-2.5 py-1 text-xs font-medium', row.tone)}>
-                        {row.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="rounded-2xl border border-zinc-850 bg-zinc-900/40 p-2 shadow-2xl backdrop-blur">
+              <InteractiveDemoDashboard />
             </div>
             <div className="pointer-events-none absolute inset-x-0 -bottom-px h-24 bg-linear-to-t from-zinc-950 to-transparent" />
           </div>
@@ -451,11 +758,11 @@ export default function LandingPage() {
             Trusted by job seekers to stay organized through every stage
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-semibold">
-            <span className="rounded-full bg-zinc-800/60 px-3 py-1 text-zinc-300">Applied</span>
+            <StatusBadge status="applied" />
             <ArrowRight size={14} className="text-zinc-600" />
-            <span className="rounded-full bg-amber-400/10 px-3 py-1 text-amber-400">Interviewing</span>
+            <StatusBadge status="interviewing" />
             <ArrowRight size={14} className="text-zinc-600" />
-            <span className="rounded-full bg-primary/10 px-3 py-1 text-primary">Offer</span>
+            <StatusBadge status="offered" />
           </div>
         </Container>
       </section>
@@ -514,7 +821,6 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* Testimonials */}
       <section id="testimonials" className="border-t border-zinc-800/60 py-20 sm:py-24">
         <Container>
           <SectionHeading
@@ -613,48 +919,49 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <footer className="border-t border-zinc-800/60 py-10">
-        <Container>
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+      <footer className="border-t border-zinc-900 bg-zinc-950 py-6">
+        <Container className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="flex items-center gap-3">
             <Logo />
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-              <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-zinc-400 transition-colors hover:text-zinc-100"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </nav>
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-zinc-800/60 pt-4 md:border-t-0 md:border-l md:border-zinc-800/60 md:pt-0 md:pl-6">
-                <a
-                  href="https://github.com/shouqatazeez/hiretrack.git"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-zinc-400 transition-colors hover:text-zinc-100"
-                >
-                  <Github size={15} />
-                  GitHub Repository
-                </a>
-                <a
-                  href="https://hiretrack-api.vercel.app/docs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-sm text-zinc-400 transition-colors hover:text-zinc-100"
-                >
-                  <FileText size={15} />
-                  API Docs
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-6 border-t border-zinc-800/60 pt-6 text-center">
+            <span className="hidden h-4 w-px bg-zinc-800 sm:inline-block" />
             <p className="text-xs text-zinc-500">
               © {new Date().getFullYear()} HireTrack. All rights reserved.
             </p>
+          </div>
+          
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <nav className="flex items-center gap-5 text-xs text-zinc-400">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors hover:text-zinc-100"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <span className="hidden h-4 w-px bg-zinc-850 sm:inline-block" />
+            <div className="flex items-center gap-3">
+              <a
+                href="https://github.com/shouqatazeez/hiretrack.git"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-850 bg-zinc-900/40 p-1.5 text-zinc-400 transition-all hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100"
+                aria-label="GitHub Repository"
+              >
+                <Github size={14} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/shouqat-azeez-mohammad/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-850 bg-zinc-900/40 p-1.5 text-zinc-400 transition-all hover:border-zinc-700 hover:bg-zinc-800 hover:text-zinc-100"
+                aria-label="LinkedIn Profile"
+              >
+                <Linkedin size={14} />
+              </a>
+            </div>
           </div>
         </Container>
       </footer>
