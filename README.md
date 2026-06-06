@@ -280,13 +280,12 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Roadmap
 
-- [ ] **Kanban Board:** Interactive drag-and-drop board for visual job pipeline management.
-- [ ] **Document Storage:** Resume/CV PDF upload connected directly to specific applications.
-- [ ] **Email Reminders:** Automated notification alerts for interview times.
-- [ ] **Google Calendar Sync:** Auto-schedule and push meetings directly to user calendars.
-- [ ] **Data Export:** Generate and download XLS/CSV spreadsheet reports.
-- [ ] **Theme Controls:** Dark / Light theme toggle setting.
-- [ ] **Activity Timeline:** Track interaction history and updates for every application.
+- [ ] **Interview date reminder:** Auto-schedule and set notifications for upcoming interviews.
+- [ ] **Resume upload:** Upload and link CV/Resume PDF files directly to job applications.
+- [ ] **CSV export:** Export application history data to structured CSV / Excel files.
+- [ ] **AI cover letter generator:** Generate personalized cover letters tailored to job descriptions.
+- [ ] **AI interview question generator:** Generate tailored practice questions for the specific role.
+- [ ] **AI resume-to-job match score:** Measure match score percentages between your resume and a job listing.
 
 ---
 
@@ -310,6 +309,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-**Shouqat Azeez**
-- GitHub: [@shouqatazeez](https://github.com/shouqatazeez)
-- Project Link: [https://github.com/shouqatazeez/hiretrack](https://github.com/shouqatazeez/hiretrack)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mdshouqatazeez@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shouqat-azeez-mohammad/)
+[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=react&logoColor=61DAFB)](https://mohammadshouqatazeez.vercel.app/)
