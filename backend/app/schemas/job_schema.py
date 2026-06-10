@@ -8,7 +8,7 @@ class JobApplicationBase(BaseModel):
 	company_name: str = Field(..., min_length=1, max_length=255, description="Company name")
 	job_title: str = Field(..., min_length=1, max_length=255, description="Job title")
 	job_url: Optional[str] = Field(None, description="Job posting URL")
-	job_description: Optional[str] = Field(None, max_length=10000, description="Job description text")
+	job_description: Optional[str] = Field(None, max_length=5000, description="Job description text")
 	status: str = Field("applied", min_length=1, max_length=50, description="Application status")
 
 
@@ -21,7 +21,7 @@ class JobApplicationUpdate(BaseModel):
 	company_name: Optional[str] = Field(None, min_length=1, max_length=255, description="Company name")
 	job_title: Optional[str] = Field(None, min_length=1, max_length=255, description="Job title")
 	job_url: Optional[str] = Field(None, description="Job posting URL")
-	job_description: Optional[str] = Field(None, max_length=10000, description="Job description text")
+	job_description: Optional[str] = Field(None, max_length=5000, description="Job description text")
 	status: Optional[str] = Field(None, min_length=1, max_length=50, description="Application status")
 	applied_at: Optional[datetime] = Field(None, description="When the application was submitted")
 
