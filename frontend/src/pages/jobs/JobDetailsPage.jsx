@@ -252,6 +252,17 @@ export default function JobDetailsPage() {
             </div>
           )}
 
+          {job.job_description && (
+            <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
+                Job Description
+              </p>
+              <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
+                {job.job_description}
+              </p>
+            </div>
+          )}
+
           <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 text-xs text-zinc-400 shadow-sm">
             <span>Created {formatDate(job.created_at)}</span>
             {hasBeenUpdated && (
