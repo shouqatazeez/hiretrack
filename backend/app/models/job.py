@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -14,6 +14,7 @@ class JobApplication(Base):
 	company_name = Column(String, nullable=False)
 	job_title = Column(String, nullable=False)
 	job_url = Column(String, nullable=True)
+	job_description = Column(Text, nullable=True)
 	status = Column(String, default="applied", nullable=False)
 	applied_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 	created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
