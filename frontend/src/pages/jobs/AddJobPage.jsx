@@ -31,6 +31,7 @@ export default function AddJobPage() {
     job_title: '',
     status: 'applied',
     job_url: '',
+    job_description: '',
   })
 
   const [loading, setLoading] = useState(false)
@@ -55,6 +56,9 @@ export default function AddJobPage() {
 
       const url = formData.job_url.trim()
       if (url) payload.job_url = url
+
+      const desc = formData.job_description.trim()
+      if (desc) payload.job_description = desc
 
       await createJob(payload)
       navigate('/dashboard/jobs')
@@ -162,6 +166,24 @@ export default function AddJobPage() {
                   disabled={loading}
                   className="h-11 bg-zinc-900/50 mt-1.5"
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="job_description">
+                  Job Description <span className="text-muted-foreground">(optional)</span>
+                </Label>
+                <textarea
+                  id="job_description"
+                  name="job_description"
+                  placeholder="Paste the job description here..."
+                  rows={6}
+                  maxLength={5000}
+                  value={formData.job_description}
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="w-full rounded-md border border-input bg-zinc-900/50 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20 disabled:opacity-50 resize-y mt-1.5"
+                />
+                <p className="text-xs text-muted-foreground">{formData.job_description.length}/5,000 characters</p>
               </div>
             </div>
 
