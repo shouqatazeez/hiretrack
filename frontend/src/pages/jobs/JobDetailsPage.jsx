@@ -54,7 +54,6 @@ function formatDate(value) {
 function SkeletonJobDetails() {
   return (
     <div className="space-y-6 animate-pulse">
-      {/* Header Card Shimmer */}
       <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-4 w-full sm:w-auto">
@@ -71,7 +70,6 @@ function SkeletonJobDetails() {
         </div>
       </div>
 
-      {/* Grid Shimmer */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-5 shadow-lg space-y-3">
           <div className="flex items-center gap-2">
@@ -89,7 +87,6 @@ function SkeletonJobDetails() {
         </div>
       </div>
 
-      {/* Additional Card Shimmer */}
       <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg space-y-3">
         <div className="h-3 w-24 rounded bg-zinc-700" />
         <div className="h-4 w-1/2 rounded bg-zinc-800" />
