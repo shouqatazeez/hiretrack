@@ -7,6 +7,7 @@ import JobsPage from '../pages/jobs/JobsPage.jsx'
 import AddJobPage from '../pages/jobs/AddJobPage.jsx'
 import JobDetailsPage from '../pages/jobs/JobDetailsPage.jsx'
 import EditJobPage from '../pages/jobs/EditJobPage.jsx'
+import ResumePage from '../pages/dashboard/ResumePage.jsx'
 import MainLayout from '../layouts/dashboard/MainLayout.jsx'
 import ProtectedRoute from '../components/ProtectedRoute.jsx'
 
@@ -36,6 +37,7 @@ export default function AppRoutes() {
 				<Route path="jobs/new" element={<AddJobPage />} />
 				<Route path="jobs/:jobId" element={<JobDetailsPage />} />
 				<Route path="jobs/:jobId/edit" element={<EditJobPage />} />
+				<Route path="resume" element={<ResumePage />} />
 			</Route>
 
 			<Route path="/jobs" element={<Navigate to="/dashboard/jobs" replace />} />

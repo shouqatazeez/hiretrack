@@ -1,4 +1,4 @@
-import { Briefcase, CirclePlus, LayoutDashboard, LogOut, X, ChevronRight } from 'lucide-react'
+import { Briefcase, CirclePlus, FileText, LayoutDashboard, LogOut, X, ChevronRight } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { useAuth } from '../../context/AuthContext'
@@ -7,6 +7,7 @@ const navItems = [
 	{ label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard, end: true },
 	{ label: 'Jobs', to: '/dashboard/jobs', icon: Briefcase, end: true },
 	{ label: 'Add Job', to: '/dashboard/jobs/new', icon: CirclePlus, end: true },
+	{ label: 'Resume', to: '/dashboard/resume', icon: FileText, end: true },
 ]
 
 export default function Sidebar({ isOpen, onClose }) {
