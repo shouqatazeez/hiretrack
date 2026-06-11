@@ -18,7 +18,6 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
 
 	hashed = hash_password(user.password)
 
-	# Create and persist the user
 	db_user = UserModel(email=user.email, full_name=user.full_name, hashed_password=hashed)
 	db.add(db_user)
 	db.commit()
