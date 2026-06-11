@@ -33,7 +33,6 @@ function toDateInputValue(value) {
 function SkeletonEditJob() {
   return (
     <div className="space-y-6 animate-pulse">
-      {/* Header Card Shimmer */}
       <Card>
         <CardHeader className="text-left space-y-2">
           <div className="h-3 w-12 rounded bg-zinc-700" />
@@ -42,7 +41,6 @@ function SkeletonEditJob() {
         </CardHeader>
       </Card>
 
-      {/* Form Card Shimmer */}
       <Card>
         <CardContent className="space-y-6 pt-8">
           <div className="space-y-5">
