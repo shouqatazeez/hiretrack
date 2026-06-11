@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 export default function ActivityChart({ data = [] }) {
 	const [hoveredIdx, setHoveredIdx] = useState(null)
 
-	// Fallback data if empty
+	// Fallback structure to ensure a complete weekly axis renders when no application data is present.
 	const chartData = data.length > 0 ? data : [
 		{ label: 'Mon', count: 0 },
 		{ label: 'Tue', count: 0 },
@@ -18,7 +18,6 @@ export default function ActivityChart({ data = [] }) {
 
 	const maxCount = Math.max(...chartData.map(d => d.count), 4)
 
-	// SVG Config
 	const width = 500
 	const height = 200
 	const paddingLeft = 35
@@ -29,22 +28,20 @@ export default function ActivityChart({ data = [] }) {
 	const graphWidth = width - paddingLeft - paddingRight
 	const graphHeight = height - paddingTop - paddingBottom
 
-	// Compute points
 	const points = chartData.map((d, i) => {
 		const x = paddingLeft + (i / (chartData.length - 1)) * graphWidth
 		const y = paddingTop + graphHeight - (d.count / maxCount) * graphHeight
 		return { x, y, ...d }
 	})
 
-	// Construct line path
+	// Build SVG path data for the line chart connecting day coordinates.
 	const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ')
 
-	// Construct area path (closed loop)
+	// Close the SVG path back to the baseline x-coordinates to fill the gradient area.
 	const areaPath = points.length > 0 
 		? `${linePath} L ${points[points.length - 1].x} ${paddingTop + graphHeight} L ${points[0].x} ${paddingTop + graphHeight} Z`
 		: ''
 
-	// Y-axis ticks
 	const ticks = []
 	for (let i = 0; i <= 4; i++) {
 		const val = Math.round((maxCount / 4) * i)
@@ -59,7 +56,6 @@ export default function ActivityChart({ data = [] }) {
 				<p className="text-xs text-zinc-500">Timeline of job submissions over the last 7 days</p>
 			</CardHeader>
 			<CardContent className="p-0 relative h-[210px] w-full">
-				{/* Tooltip Overlay */}
 				{hoveredIdx !== null && points[hoveredIdx] && (
 					<div 
 						className="absolute z-20 rounded-lg border border-zinc-850 bg-zinc-950/95 px-2.5 py-1.5 text-xs shadow-xl pointer-events-none animate-in fade-in zoom-in-95 duration-100"
@@ -87,7 +83,6 @@ export default function ActivityChart({ data = [] }) {
 						</linearGradient>
 					</defs>
 
-					{/* Horizontal Grid Lines */}
 					{ticks.map((t, idx) => (
 						<g key={idx}>
 							<line 
@@ -112,7 +107,7 @@ export default function ActivityChart({ data = [] }) {
 						</g>
 					))}
 
-					{/* Guideline when hovering */}
+					{/* Vertical dashed guideline aligning with the currently hovered data point */}
 					{hoveredIdx !== null && points[hoveredIdx] && (
 						<line 
 							x1={points[hoveredIdx].x} 
@@ -125,7 +120,6 @@ export default function ActivityChart({ data = [] }) {
 						/>
 					)}
 
-					{/* X-axis labels */}
 					{points.map((p, idx) => (
 						<text 
 							key={idx}
@@ -140,13 +134,11 @@ export default function ActivityChart({ data = [] }) {
 						</text>
 					))}
 
-					{/* Area Chart Fill */}
 					<path 
 						d={areaPath} 
 						fill="url(#chartGrad)" 
 					/>
 
-					{/* Stroke line */}
 					<path 
 						d={linePath} 
 						fill="none" 
@@ -156,10 +148,8 @@ export default function ActivityChart({ data = [] }) {
 						strokeLinejoin="round"
 					/>
 
-					{/* Interactive nodes */}
 					{points.map((p, idx) => (
 						<g key={idx}>
-							{/* Hover listener area */}
 							<rect 
 								x={p.x - graphWidth / (chartData.length * 1.5)} 
 								y={paddingTop} 
@@ -170,7 +160,6 @@ export default function ActivityChart({ data = [] }) {
 								onMouseEnter={() => setHoveredIdx(idx)}
 								onMouseLeave={() => setHoveredIdx(null)}
 							/>
-							{/* Point node */}
 							{(hoveredIdx === idx || p.count > 0) && (
 								<circle 
 									cx={p.x} 
