@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil, Trash2, MoreVertical } from 'lucide-react'
+import { ArrowLeft, Building2, Calendar, ExternalLink, Loader2, Pencil, Trash2, MoreVertical, Sparkles, MessageSquare, FileText } from 'lucide-react'
 import { deleteJob, getJobById } from '../../services/jobService'
 import { Button } from '../../components/ui/button'
+import { getMatchScore, getInterviewQuestions, getCoverLetter } from '../../services/aiService'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -106,6 +107,18 @@ export default function JobDetailsPage() {
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState(null)
 
+  const [matchResult, setMatchResult] = useState(null)
+  const [matchLoading, setMatchLoading] = useState(false)
+  const [matchError, setMatchError] = useState(null)
+
+  const [questionsResult, setQuestionsResult] = useState(null)
+  const [questionsLoading, setQuestionsLoading] = useState(false)
+  const [questionsError, setQuestionsError] = useState(null)
+
+  const [coverResult, setCoverResult] = useState(null)
+  const [coverLoading, setCoverLoading] = useState(false)
+  const [coverError, setCoverError] = useState(null)
+
   const hasBeenUpdated = job && job.updated_at && job.created_at &&
     (new Date(job.updated_at).getTime() - new Date(job.created_at).getTime() > 1000)
 
@@ -146,6 +159,45 @@ export default function JobDetailsPage() {
       )
     } finally {
       setDeleting(false)
+    }
+  }
+
+  const handleMatchScore = async () => {
+    try {
+      setMatchLoading(true)
+      setMatchError(null)
+      const result = await getMatchScore(jobId)
+      setMatchResult(result)
+    } catch (err) {
+      setMatchError(err.response?.data?.detail || 'Failed to get match score.')
+    } finally {
+      setMatchLoading(false)
+    }
+  }
+
+  const handleInterviewQuestions = async () => {
+    try {
+      setQuestionsLoading(true)
+      setQuestionsError(null)
+      const result = await getInterviewQuestions(jobId)
+      setQuestionsResult(result)
+    } catch (err) {
+      setQuestionsError(err.response?.data?.detail || 'Failed to generate questions.')
+    } finally {
+      setQuestionsLoading(false)
+    }
+  }
+
+  const handleCoverLetter = async () => {
+    try {
+      setCoverLoading(true)
+      setCoverError(null)
+      const result = await getCoverLetter(jobId)
+      setCoverResult(result)
+    } catch (err) {
+      setCoverError(err.response?.data?.detail || 'Failed to generate cover letter.')
+    } finally {
+      setCoverLoading(false)
     }
   }
 
@@ -257,6 +309,135 @@ export default function JobDetailsPage() {
               <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
                 {job.job_description}
               </p>
+            </div>
+          )}
+
+          {/* AI Features Section */}
+          {job.job_description && (
+            <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4">
+                AI Tools
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={matchLoading}
+                  onClick={handleMatchScore}
+                  className="gap-2"
+                >
+                  {matchLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                  Match Score
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={questionsLoading}
+                  onClick={handleInterviewQuestions}
+                  className="gap-2"
+                >
+                  {questionsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageSquare className="h-4 w-4" />}
+                  Interview Questions
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={coverLoading}
+                  onClick={handleCoverLetter}
+                  className="gap-2"
+                >
+                  {coverLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
+                  Cover Letter
+                </Button>
+              </div>
+
+              {matchError && <p className="mt-3 text-sm text-rose-400">{matchError}</p>}
+              {questionsError && <p className="mt-3 text-sm text-rose-400">{questionsError}</p>}
+              {coverError && <p className="mt-3 text-sm text-rose-400">{coverError}</p>}
+            </div>
+          )}
+
+          {/* Match Score Result */}
+          {matchResult && (
+            <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4">Match Score</p>
+              <div className="flex items-center gap-4 mb-4">
+                <div className={`text-4xl font-bold ${matchResult.score >= 70 ? 'text-emerald-400' : matchResult.score >= 40 ? 'text-amber-400' : 'text-rose-400'}`}>
+                  {matchResult.score}/100
+                </div>
+              </div>
+              {matchResult.strengths?.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-emerald-400 mb-1">Strengths</p>
+                  <ul className="space-y-1">
+                    {matchResult.strengths.map((s, i) => (
+                      <li key={i} className="text-sm text-zinc-300 flex gap-2">
+                        <span className="text-emerald-400 shrink-0">+</span> {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {matchResult.gaps?.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-amber-400 mb-1">Gaps</p>
+                  <ul className="space-y-1">
+                    {matchResult.gaps.map((g, i) => (
+                      <li key={i} className="text-sm text-zinc-300 flex gap-2">
+                        <span className="text-amber-400 shrink-0">−</span> {g}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {matchResult.suggestion && (
+                <div>
+                  <p className="text-xs font-semibold text-zinc-400 mb-1">Suggestion</p>
+                  <p className="text-sm text-zinc-300">{matchResult.suggestion}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Interview Questions Result */}
+          {questionsResult?.questions && (
+            <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+              <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4">Interview Questions</p>
+              <ol className="space-y-4">
+                {questionsResult.questions.map((q, i) => (
+                  <li key={i} className="border-b border-zinc-800/50 pb-3 last:border-0 last:pb-0">
+                    <div className="flex items-start gap-3">
+                      <span className="shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-xs font-medium text-zinc-300">{i + 1}</span>
+                      <div>
+                        <p className="text-sm font-medium text-zinc-200">{q.question}</p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <span className="text-[10px] uppercase tracking-wider font-semibold text-zinc-500 bg-zinc-800 rounded px-1.5 py-0.5">{q.category}</span>
+                        </div>
+                        {q.tip && <p className="mt-1.5 text-xs text-zinc-400 italic">Tip: {q.tip}</p>}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* Cover Letter Result */}
+          {coverResult?.cover_letter && (
+            <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/75 p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500">Cover Letter</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigator.clipboard.writeText(coverResult.cover_letter)}
+                >
+                  Copy
+                </Button>
+              </div>
+              <div className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
+                {coverResult.cover_letter}
+              </div>
             </div>
           )}
 
