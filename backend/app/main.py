@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import Base, engine
 from app.models.job import JobApplication
+
 from app.models.user import User
 from app.models.resume import Resume
 from app.routes.auth import router as auth_router
@@ -9,6 +10,7 @@ from app.routes.dashboard import router as dashboard_router
 from app.routes.job import router as job_router
 from app.routes.login import router as login_router
 from app.routes.resume import router as resume_router
+from app.routes.ai import router as ai_router
 
 
 app = FastAPI()
@@ -41,3 +43,4 @@ app.include_router(dashboard_router)
 app.include_router(job_router)
 app.include_router(login_router)
 app.include_router(resume_router)
+app.include_router(ai_router)
