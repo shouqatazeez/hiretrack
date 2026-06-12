@@ -1,0 +1,152 @@
+import json
+import httpx
+from fastapi import HTTPException, status
+from app.core.config import GEMINI_API_KEY
+
+
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+
+
+def _call_gemini(prompt: str) -> dict:
+    """Send a prompt to Gemini and return the parsed JSON response."""
+    url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
+
+    payload = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": prompt}
+                ]
+            }
+        ],
+        "generationConfig": {
+            "temperature": 0.7,
+            "responseMimeType": "application/json",
+        },
+    }
+
+    response = httpx.post(url, json=payload, timeout=60.0)
+
+    if response.status_code == 429:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="AI rate limit reached. Please try again in a minute.",
+        )
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI service error. Please try again.",
+        )
+
+    data = response.json()
+
+    # Extract text from Gemini response
+    try:
+        content = data["candidates"][0]["content"]["parts"][0]["text"]
+    except (KeyError, IndexError):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI returned an unexpected response.",
+        )
+
+    # Parse JSON (responseMimeType should ensure clean JSON, but strip fences just in case)
+    content = content.strip()
+    if content.startswith("```json"):
+        content = content[7:]
+    elif content.startswith("```"):
+        content = content.split("\n", 1)[1] if "\n" in content else content[3:]
+    if content.endswith("```"):
+        content = content[:-3]
+    content = content.strip()
+
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI returned invalid response format.",
+        )
+
+
+def call_ai(prompt: str) -> dict:
+    """Call Gemini AI."""
+    if not GEMINI_API_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="AI service is not configured.",
+        )
+    return _call_gemini(prompt)
+
+
+def get_match_score(resume_text: str, job_title: str, company_name: str, job_description: str) -> dict:
+    """Get a match score comparing resume against a job."""
+    prompt = f"""You are a career advisor. Analyze how well this resume matches the job below.
+
+JOB TITLE: {job_title}
+COMPANY: {company_name}
+JOB DESCRIPTION:
+{job_description}
+
+RESUME:
+{resume_text}
+
+Return a JSON object with exactly this structure:
+{{
+  "score": <number 0-100>,
+  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
+  "gaps": ["<gap 1>", "<gap 2>", "<gap 3>"],
+  "suggestion": "<one paragraph of advice on how to improve the match>"
+}}
+
+Be specific and reference actual skills/experience from the resume and requirements from the job description."""
+
+    return call_ai(prompt)
+
+
+def generate_interview_questions(job_title: str, company_name: str, job_description: str, resume_text: str = "") -> dict:
+    """Generate interview questions for a job."""
+    resume_context = f"\nCANDIDATE RESUME:\n{resume_text}" if resume_text else ""
+
+    prompt = f"""You are a career advisor. Generate interview questions for this position.
+
+JOB TITLE: {job_title}
+COMPANY: {company_name}
+JOB DESCRIPTION:
+{job_description}
+{resume_context}
+
+Return a JSON object with exactly this structure:
+{{
+  "questions": [
+    {{"question": "<the question>", "category": "<behavioral|technical|situational>", "tip": "<brief tip on how to approach this>"}},
+    ...
+  ]
+}}
+
+Generate exactly 10 questions. Mix behavioral, technical, and situational questions relevant to the specific role and job description."""
+
+    return call_ai(prompt)
+
+
+def generate_cover_letter(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
+    """Generate a cover letter for a job application."""
+    prompt = f"""You are a career advisor. Write a professional cover letter for this job application.
+
+APPLICANT NAME: {user_name}
+JOB TITLE: {job_title}
+COMPANY: {company_name}
+JOB DESCRIPTION:
+{job_description}
+
+RESUME:
+{resume_text}
+
+Return a JSON object with exactly this structure:
+{{
+  "cover_letter": "<the full cover letter text, 3-4 paragraphs, professional but personable tone>"
+}}
+
+Make it specific to the job requirements and reference relevant experience from the resume."""
+
+    return call_ai(prompt)
