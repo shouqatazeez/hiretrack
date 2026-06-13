@@ -14,3 +14,12 @@ export async function getCoverLetter(jobId) {
   const response = await api.post(`/jobs/applications/${jobId}/cover-letter`)
   return response.data
 }
+
+export async function getAnswerFeedback(jobId, question, answer, category = '') {
+  const response = await api.post(`/jobs/applications/${jobId}/answer-feedback`, {
+    question,
+    answer,
+    category,
+  })
+  return response.data
+}
