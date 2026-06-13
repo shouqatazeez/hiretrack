@@ -36,5 +36,14 @@ class JobApplicationResponse(JobApplicationBase):
 	created_at: datetime
 	updated_at: datetime
 
+	# AI results fields
+	ai_match_score: Optional[dict] = None
+	ai_match_score_updated_at: Optional[datetime] = None
+	ai_interview_questions: Optional[dict] = None
+	ai_interview_questions_updated_at: Optional[datetime] = None
+	ai_cover_letter: Optional[str] = None
+	ai_cover_letter_updated_at: Optional[datetime] = None
+
 	class Config:
 		from_attributes = True
+

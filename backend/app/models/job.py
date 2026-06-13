@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, JSON
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -25,4 +25,13 @@ class JobApplication(Base):
 		nullable=False,
 	)
 
+	# AI Workspace fields
+	ai_match_score = Column(JSON, nullable=True)
+	ai_match_score_updated_at = Column(DateTime, nullable=True)
+	ai_interview_questions = Column(JSON, nullable=True)
+	ai_interview_questions_updated_at = Column(DateTime, nullable=True)
+	ai_cover_letter = Column(Text, nullable=True)
+	ai_cover_letter_updated_at = Column(DateTime, nullable=True)
+
 	user = relationship("User", back_populates="job_applications")
+
