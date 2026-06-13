@@ -94,12 +94,18 @@ RESUME:
 Return a JSON object with exactly this structure:
 {{
   "score": <number 0-100>,
+  "sub_scores": {{
+    "skills": <number 0-100>,
+    "experience": <number 0-100>,
+    "projects": <number 0-100>,
+    "keywords": <number 0-100>
+  }},
   "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
   "gaps": ["<gap 1>", "<gap 2>", "<gap 3>"],
-  "suggestion": "<one paragraph of advice on how to improve the match>"
+  "recommendations": ["<actionable recommendation 1>", "<actionable recommendation 2>", "<actionable recommendation 3>"]
 }}
 
-Be specific and reference actual skills/experience from the resume and requirements from the job description."""
+Be specific and reference actual skills/experience from the resume and requirements from the job description. Each recommendation should be a concise, actionable bullet point."""
 
     return call_ai(prompt)
 
@@ -130,8 +136,8 @@ Generate exactly 10 questions. Mix behavioral, technical, and situational questi
 
 
 def generate_cover_letter(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
-    """Generate a cover letter for a job application."""
-    prompt = f"""You are a career advisor. Write a professional cover letter for this job application.
+    """Generate a professional cover letter for a job application."""
+    prompt = f"""You are a professional career advisor writing a cover letter. Follow these rules strictly:
 
 APPLICANT NAME: {user_name}
 JOB TITLE: {job_title}
@@ -142,12 +148,26 @@ JOB DESCRIPTION:
 RESUME:
 {resume_text}
 
+RULES:
+- Only use information that actually exists in the resume. Never invent skills, projects, phone numbers, emails, or experience.
+- If contact info (email, phone) is in the resume, include it. If not, omit gracefully.
+- Keep length between 300-450 words.
+- Avoid generic buzzwords, excessive flattery, and repetitive AI phrasing.
+- Make it feel personalized to both the role and the specific company.
+- Reference relevant projects and technologies from the resume.
+
+FORMAT THE COVER LETTER EXACTLY LIKE THIS:
+1. Header: Applicant name (and email/phone only if found in resume), current date, company name, subject line
+2. Introduction: State the position, express interest, brief candidate background
+3. Skills & Experience: Highlight matching technical skills, reference specific projects, mention measurable impact
+4. Company Alignment: Why this company specifically, connect candidate goals with company mission/products
+5. Closing: Reaffirm interest, thank hiring manager, express willingness to discuss further
+6. Sign off with "Sincerely, [Name]"
+
 Return a JSON object with exactly this structure:
 {{
-  "cover_letter": "<the full cover letter text, 3-4 paragraphs, professional but personable tone>"
-}}
-
-Make it specific to the job requirements and reference relevant experience from the resume."""
+  "cover_letter": "<the full formatted cover letter text following the structure above>"
+}}"""
 
     return call_ai(prompt)
 
