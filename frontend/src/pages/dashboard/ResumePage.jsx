@@ -3,12 +3,70 @@ import { FileText, Loader2, Trash2, Upload } from 'lucide-react'
 import { uploadResume, getResume, deleteResume } from '../../services/resumeService'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../../components/ui/alert-dialog'
+
+function ResumeShimmer() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      <Card>
+        <CardHeader>
+          <div className="h-3 w-16 rounded bg-zinc-800" />
+          <div className="h-5 w-40 rounded bg-zinc-800 mt-2" />
+          <div className="h-3 w-72 rounded bg-zinc-800 mt-2" />
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-zinc-800" />
+              <div className="space-y-2">
+                <div className="h-4 w-32 rounded bg-zinc-800" />
+                <div className="h-3 w-24 rounded bg-zinc-800" />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="h-8 w-20 rounded bg-zinc-800" />
+              <div className="h-8 w-8 rounded bg-zinc-800" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <div className="h-4 w-36 rounded bg-zinc-800" />
+          <div className="h-3 w-56 rounded bg-zinc-800 mt-2" />
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4 space-y-3">
+            <div className="h-3 w-full rounded bg-zinc-800" />
+            <div className="h-3 w-5/6 rounded bg-zinc-800" />
+            <div className="h-3 w-4/5 rounded bg-zinc-800" />
+            <div className="h-3 w-full rounded bg-zinc-800" />
+            <div className="h-3 w-3/4 rounded bg-zinc-800" />
+            <div className="h-3 w-5/6 rounded bg-zinc-800" />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
 
 export default function ResumePage() {
   const [resume, setResume] = useState(null)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [error, setError] = useState(null)
   const [dragOver, setDragOver] = useState(false)
   const fileInputRef = useRef(null)
@@ -56,12 +114,13 @@ export default function ResumePage() {
     }
   }
 
-  async function handleDelete() {
+  async function confirmDelete() {
     try {
       setDeleting(true)
       setError(null)
       await deleteResume()
       setResume(null)
+      setShowDeleteConfirm(false)
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to delete resume.')
     } finally {
@@ -83,12 +142,7 @@ export default function ResumePage() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-        <span className="ml-2 text-sm text-muted-foreground">Loading...</span>
-      </div>
-    )
+    return <ResumeShimmer />
   }
 
   return (
@@ -156,7 +210,13 @@ export default function ResumePage() {
                   <Button variant="outline" size="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
                     {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Replace'}
                   </Button>
-                  <Button variant="outline" size="sm" disabled={deleting} onClick={handleDelete} className="text-destructive hover:text-destructive">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={deleting}
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="text-destructive hover:text-destructive"
+                  >
                     {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                   </Button>
                 </div>
@@ -176,6 +236,28 @@ export default function ResumePage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Resume</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete your resume? AI features like match scoring and cover letter generation will be unavailable until you upload a new one.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+                <AlertDialogAction disabled={deleting} onClick={confirmDelete}>
+                  {deleting ? (
+                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Deleting...</>
+                  ) : (
+                    'Delete Resume'
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </>
       )}
     </div>

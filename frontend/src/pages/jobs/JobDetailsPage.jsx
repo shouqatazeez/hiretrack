@@ -488,81 +488,107 @@ export default function JobDetailsPage() {
                       )}
 
                       {matchResult && !matchLoading && (
-                        <div className="space-y-6">
-                          {/* Radial Score Gauge Card */}
-                          <div className="flex flex-col sm:flex-row items-center gap-6 bg-zinc-950/20 p-6 rounded-2xl border border-zinc-800/50">
-                            <MatchScoreCircle score={matchResult.score} />
-                            <div className="space-y-2 text-center sm:text-left flex-1">
-                              <h3 className="text-base font-bold text-zinc-100">Compatibility Score</h3>
-                              <p className="text-xs leading-relaxed text-zinc-400">
-                                {matchResult.score >= 80 
-                                  ? "Excellent match! Your resume shows highly relevant skills and experience matching this job description perfectly."
-                                  : matchResult.score >= 60 
-                                  ? "Good match, but there are some missing key skills or experience. Check recommendations to optimize your application."
-                                  : "Low match. Consider rewriting sections of your resume or acquiring matching credentials before applying."}
+                        <div className="space-y-4">
+                          {/* Score + Sub-scores Row */}
+                          <div className="flex flex-col sm:flex-row items-center gap-4 bg-zinc-950/20 p-4 rounded-2xl border border-zinc-800/50">
+                            <div className="text-center">
+                              <MatchScoreCircle score={matchResult.score} />
+                              <p className={`mt-2 text-[11px] font-bold uppercase tracking-wider ${
+                                matchResult.score >= 85 ? 'text-emerald-400' : matchResult.score >= 70 ? 'text-primary' : matchResult.score >= 50 ? 'text-amber-400' : 'text-rose-400'
+                              }`}>
+                                {matchResult.score >= 85 ? 'Excellent Match' : matchResult.score >= 70 ? 'Good Match' : matchResult.score >= 50 ? 'Moderate Match' : 'Weak Match'}
                               </p>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={handleMatchScore}
-                                className="text-xs hover:bg-zinc-850 mt-1 gap-1.5 hover:text-zinc-50 cursor-pointer"
-                              >
-                                <Sparkles className="h-3.5 w-3.5 text-primary" />
-                                Refresh Analysis
-                              </Button>
+                            </div>
+                            <div className="flex-1 space-y-3 text-center sm:text-left">
+                              <div className="flex items-center justify-between sm:justify-start gap-3">
+                                <h3 className="text-sm font-bold text-zinc-100">Compatibility Score</h3>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={handleMatchScore}
+                                  disabled={matchLoading}
+                                  className="text-[11px] h-7 gap-1.5 cursor-pointer"
+                                >
+                                  {matchLoading ? (
+                                    <><Loader2 className="h-3 w-3 animate-spin" /> Analyzing...</>
+                                  ) : (
+                                    <><Sparkles className="h-3 w-3 text-primary" /> Refresh Analysis</>
+                                  )}
+                                </Button>
+                              </div>
+                              {/* Sub-scores grid */}
+                              {matchResult.sub_scores && (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                  {Object.entries(matchResult.sub_scores).map(([key, value]) => (
+                                    <div key={key} className="rounded-lg bg-zinc-900/50 border border-zinc-800/40 p-2 text-center transition-all duration-200 hover:border-zinc-700/60 hover:bg-zinc-900/70">
+                                      <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">{key}</p>
+                                      <p className={`text-sm font-bold ${value >= 80 ? 'text-emerald-400' : value >= 60 ? 'text-amber-400' : 'text-rose-400'}`}>{value}%</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           </div>
 
-                          {/* Strengths and Gaps Lists */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Strengths */}
-                            <div className="rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-5">
-                              <p className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 pb-3 mb-3 border-b border-emerald-500/10">
-                                <CheckCircle2 className="h-4 w-4" /> Top Matching Skills
+                          {/* Strengths and Gaps */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4 transition-all duration-300 hover:border-emerald-500/25 hover:bg-emerald-500/[0.07]">
+
+
+                              <p className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 pb-1 mb-4 border-b border-emerald-500/10">
+                                <CheckCircle2 className="h-3.5 w-3.5" /> Top Matching Skills
                               </p>
                               {matchResult.strengths?.length > 0 ? (
-                                <ul className="space-y-2.5">
+                                <ul className="space-y-1.5">
                                   {matchResult.strengths.map((s, i) => (
-                                    <li key={i} className="text-xs text-zinc-350 flex items-start gap-2">
-                                      <span className="text-emerald-400 shrink-0 select-none">•</span>
+                                    <li key={i} className="text-xs text-zinc-300 flex items-start gap-2 mt-1.5">
+                                      <span className="text-emerald-400 shrink-0">•</span>
                                       <span>{s}</span>
                                     </li>
                                   ))}
                                 </ul>
                               ) : (
-                                <p className="text-xs text-zinc-500 italic">No clear strengths highlighted.</p>
+                                <p className="text-xs text-zinc-500 italic">No strengths highlighted.</p>
                               )}
                             </div>
 
-                            {/* Gaps */}
-                            <div className="rounded-2xl border border-amber-500/10 bg-amber-500/5 p-5">
-                              <p className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5 pb-3 mb-3 border-b border-amber-500/10">
-                                <AlertTriangle className="h-4 w-4" /> Missing / Gap Skills
+                            <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4 transition-all duration-300 hover:border-emerald-500/25 hover:bg-emerald-500/[0.07]">
+                              <p className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5 pb-1 mb-3 border-b border-amber-500/10">
+                                <AlertTriangle className="h-3.5 w-3.5" /> Missing / Gap Skills
                               </p>
                               {matchResult.gaps?.length > 0 ? (
-                                <ul className="space-y-2.5">
+                                <ul className="space-y-1.5">
                                   {matchResult.gaps.map((g, i) => (
-                                    <li key={i} className="text-xs text-zinc-355 flex items-start gap-2">
-                                      <span className="text-amber-400 shrink-0 select-none">•</span>
+                                    <li key={i} className="text-xs text-zinc-300 flex items-start gap-2 mt-1.5">
+                                      <span className="text-amber-400 shrink-0">•</span>
                                       <span>{g}</span>
                                     </li>
                                   ))}
                                 </ul>
                               ) : (
-                                <p className="text-xs text-zinc-500 italic">No critical skill gaps identified.</p>
+                                <p className="text-xs text-zinc-500 italic">No gaps identified.</p>
                               )}
                             </div>
                           </div>
 
-                          {/* Recommendations */}
-                          {matchResult.suggestion && (
-                            <div className="rounded-2xl border border-primary/10 bg-primary/5 p-5">
-                              <p className="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5 pb-3 mb-3 border-b border-primary/10">
-                                <Award className="h-4 w-4" /> AI Recommendations
+                          {/* Recommendations as bullets */}
+                          {(matchResult.recommendations?.length > 0 || matchResult.suggestion) && (
+                            <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4 transition-all duration-300 hover:border-emerald-500/25 hover:bg-emerald-500/[0.07]">
+                              <p className="text-[11px] font-bold text-primary uppercase tracking-wider flex items-center gap-1.5 pb-1 mb-3 border-b border-primary/10">
+                                <Award className="h-3.5 w-3.5" /> AI Recommendations
                               </p>
-                              <p className="text-sm leading-relaxed text-zinc-300">
-                                {matchResult.suggestion}
-                              </p>
+                              {matchResult.recommendations?.length > 0 ? (
+                                <ul className="space-y-1.5">
+                                  {matchResult.recommendations.map((r, i) => (
+                                    <li key={i} className="text-xs text-zinc-300 flex items-start gap-2 mt-1.5">
+                                      <span className="text-primary shrink-0">→</span>
+                                      <span>{r}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p className="text-xs leading-relaxed text-zinc-300">{matchResult.suggestion}</p>
+                              )}
                             </div>
                           )}
                         </div>
