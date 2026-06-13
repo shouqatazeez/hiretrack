@@ -150,3 +150,28 @@ Return a JSON object with exactly this structure:
 Make it specific to the job requirements and reference relevant experience from the resume."""
 
     return call_ai(prompt)
+
+
+def evaluate_answer(question: str, answer: str, job_title: str, category: str = "") -> dict:
+    """Evaluate a user's interview answer and provide coaching feedback."""
+    category_context = f"\nQuestion Category: {category}" if category else ""
+
+    prompt = f"""You are an expert interview coach. Evaluate this candidate's answer to an interview question.
+
+JOB TITLE: {job_title}
+INTERVIEW QUESTION: {question}{category_context}
+
+CANDIDATE'S ANSWER:
+{answer}
+
+Evaluate the answer on clarity, relevance, depth, and structure. Return a JSON object with exactly this structure:
+{{
+  "score": <number 1-10, one decimal place>,
+  "strengths": ["<specific strength 1>", "<specific strength 2>"],
+  "improvements": ["<specific improvement 1>", "<specific improvement 2>"],
+  "suggested_answer": "<a concise improved version of their answer, 2-3 paragraphs max>"
+}}
+
+Be encouraging but honest. Reference specific parts of their answer in your feedback."""
+
+    return call_ai(prompt)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.config import GEMINI_API_KEY
@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.models.job import JobApplication
 from app.models.resume import Resume
 from app.models.user import User
-from app.services.ai_service import generate_cover_letter, generate_interview_questions, get_match_score
+from app.services.ai_service import evaluate_answer, generate_cover_letter, generate_interview_questions, get_match_score
 from app.utils.dependencies import get_current_user
 
 
@@ -65,6 +65,12 @@ def match_score(
         company_name=job.company_name,
         job_description=job.job_description,
     )
+
+    from datetime import datetime
+    job.ai_match_score = result
+    job.ai_match_score_updated_at = datetime.utcnow()
+    db.commit()
+
     return result
 
 
@@ -92,6 +98,12 @@ def interview_questions(
         job_description=job.job_description,
         resume_text=resume_text,
     )
+
+    from datetime import datetime
+    job.ai_interview_questions = result
+    job.ai_interview_questions_updated_at = datetime.utcnow()
+    db.commit()
+
     return result
 
 
@@ -118,5 +130,38 @@ def cover_letter(
         company_name=job.company_name,
         job_description=job.job_description,
         user_name=current_user.full_name,
+    )
+
+    from datetime import datetime
+    job.ai_cover_letter = result.get("cover_letter")
+    job.ai_cover_letter_updated_at = datetime.utcnow()
+    db.commit()
+
+    return result
+
+
+@router.post("/{job_id}/answer-feedback")
+def answer_feedback(
+    job_id: int,
+    question: str = Body(...),
+    answer: str = Body(...),
+    category: str = Body(""),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    _check_ai_configured()
+    job = _get_job_or_404(job_id, current_user.id, db)
+
+    if not answer.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Write an answer first before requesting feedback.",
+        )
+
+    result = evaluate_answer(
+        question=question,
+        answer=answer,
+        job_title=job.job_title,
+        category=category,
     )
     return result
