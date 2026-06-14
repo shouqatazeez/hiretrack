@@ -216,6 +216,27 @@ export default function JobsPage() {
 		setJobs((prev) => prev.filter((job) => job.id !== deletedId))
 	}
 
+	const handleExportCSV = async () => {
+		try {
+			const token = localStorage.getItem('hiretrack_token')
+			const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+			const res = await fetch(`${baseUrl}/jobs/applications/export`, {
+				headers: { Authorization: `Bearer ${token}` },
+			})
+			const blob = await res.blob()
+			const url = URL.createObjectURL(blob)
+			const a = document.createElement('a')
+			a.href = url
+			a.download = 'hiretrack_applications.csv'
+			document.body.appendChild(a)
+			a.click()
+			document.body.removeChild(a)
+			URL.revokeObjectURL(url)
+		} catch {
+			toast.error('Failed to export CSV')
+		}
+	}
+
 	const filteredJobs = jobs.filter((job) => {
 		const query = searchQuery.toLowerCase()
 		const statusLabel = STATUS_CONFIG[job.status]?.label?.toLowerCase() ?? job.status?.toLowerCase() ?? ''
@@ -242,13 +263,22 @@ export default function JobsPage() {
 							{`${jobs.length} ${jobs.length === 1 ? 'application' : 'applications'} tracked`}
 						</p>
 					</div>
-					<Link
-						to="/dashboard/jobs/new"
-						className="inline-flex h-8 items-center gap-1.5 self-start rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 sm:self-auto"
-					>
-						<CirclePlus className="h-4 w-4" />
-						Add Job
-					</Link>
+					<div className="flex items-center gap-2 self-start sm:self-auto">
+						<button
+							type="button"
+							onClick={handleExportCSV}
+							className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/50 px-3 text-xs font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-zinc-50"
+						>
+							Export CSV
+						</button>
+						<Link
+							to="/dashboard/jobs/new"
+							className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+						>
+							<CirclePlus className="h-4 w-4" />
+							Add Job
+						</Link>
+					</div>
 				</div>
 			)}
 
