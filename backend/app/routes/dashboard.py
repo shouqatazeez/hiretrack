@@ -65,3 +65,23 @@ def get_recent_applications(
 		.limit(limit)
 		.all()
 	)
+
+
+@router.get("/upcoming-interviews", response_model=list[JobApplicationResponse])
+def get_upcoming_interviews(
+	db: Session = Depends(get_db),
+	current_user: UserModel = Depends(get_current_user),
+):
+	"""Get jobs with future interview dates, sorted by nearest first."""
+	now = datetime.utcnow()
+	return (
+		db.query(JobApplicationModel)
+		.filter(
+			JobApplicationModel.user_id == current_user.id,
+			JobApplicationModel.interview_date != None,
+			JobApplicationModel.interview_date >= now,
+		)
+		.order_by(JobApplicationModel.interview_date.asc())
+		.limit(10)
+		.all()
+	)

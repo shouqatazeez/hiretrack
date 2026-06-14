@@ -16,6 +16,7 @@ class JobApplication(Base):
 	job_url = Column(String, nullable=True)
 	job_description = Column(Text, nullable=True)
 	status = Column(String, default="applied", nullable=False)
+	interview_date = Column(DateTime, nullable=True)
 	applied_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 	created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 	updated_at = Column(

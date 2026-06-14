@@ -23,6 +23,7 @@ class JobApplicationUpdate(BaseModel):
 	job_url: Optional[str] = Field(None, description="Job posting URL")
 	job_description: Optional[str] = Field(None, max_length=5000, description="Job description text")
 	status: Optional[str] = Field(None, min_length=1, max_length=50, description="Application status")
+	interview_date: Optional[datetime] = Field(None, description="Scheduled interview date and time")
 	applied_at: Optional[datetime] = Field(None, description="When the application was submitted")
 
 	class Config:
@@ -32,6 +33,7 @@ class JobApplicationUpdate(BaseModel):
 class JobApplicationResponse(JobApplicationBase):
 	id: int
 	user_id: int
+	interview_date: Optional[datetime] = None
 	applied_at: datetime
 	created_at: datetime
 	updated_at: datetime
