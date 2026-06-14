@@ -353,21 +353,6 @@ Both frontend and backend are deployed on **Vercel**:
 
 ---
 
-## Roadmap
-
-- [x] ~~Interview date reminder~~ ✅
-- [x] ~~Resume upload~~ ✅
-- [x] ~~CSV export~~ ✅
-- [x] ~~AI cover letter generator~~ ✅
-- [x] ~~AI interview question generator~~ ✅
-- [x] ~~AI resume-to-job match score~~ ✅
-- [x] ~~AI answer feedback coaching~~ ✅
-- [x] ~~Google Calendar integration~~ ✅
-- [ ] Email interview reminders (Vercel Cron + Resend)
-- [ ] PDF resume storage (Supabase Storage)
-- [ ] PDF cover letter download (jsPDF)
-
----
 
 ## Contributing
 
