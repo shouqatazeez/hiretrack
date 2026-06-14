@@ -98,6 +98,12 @@ export default function DashboardPage() {
 			.finally(() => setLoading(false))
 	}, [])
 
+	// Filter upcoming interviews from loaded jobs
+	const upcomingInterviews = jobs
+		.filter((j) => j.interview_date && new Date(j.interview_date) >= new Date())
+		.sort((a, b) => new Date(a.interview_date) - new Date(b.interview_date))
+		.slice(0, 5)
+
 	const total = jobs.length
 	const interviews = jobs.filter((j) => j.status === 'interviewing').length
 	const offers = jobs.filter((j) => j.status === 'offered').length
@@ -150,6 +156,64 @@ export default function DashboardPage() {
 				<StatCard label="Offers" value={offers} icon={Trophy} loading={loading} />
 				<StatCard label="Rejected" value={rejected} icon={XCircle} loading={loading} />
 			</div>
+
+			{/* Upcoming Interviews */}
+			{!loading && upcomingInterviews.length > 0 && (
+				<Card className="border border-zinc-800/80 bg-zinc-900/75 px-5 py-3 shadow-lg">
+					<div className="flex items-center justify-between pb-1.5">
+						<h3 className="text-sm font-semibold text-zinc-50 flex items-center gap-2">
+							<CalendarClock className="h-3.5 w-3.5 text-primary" />
+							Upcoming Interviews
+						</h3>
+						<span className="text-[11px] text-zinc-500">{upcomingInterviews.length} scheduled</span>
+					</div>
+					<p className="text-[11px] text-zinc-500 pb-2">Add to Google Calendar for automatic reminders.</p>
+					<ul className="divide-y divide-zinc-800/60">
+						{upcomingInterviews.map((job) => {
+							const interviewDate = new Date(job.interview_date)
+							const now = new Date()
+							const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+							const interviewDay = new Date(interviewDate.getFullYear(), interviewDate.getMonth(), interviewDate.getDate())
+							const diffDays = Math.round((interviewDay - todayStart) / (1000 * 60 * 60 * 24))
+							const countdown = diffDays === 0 ? 'Today' : diffDays === 1 ? 'Tomorrow' : `in ${diffDays} days`
+							const urgency = diffDays <= 1 ? 'text-rose-400' : diffDays <= 3 ? 'text-amber-400' : 'text-zinc-400'
+
+							const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Interview: ${job.job_title} at ${job.company_name}`)}&dates=${interviewDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}/${new Date(interviewDate.getTime() + 3600000).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}&details=${encodeURIComponent(`Job application tracked in HireTrack`)}`
+
+							return (
+								<li key={job.id} className="flex items-center justify-between py-2 gap-3">
+									<Link to={`/dashboard/jobs/${job.id}`} className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition">
+										<Avatar className="h-7 w-7 rounded-md shrink-0">
+											<AvatarFallback className="rounded-md bg-zinc-800 text-[11px] font-semibold text-zinc-200">
+												{job.company_name?.[0]?.toUpperCase() ?? '?'}
+											</AvatarFallback>
+										</Avatar>
+										<div className="min-w-0">
+											<p className="truncate text-xs font-semibold text-zinc-100">{job.job_title}</p>
+											<p className="text-[11px] text-zinc-500">{job.company_name} • <span className={urgency}>{countdown}</span></p>
+										</div>
+									</Link>
+									<div className="flex items-center gap-2 shrink-0">
+										<span className="text-[11px] text-zinc-400 hidden sm:inline">
+											{interviewDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} • {interviewDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+										</span>
+										<a
+											href={calendarUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="inline-flex items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/50 px-2 py-1 text-[10px] font-medium text-zinc-300 hover:bg-zinc-800 hover:text-zinc-50 transition"
+											title="Add to Google Calendar"
+										>
+											<img src="https://www.gstatic.com/images/branding/product/1x/calendar_2020q4_48dp.png" alt="Google Calendar" className="h-3 w-3" />
+											Add
+										</a>
+									</div>
+								</li>
+							)
+						})}
+					</ul>
+				</Card>
+			)}
 
 			<div className="grid grid-cols-1 gap-6 xl:grid-cols-5">
 				<div className="xl:col-span-3">

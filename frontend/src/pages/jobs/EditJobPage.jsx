@@ -72,6 +72,7 @@ export default function EditJobPage() {
     status: 'applied',
     job_url: '',
     applied_at: '',
+    interview_date: '',
     job_description: '',
   })
 
@@ -91,6 +92,7 @@ export default function EditJobPage() {
           status:       job.status ?? 'applied',
           job_url:      job.job_url ?? '',
           applied_at:   toDateInputValue(job.applied_at),
+          interview_date: job.interview_date ? new Date(job.interview_date).toISOString().slice(0, 16) : '',
           job_description: job.job_description ?? '',
         })
       } catch (err) {
@@ -125,6 +127,7 @@ export default function EditJobPage() {
         status:       formData.status,
         job_url:      formData.job_url.trim() || null,
         applied_at:   formData.applied_at || null,
+        interview_date: formData.interview_date || null,
         job_description: formData.job_description.trim() || null,
       }
 
@@ -237,6 +240,21 @@ export default function EditJobPage() {
                   name="applied_at"
                   type="date"
                   value={formData.applied_at}
+                  onChange={handleChange}
+                  disabled={saving}
+                  className="h-11 bg-zinc-900/50 scheme-dark mt-1.5"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="interview_date">
+                  Interview Date & Time <span className="text-muted-foreground">(optional)</span>
+                </Label>
+                <Input
+                  id="interview_date"
+                  name="interview_date"
+                  type="datetime-local"
+                  value={formData.interview_date}
                   onChange={handleChange}
                   disabled={saving}
                   className="h-11 bg-zinc-900/50 scheme-dark mt-1.5"
