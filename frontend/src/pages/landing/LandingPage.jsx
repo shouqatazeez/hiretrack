@@ -75,58 +75,58 @@ function Linkedin({ size = 24, className, ...props }) {
 
 const valueProps = [
   {
-    icon: KanbanSquare,
-    title: 'Built for the search, not the spreadsheet',
+    icon: Sparkles,
+    title: 'AI Resume Match Score',
     description:
-      'A real pipeline that moves applications from applied to offer, so your search never falls apart by week two.',
+      'Get an instant compatibility score comparing your resume against any job description, with strengths, gaps, and actionable recommendations.',
   },
   {
     icon: LayoutDashboard,
-    title: 'Everything on one dashboard',
+    title: 'Smart Dashboard',
     description:
-      'Total applications, active interviews, and offers at a glance. No scattered tabs, no guessing where things stand.',
+      'Total applications, interviews, offers, and upcoming interview reminders at a glance with a 7-day activity chart.',
   },
   {
-    icon: Search,
-    title: 'Find applications instantly',
+    icon: FileText,
+    title: 'AI Cover Letter Generator',
     description:
-      'Search and filter your applications in real-time by title, company, or status as your pipeline grows.',
+      'Generate professional, company-specific cover letters tailored to each job description and your resume in seconds.',
   },
   {
-    icon: Clock,
-    title: 'Add a job in seconds',
+    icon: Bell,
+    title: 'Interview Reminders + Google Calendar',
     description:
-      'Capture a new application the moment you hit submit, with just the details that matter to you.',
+      'Set interview dates and add them to Google Calendar with one click. Never miss an interview again.',
   },
   {
-    icon: ShieldCheck,
-    title: 'Private by default',
+    icon: KanbanSquare,
+    title: 'AI Interview Coach',
     description:
-      'Secure authentication keeps your search locked to your account. Your search is yours alone.',
+      'Get 10 tailored interview questions with AI feedback on your practice answers, scoring, and suggested improvements.',
   },
   {
     icon: BarChart3,
-    title: 'See your momentum',
+    title: 'Resume Upload & Analysis',
     description:
-      'Watch progress build as roles move through each stage and stay motivated through the whole search.',
+      'Upload your PDF resume once. AI extracts the text and uses it across all features — match scoring, cover letters, and interview prep.',
   },
 ]
 
 const steps = [
   {
     number: '01',
-    title: 'Create your workspace',
-    description: 'Sign up in seconds and get a clean, private space built for your job search.',
+    title: 'Upload your resume',
+    description: 'Sign up and upload your PDF resume. AI extracts the text for all smart features.',
   },
   {
     number: '02',
-    title: 'Add your applications',
-    description: 'Log every role you apply to with company and status to keep your pipeline organized.',
+    title: 'Track your applications',
+    description: 'Add jobs with descriptions, set interview dates, and watch your pipeline grow.',
   },
   {
     number: '03',
-    title: 'Track to the offer',
-    description: 'Move each application through your pipeline until you land the right one.',
+    title: 'Let AI prepare you',
+    description: 'Get match scores, practice interviews with AI feedback, and generate tailored cover letters.',
   },
 ]
 
@@ -161,40 +161,42 @@ const faqs = [
   {
     question: 'Is HireTrack free?',
     answer:
-      'Yes. You can create a workspace and start tracking applications for free — no credit card required.',
+      'Yes. All features including AI match scoring, interview coaching, and cover letter generation are free — no credit card required.',
   },
   {
-    question: 'How is this better than a spreadsheet?',
+    question: 'How does the AI Resume Match work?',
     answer:
-      'HireTrack is purpose-built for job searching. Instead of fighting with rows and columns, you get a visual pipeline, a live dashboard, and real-time search capabilities — all in one place that stays organized as your search grows.',
+      'Upload your resume and add a job description. Our AI compares them and gives you a compatibility score (0-100) with sub-scores for skills, experience, projects, and keywords — plus specific recommendations to improve your match.',
   },
   {
-    question: 'Can I track unlimited applications?',
+    question: 'What AI model powers the features?',
     answer:
-      "Yes. Add as many roles as you're applying to, with company and status for each.",
+      'HireTrack uses Google Gemini AI for all intelligent features. It provides fast, accurate analysis for resume matching, interview prep, and cover letter generation.',
+  },
+  {
+    question: 'Can I export my application data?',
+    answer:
+      'Yes. Click "Export CSV" on the Jobs page to download all your tracked applications as a spreadsheet file.',
+  },
+  {
+    question: 'How do interview reminders work?',
+    answer:
+      'Set an interview date on any job application. It appears on your dashboard with a countdown, and you can add it to Google Calendar with one click for automatic notifications.',
   },
   {
     question: 'Is my data private?',
     answer:
-      'Always. Your applications are locked to your account behind secure authentication. Your search is yours alone.',
-  },
-  {
-    question: 'How long does setup take?',
-    answer:
-      "Under a minute. Sign up, add your first application, and you're tracking.",
-  },
-  {
-    question: 'What stages can I track?',
-    answer:
-      'Every application moves through clear stages — applied, interviewing, and offer — so you always know where things stand.',
+      'Always. Your applications, resume, and AI results are locked to your account behind secure JWT authentication. Your data is yours alone.',
   },
 ]
 
 const benefits = [
-  'Unlimited application tracking',
-  'Status pipeline from applied to offer',
-  'Clean dashboard with live stats',
-  'Real-time search and filter capabilities',
+  'AI-powered resume match scoring',
+  'Personalized cover letter generation',
+  'AI interview coach with feedback',
+  'Google Calendar interview reminders',
+  'CSV export for your records',
+  'Unlimited job application tracking',
 ]
 
 const navLinks = [
