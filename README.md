@@ -99,6 +99,8 @@ Upload your resume. Click "Match Score" on any job. Get back:
 
 The AI compares semantic meaning, not just keywords. "Built REST APIs with Express" matches "backend API development experience" because the AI understands context.
 
+![AI Match Score](screenshots/match_score.png)
+
 ### AI Interview Coach
 
 Click "Generate Questions" and get 10 tailored questions — mix of behavioral, technical, and situational — specific to the job title, company, and description.
@@ -109,6 +111,8 @@ Each question has:
 - Practice Sandbox (type your answer, auto-saves to localStorage)
 - "Get AI Feedback" button — returns a score (1-10), strengths, improvements, and a suggested better answer
 - "Mark Complete" — tracks your progress with a visual progress bar
+
+![AI Interview Coach](screenshots/interview_coach.png)
 
 ### AI Cover Letter Generator
 
@@ -121,6 +125,8 @@ Generates a professional cover letter following industry format:
 
 Rules baked into the prompt: never invent information, reference actual projects, 300-450 words, no generic buzzwords. Copy or download as TXT.
 
+![AI Cover Letter](screenshots/cover_letter.png)
+
 ### AI Referral Message Generator
 
 Generates two versions:
@@ -128,6 +134,8 @@ Generates two versions:
 - **LinkedIn connection note** (under 300 characters) — short version for connection requests
 
 Both are personalized to the specific job and your resume. Not a template — it references your actual experience.
+
+![AI Referral Message](screenshots/referral_message.png)
 
 ### Interview Scheduling + Google Calendar
 
@@ -138,6 +146,8 @@ Set an interview date on any job. The dashboard shows upcoming interviews with:
 
 No OAuth, no API key. Just a URL that Google Calendar accepts. Simple and reliable.
 
+![Interview Reminders](screenshots/interview_reminders.png)
+
 ### Smart Dashboard
 
 At a glance:
@@ -147,9 +157,19 @@ At a glance:
 - Upcoming interviews section
 - Recent applications quick-view
 
+![Dashboard](screenshots/dashboard.png)
+
+### Resume Upload
+
+Upload your PDF resume. The app extracts text using pypdf and displays it. This text powers all AI features — upload once, used everywhere.
+
+![Resume Upload](screenshots/resume.png)
+
 ### CSV Export
 
 Click "Export CSV" on the Jobs page. Downloads all your applications as a spreadsheet with: Company, Job Title, Status, Applied Date, Interview Date, Job URL, Created At.
+
+![Jobs Page](screenshots/jobs.png)
 
 ---
 
@@ -444,36 +464,6 @@ This is a working, deployed product — but there's room to grow:
 - **Browser extension** — auto-capture job details from LinkedIn/Indeed job pages
 
 The foundation is solid. The AI integration pattern is proven. Every new feature follows the same flow: user data + job data → Gemini → structured result → display.
-
----
-
-## Screenshots
-
-<details>
-<summary>Click to view app screenshots</summary>
-
-### Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-### Job Details + AI Workspace
-![Job Details](screenshots/job_details.png)
-
-### AI Match Score
-![Match Score](screenshots/match_score.png)
-
-### AI Interview Coach
-![Interview Coach](screenshots/interview_coach.png)
-
-### AI Cover Letter
-![Cover Letter](screenshots/cover_letter.png)
-
-### Resume Upload
-![Resume](screenshots/resume.png)
-
-### Landing Page
-![Landing](screenshots/landing.png)
-
-</details>
 
 ---
 
