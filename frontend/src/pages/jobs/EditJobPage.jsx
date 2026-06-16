@@ -156,7 +156,7 @@ export default function EditJobPage() {
   return (
     <section className="mx-auto w-full max-w-2xl space-y-6">
       <Card>
-        <CardHeader className="text-left">
+        <CardHeader className="text-left pb-2">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Edit</p>
           <CardTitle className="mt-1">Edit job</CardTitle>
           <CardDescription className="mt-1">Update the details of this application below.</CardDescription>
@@ -211,14 +211,14 @@ export default function EditJobPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="status">
-                  Status <span className="text-destructive">*</span>
+                  Status <span className="text-destructive ">*</span>
                 </Label>
                 <Select
                   value={formData.status}
                   onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))}
                   disabled={saving}
                 >
-                  <SelectTrigger id="status" className="h-11 w-full justify-between bg-zinc-900/50 border-input text-zinc-50 mt-1.5">
+                  <SelectTrigger id="status" className="!h-11 w-full justify-between bg-zinc-900/50 border-zinc-800 text-zinc-50 mt-1.5">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent className="border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl shadow-black/30 ">

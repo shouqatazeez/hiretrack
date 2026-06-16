@@ -77,7 +77,7 @@ export default function AddJobPage() {
   return (
     <section className="mx-auto w-full max-w-2xl space-y-6">
       <Card>
-        <CardHeader className="text-left">
+        <CardHeader className="text-left pb-2">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Create</p>
           <CardTitle className="mt-1">Add a new job</CardTitle>
           <CardDescription className="mb-5 ">Track a new application by filling in the details below.</CardDescription>
@@ -139,7 +139,7 @@ export default function AddJobPage() {
                   onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))}
                   disabled={loading}
                 >
-                  <SelectTrigger id="status" className="h-11 w-full justify-between bg-zinc-900/50 border-input text-zinc-50 mt-1.5">
+                  <SelectTrigger id="status" className="!h-11 w-full justify-between bg-zinc-900/50 border-zinc-800 text-zinc-50 mt-1.5">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent className="border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-xl shadow-black/30">
