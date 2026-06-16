@@ -170,13 +170,14 @@ export default function AddJobPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="job_description">
-                  Job Description <span className="text-muted-foreground">(optional)</span>
+                  Job Description <span className="text-destructive">*</span>
                 </Label>
                 <textarea
                   id="job_description"
                   name="job_description"
                   placeholder="Paste the job description here..."
                   rows={6}
+                  required
                   maxLength={5000}
                   value={formData.job_description}
                   onChange={handleChange}
