@@ -140,11 +140,11 @@ function JobCardMenu({ jobId, onDelete }) {
 						<MoreVertical className="h-4 w-4" />
 					</button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent side="left" align="start" sideOffset={8} className="w-36">
+				<DropdownMenuContent side="bottom" align="end" sideOffset={2} className="w-32 border border-zinc-800 bg-zinc-900 text-zinc-50 shadow-lg">
 					<DropdownMenuItem
 						id={`job-view-${jobId}`}
 						onSelect={() => navigate(`/dashboard/jobs/${jobId}`)}
-						className="gap-2"
+						className="gap-2 cursor-pointer focus:bg-zinc-800 focus:text-zinc-50"
 					>
 						<Eye className="h-4 w-4" />
 						View Details
@@ -152,7 +152,7 @@ function JobCardMenu({ jobId, onDelete }) {
 					<DropdownMenuItem
 						id={`job-edit-${jobId}`}
 						onSelect={handleEditJob}
-						className="gap-2"
+						className="gap-2 cursor-pointer focus:bg-zinc-800 focus:text-zinc-50"
 					>
 						<Pencil className="h-4 w-4" />
 						Edit Job
@@ -164,7 +164,7 @@ function JobCardMenu({ jobId, onDelete }) {
 							e.preventDefault()
 							setShowDeleteDialog(true)
 						}}
-						className="gap-2"
+						className="gap-2 cursor-pointer text-rose-400 focus:bg-rose-950/30 focus:text-rose-300"
 					>
 						<Trash2 className="h-4 w-4" />
 						Delete Job
