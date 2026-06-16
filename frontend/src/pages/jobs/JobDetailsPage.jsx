@@ -21,7 +21,7 @@ import {
 } from 'lucide-react'
 import { deleteJob, getJobById } from '../../services/jobService'
 import { Button } from '../../components/ui/button'
-import { getMatchScore, getInterviewQuestions, getCoverLetter } from '../../services/aiService'
+import { getMatchScore, getInterviewQuestions, getCoverLetter, getReferralMessage } from '../../services/aiService'
 import MatchScoreCircle from '../../components/jobs/MatchScoreCircle'
 import QuestionAccordionItem from '../../components/jobs/QuestionAccordionItem'
 import CoverLetterDocument from '../../components/jobs/CoverLetterDocument'
@@ -166,6 +166,10 @@ export default function JobDetailsPage() {
   const [coverError, setCoverError] = useState(null)
   const [progressKey, setProgressKey] = useState(0)
 
+  const [referralResult, setReferralResult] = useState(null)
+  const [referralLoading, setReferralLoading] = useState(false)
+  const [referralError, setReferralError] = useState(null)
+
   const hasBeenUpdated = job && job.updated_at && job.created_at &&
     (new Date(job.updated_at).getTime() - new Date(job.created_at).getTime() > 1000)
 
@@ -210,6 +214,11 @@ export default function JobDetailsPage() {
         setCoverResult({ cover_letter: job.ai_cover_letter })
       } else {
         setCoverResult(null)
+      }
+      // Load referral from localStorage
+      const savedReferral = localStorage.getItem(`referral_${job.id}`)
+      if (savedReferral) {
+        try { setReferralResult(JSON.parse(savedReferral)) } catch {}
       }
     }
   }, [job])
@@ -282,6 +291,20 @@ export default function JobDetailsPage() {
       setCoverError(err.response?.data?.detail || 'Failed to generate cover letter.')
     } finally {
       setCoverLoading(false)
+    }
+  }
+
+  const handleReferralMessage = async () => {
+    try {
+      setReferralLoading(true)
+      setReferralError(null)
+      const result = await getReferralMessage(jobId)
+      setReferralResult(result)
+      localStorage.setItem(`referral_${jobId}`, JSON.stringify(result))
+    } catch (err) {
+      setReferralError(err.response?.data?.detail || 'Failed to generate referral message.')
+    } finally {
+      setReferralLoading(false)
     }
   }
 
@@ -446,6 +469,17 @@ export default function JobDetailsPage() {
                   >
                     <FileText className="h-4 w-4" />
                     Cover Letter
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('referral')}
+                    className={`flex items-center gap-2 px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all whitespace-nowrap ${
+                      activeTab === 'referral'
+                        ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
+                        : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    Referral
                   </button>
                 </div>
 
@@ -729,6 +763,109 @@ export default function JobDetailsPage() {
                       )}
 
                       {coverError && <p className="text-xs font-semibold text-rose-455 bg-rose-950/20 border border-rose-800/30 p-3.5 rounded-xl">{coverError}</p>}
+                    </div>
+                  )}
+
+                  {/* TAB 4: Referral Message */}
+                  {activeTab === 'referral' && (
+                    <div className="space-y-4">
+                      {!referralResult && !referralLoading && (
+                        <div className="flex flex-col items-center justify-center text-center p-8 space-y-4 bg-zinc-950/20 rounded-2xl border border-zinc-800/50">
+                          <div className="p-3.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                            <MessageSquare className="h-6 w-6 animate-pulse" />
+                          </div>
+                          <div className="space-y-1.5 max-w-md">
+                            <h3 className="text-sm font-bold text-zinc-200 uppercase tracking-wider">Generate Referral Message</h3>
+                            <p className="text-xs leading-relaxed text-zinc-400">
+                              Create a professional referral request message you can send to employees at this company via LinkedIn or email.
+                            </p>
+                          </div>
+                          <Button
+                            variant="default"
+                            onClick={handleReferralMessage}
+                            className="bg-primary hover:bg-primary/90 text-white gap-2 px-6 shadow-lg shadow-primary/10 cursor-pointer"
+                          >
+                            <MessageSquare className="h-4 w-4" />
+                            Generate Message
+                          </Button>
+                        </div>
+                      )}
+
+                      {referralLoading && (
+                        <div className="flex flex-col items-center justify-center text-center p-12 space-y-4">
+                          <Loader2 className="h-8 w-8 text-primary animate-spin" />
+                          <div className="space-y-1">
+                            <p className="text-sm font-semibold text-zinc-300">Crafting Your Referral Message...</p>
+                            <p className="text-xs text-zinc-500">Creating a personalized, professional referral request...</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {referralResult && !referralLoading && (
+                        <div className="space-y-4">
+                          {/* Email Version */}
+                          <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/40 p-5 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-[11px] font-bold text-primary uppercase tracking-wider">Email / DM Version</h4>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-[11px] h-7 gap-1 cursor-pointer"
+                                onClick={() => navigator.clipboard.writeText(`Subject: ${referralResult.subject}\n\n${referralResult.message}`)}
+                              >
+                                Copy
+                              </Button>
+                            </div>
+                            {referralResult.subject && (
+                              <p className="text-xs text-zinc-400">
+                                <span className="font-semibold text-zinc-300">Subject:</span> {referralResult.subject}
+                              </p>
+                            )}
+                            <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
+                              {referralResult.message}
+                            </p>
+                          </div>
+
+                          {/* LinkedIn Short Version */}
+                          {referralResult.linkedin_short && (
+                            <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/40 p-5 space-y-3">
+                              <div className="flex items-center justify-between">
+                                <h4 className="text-[11px] font-bold text-primary uppercase tracking-wider">LinkedIn Connection Note</h4>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-[11px] h-7 gap-1 cursor-pointer"
+                                  onClick={() => navigator.clipboard.writeText(referralResult.linkedin_short)}
+                                >
+                                  Copy
+                                </Button>
+                              </div>
+                              <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-300">
+                                {referralResult.linkedin_short}
+                              </p>
+                              <p className="text-[10px] text-zinc-500">
+                                {referralResult.linkedin_short.length}/300 characters
+                                {referralResult.linkedin_short.length > 300 && (
+                                  <span className="text-amber-400 ml-2">⚠ Over limit — trim before pasting</span>
+                                )}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Regenerate */}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleReferralMessage}
+                            className="text-xs gap-1.5 cursor-pointer"
+                          >
+                            <MessageSquare className="h-3.5 w-3.5 text-primary" />
+                            Regenerate
+                          </Button>
+                        </div>
+                      )}
+
+                      {referralError && <p className="text-xs font-semibold text-rose-455 bg-rose-950/20 border border-rose-800/30 p-3.5 rounded-xl">{referralError}</p>}
                     </div>
                   )}
 
