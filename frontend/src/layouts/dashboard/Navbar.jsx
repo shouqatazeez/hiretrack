@@ -8,6 +8,7 @@ const titleMap = [
 	{ path: '/dashboard/jobs/new',        title: 'Add Job'     },
 	{ path: '/dashboard/jobs/:jobId/edit',title: 'Edit Job'    },
 	{ path: '/dashboard/jobs/:jobId',     title: 'Job Details' },
+	{ path: '/dashboard/resume',          title: 'Resume'      },
 ]
 
 function getPageTitle(pathname) {
