@@ -195,3 +195,35 @@ Evaluate the answer on clarity, relevance, depth, and structure. Return a JSON o
 Be encouraging but honest. Reference specific parts of their answer in your feedback."""
 
     return call_ai(prompt)
+
+
+def generate_referral_message(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
+    """Generate a professional referral request message."""
+    prompt = f"""You are a career communication expert. Write a professional referral request message that a job seeker would send to someone who works at the target company.
+
+APPLICANT NAME: {user_name}
+JOB TITLE: {job_title}
+COMPANY: {company_name}
+JOB DESCRIPTION:
+{job_description}
+
+RESUME:
+{resume_text}
+
+RULES:
+- Write a concise, professional LinkedIn message or email (150-250 words max).
+- Be respectful of the person's time — don't be pushy.
+- Mention 2-3 specific relevant skills/experience from the resume that match the job.
+- Don't assume you know the referrer's name — use a polite generic opening.
+- Include a clear ask (referral) without being demanding.
+- Sound human, not AI-generated. No buzzwords like "synergy" or "leverage".
+- End with gratitude and an offer to share more details.
+
+Return a JSON object with exactly this structure:
+{{
+  "subject": "<email subject line, short and clear>",
+  "message": "<the full referral request message>",
+  "linkedin_short": "<a VERY short version, MAXIMUM 280 characters total. This is for LinkedIn connection request which has a strict 300 char limit. Count carefully.>"
+}}"""
+
+    return call_ai(prompt)

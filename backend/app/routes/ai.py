@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.models.job import JobApplication
 from app.models.resume import Resume
 from app.models.user import User
-from app.services.ai_service import evaluate_answer, generate_cover_letter, generate_interview_questions, get_match_score
+from app.services.ai_service import evaluate_answer, generate_cover_letter, generate_interview_questions, generate_referral_message, get_match_score
 from app.utils.dependencies import get_current_user
 
 
@@ -163,5 +163,32 @@ def answer_feedback(
         answer=answer,
         job_title=job.job_title,
         category=category,
+    )
+    return result
+
+
+@router.post("/{job_id}/referral-message")
+def referral_message(
+    job_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    _check_ai_configured()
+    job = _get_job_or_404(job_id, current_user.id, db)
+
+    if not job.job_description:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Add a job description first to generate a referral message.",
+        )
+
+    resume = _get_resume_or_400(current_user.id, db)
+
+    result = generate_referral_message(
+        resume_text=resume.extracted_text,
+        job_title=job.job_title,
+        company_name=job.company_name,
+        job_description=job.job_description,
+        user_name=current_user.full_name,
     )
     return result

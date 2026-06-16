@@ -23,3 +23,8 @@ export async function getAnswerFeedback(jobId, question, answer, category = '') 
   })
   return response.data
 }
+
+export async function getReferralMessage(jobId) {
+  const response = await api.post(`/jobs/applications/${jobId}/referral-message`)
+  return response.data
+}
