@@ -2,14 +2,16 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge&logo=vercel)](https://myhiretrack.vercel.app/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8-purple?style=flat-square&logo=vite)](https://vitejs.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?style=flat-square&logo=postgresql)](https://neon.tech/)
-[![JWT](https://img.shields.io/badge/JWT-Auth-black?style=flat-square&logo=jsonwebtokens)](https://jwt.io/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 [![Gemini AI](https://img.shields.io/badge/Gemini-AI%20Powered-4285F4?style=flat-square&logo=google)](https://ai.google.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 
-**HireTrack** is an AI-powered, full-stack job application tracking platform that helps job seekers manage their entire job search from one centralized dashboard. Beyond simple tracking, it uses Google Gemini AI to analyze resume-job compatibility, generate personalized cover letters, and provide AI-powered interview coaching with answer feedback — replacing messy spreadsheets with an intelligent career management tool.
+**AI-powered job application tracker that does more than track — it prepares you.**
+
+I built HireTrack because I was tired of managing job applications in a spreadsheet. Every job seeker knows the chaos: 20 tabs open, no idea which companies you already applied to, forgetting interview dates, and writing the same cover letter from scratch every time.
+
+HireTrack fixes this. Add a job, paste the description, upload your resume once — and the AI handles the rest. It tells you how well you match, generates a tailored cover letter, coaches you through interview questions with real-time feedback, and even writes your referral request messages. All from one clean dashboard.
 
 <p align="center">
   <img src="screenshots/dashboard.png" alt="HireTrack Dashboard" width="100%" />
@@ -17,204 +19,271 @@
 
 ---
 
-## Live Demo & API Documentation
+## Live Demo & API
 
-* **Live Demo:** [https://myhiretrack.vercel.app/](https://myhiretrack.vercel.app/)
-* **Backend API:** [https://hiretrack-api.vercel.app/](https://hiretrack-api.vercel.app/)
-* **Swagger UI (Interactive API Docs):** [https://hiretrack-api.vercel.app/docs](https://hiretrack-api.vercel.app/docs)
-* **ReDoc (Alternative API Docs):** [https://hiretrack-api.vercel.app/redoc](https://hiretrack-api.vercel.app/redoc)
+* **App:** [https://myhiretrack.vercel.app](https://myhiretrack.vercel.app/)
+* **API Docs (Swagger):** [https://hiretrack-api.vercel.app/docs](https://hiretrack-api.vercel.app/docs)
+* **API Docs (ReDoc):** [https://hiretrack-api.vercel.app/redoc](https://hiretrack-api.vercel.app/redoc)
 
 ---
 
-## Screenshots
+## The Problem
 
-<details>
-<summary>Click to view app walkthrough screenshots</summary>
+Every job seeker I know — including myself — goes through the same cycle:
 
-### Landing Page
-![Landing Page](screenshots/landing.png)
+- Apply to 30 companies, forget which ones by week two
+- Miss interview dates because they're buried in email threads
+- Spend 45 minutes writing each cover letter from scratch
+- Walk into interviews with zero preparation specific to that role
+- Want referrals but don't know how to write a professional ask
 
-### Authentication (Login)
-![Login Page](screenshots/login.png)
+Spreadsheets don't solve this. They track rows of data, but they don't help you *prepare*. HireTrack does both.
 
-### Jobs Dashboard (Applications List)
-![Jobs Page](screenshots/jobs.png)
+---
 
-### Add New Job
-![Add Job Page](screenshots/add_job.png)
+## How It Works
 
-### Job Details & AI Features
-![Job Details Page](screenshots/job_details.png)
+### 1. Upload Your Resume
 
-### AI Resume Match Score
-![Match Score](screenshots/match_score.png)
+Open the Resume page, drop your PDF. HireTrack extracts all the text using pypdf and stores it. This text powers every AI feature — you upload once, and it's used everywhere.
 
-### AI Interview Coach
-![Interview Coach](screenshots/interview_coach.png)
+### 2. Add Jobs With Descriptions
 
-### AI Cover Letter Generator
-![Cover Letter](screenshots/cover_letter.png)
+When you add a job application, paste the full job description (required field). This is the context the AI needs to give you useful, specific output — not generic advice.
 
-### Resume Upload
-![Resume Page](screenshots/resume.png)
+### 3. AI Does The Heavy Lifting
 
-</details>
+Click into any job and you get four AI tools:
+
+- **Match Score** — "How well do I fit this role?" with a 0-100 score, sub-scores for skills/experience/projects/keywords, and specific recommendations
+- **Interview Coach** — 10 tailored questions, a practice sandbox where you type answers, and AI feedback with a score + suggested improvements
+- **Cover Letter** — A professional, ready-to-send cover letter that references your actual projects and matches the JD requirements
+- **Referral Message** — A LinkedIn connection note + email version, personalized to the role, ready to copy and send
+
+### 4. Stay Organized
+
+Set interview dates. See upcoming interviews on your dashboard with countdowns. Add them to Google Calendar with one click. Export everything to CSV when you need a spreadsheet.
+
+---
+
+## Use Cases
+
+**A fresh graduate applying to 50+ companies**
+
+She uploads her resume, adds each job with its description, and immediately knows her match score. For roles where she scores 80+, she generates a cover letter and applies with confidence. For lower scores, she reads the "gaps" section and knows exactly what skills to highlight differently.
+
+**A working professional preparing for interviews**
+
+He has 3 interviews this week at different companies. For each one, he opens HireTrack, generates 10 role-specific questions, practices his answers in the sandbox, and gets AI feedback on clarity, depth, and structure. He walks in prepared with company-specific talking points.
+
+**Someone who needs referrals but doesn't know what to say**
+
+She finds employees at her target company on LinkedIn but freezes when writing the connection message. She opens the Referral tab, clicks generate, and gets a professional 280-character LinkedIn note that mentions her relevant skills and the specific role — ready to paste.
+
+**A busy person who forgets interview dates**
+
+He sets the interview date when he gets the email confirmation. The dashboard shows "Tomorrow" in red. He clicks "Google Calendar" and gets a phone notification 30 minutes before. No more missed interviews.
 
 ---
 
 ## Features
 
-### AI-Powered Career Tools
+### AI Resume Match Score
 
-- **Resume Match Scoring** — Upload your resume and get an AI compatibility score (0-100) with sub-category breakdowns (Skills, Experience, Projects, Keywords), strengths, gaps, and actionable recommendations.
-- **AI Interview Coach** — Generate 10 tailored interview questions (behavioral, technical, situational) with practice sandbox, AI answer feedback scoring, and progress tracking.
-- **Cover Letter Generator** — Generate professional, company-specific cover letters following industry-standard format with copy/download functionality.
-- **Resume Upload & Parsing** — Upload PDF resumes with automatic text extraction (pypdf) for use across all AI features.
+Upload your resume. Click "Match Score" on any job. Get back:
+- Overall score (0-100)
+- Sub-scores: Skills, Experience, Projects, Keywords
+- Top matching strengths (what makes you a good fit)
+- Gap skills (what's missing from your profile)
+- Actionable recommendations (what to do about it)
 
-### Job Application Management
+The AI compares semantic meaning, not just keywords. "Built REST APIs with Express" matches "backend API development experience" because the AI understands context.
 
-- Full CRUD operations for job entries with company, title, description, URL, and status tracking.
-- Application statuses: Applied, Interviewing, Offered, Rejected, Withdrawn.
-- Job description field (5,000 chars) for AI analysis context.
-- CSV export of all applications for backup/spreadsheet use.
+### AI Interview Coach
 
-### Interview Scheduling
+Click "Generate Questions" and get 10 tailored questions — mix of behavioral, technical, and situational — specific to the job title, company, and description.
 
-- Set interview dates and times on any job application.
-- Dashboard shows upcoming interviews with countdown (Today, Tomorrow, in X days).
-- One-click **Google Calendar integration** — adds interview events with pre-filled details.
+Each question has:
+- Category badge (Technical / Behavioral / Situational)
+- AI Coach Tip (how to approach the answer)
+- Practice Sandbox (type your answer, auto-saves to localStorage)
+- "Get AI Feedback" button — returns a score (1-10), strengths, improvements, and a suggested better answer
+- "Mark Complete" — tracks your progress with a visual progress bar
 
-### Dashboard Analytics
+### AI Cover Letter Generator
 
-- Real-time KPI cards: Total Applications, Interviewing, Offers, Rejected.
-- 7-day application activity chart.
-- Color-coded status breakdown with progress bars.
-- Recent applications preview with quick navigation.
+Generates a professional cover letter following industry format:
+- Header with your info + date + company
+- Introduction stating the role and your background
+- Skills paragraph referencing specific projects from your resume
+- Company alignment paragraph (why this company specifically)
+- Professional closing
 
-### Authentication & Security
+Rules baked into the prompt: never invent information, reference actual projects, 300-450 words, no generic buzzwords. Copy or download as TXT.
 
-- JWT-based authentication with bcrypt password hashing.
-- User-scoped data isolation — each user only sees their own data.
-- Protected routes on both frontend and backend.
+### AI Referral Message Generator
 
-### Search & Filtering
+Generates two versions:
+- **Email/DM version** (150-250 words) — professional, mentions 2-3 relevant skills, clear referral ask
+- **LinkedIn connection note** (under 300 characters) — short version for connection requests
 
-- Real-time client-side search across company names and job titles.
-- Multi-status dropdown filter for instant pipeline views.
+Both are personalized to the specific job and your resume. Not a template — it references your actual experience.
+
+### Interview Scheduling + Google Calendar
+
+Set an interview date on any job. The dashboard shows upcoming interviews with:
+- Countdown (Today, Tomorrow, in X days)
+- Color-coded urgency (red = tomorrow, yellow = this week)
+- One-click Google Calendar button — opens pre-filled event with title, date, time
+
+No OAuth, no API key. Just a URL that Google Calendar accepts. Simple and reliable.
+
+### Smart Dashboard
+
+At a glance:
+- Total applications, interviewing count, offers, rejections
+- 7-day application activity chart
+- Status breakdown with progress bars
+- Upcoming interviews section
+- Recent applications quick-view
+
+### CSV Export
+
+Click "Export CSV" on the Jobs page. Downloads all your applications as a spreadsheet with: Company, Job Title, Status, Applied Date, Interview Date, Job URL, Created At.
 
 ---
 
-## Tech Stack
+## Application Flow
 
-| Layer | Technology |
-|---|---|
-| **Frontend** | React 19, Vite 8 |
-| **Styling & Components** | Tailwind CSS v4, Shadcn/UI, Radix UI |
-| **Forms & Validation** | React Hook Form, Zod |
-| **HTTP Client** | Axios (with auth interceptors) |
-| **Routing** | React Router DOM v7 |
-| **Icons** | Lucide React |
-| **Backend** | FastAPI (Python) |
-| **ORM** | SQLAlchemy |
-| **Authentication** | JWT (python-jose + passlib + bcrypt) |
-| **AI** | Google Gemini 3.1 Flash Lite (via REST API) |
-| **PDF Parsing** | pypdf |
-| **Database** | PostgreSQL (Neon - cloud) |
-| **Deployment** | Vercel (Frontend + Backend as Serverless Functions) |
+```
+User uploads PDF resume
+    │
+    ▼
+pypdf extracts text → saved to `resumes` table
+    │
+    ▼
+User adds job with description (required)
+    │
+    ▼
+User clicks AI feature on Job Details page
+    │
+    ├── Match Score ──→ resume_text + job_description → Gemini → score + sub_scores + strengths + gaps + recommendations
+    │
+    ├── Interview Questions ──→ job_title + description + resume → Gemini → 10 questions with tips
+    │   └── User types answer → clicks "Get Feedback" → answer + question → Gemini → score + improvements
+    │
+    ├── Cover Letter ──→ resume + job + user_name → Gemini → structured professional letter
+    │
+    └── Referral Message ──→ resume + job → Gemini → email version + linkedin short version
+```
+
+**Key insight:** Internet is needed for AI generation only. Once generated, results are cached in the database (match score, questions, cover letter) or localStorage (referral, practice answers). The dashboard, job list, search, and filtering all work instantly from cached data.
+
+---
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                    Frontend (Vercel)                       │
+│                                                           │
+│  React 19 + Vite 8 + Tailwind CSS v4 + Shadcn/UI        │
+│                                                           │
+│  ┌─────────────┐  ┌──────────────┐  ┌───────────────┐   │
+│  │  Dashboard  │  │  Job Details  │  │  Resume Page  │   │
+│  │  (stats +   │  │  (AI tabs +  │  │  (upload +    │   │
+│  │  interviews)│  │  workspace)  │  │  extract)     │   │
+│  └──────┬──────┘  └──────┬───────┘  └──────┬────────┘   │
+│         │                │                  │            │
+│         └────────────────┼──────────────────┘            │
+│                          │                               │
+│                   Axios + JWT Token                       │
+└──────────────────────────┼───────────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│               Backend (Vercel Serverless)                  │
+│                                                           │
+│  FastAPI + SQLAlchemy + Pydantic                         │
+│                                                           │
+│  ┌────────────┐  ┌────────────┐  ┌──────────────────┐   │
+│  │ Auth Routes│  │ Job Routes │  │   AI Routes      │   │
+│  │ (register, │  │ (CRUD +   │  │ (match, coach,   │   │
+│  │  login,me) │  │  export)  │  │  cover, referral)│   │
+│  └────────────┘  └────────────┘  └────────┬─────────┘   │
+│                                           │              │
+│                                    ai_service.py         │
+│                                           │              │
+│                                           ▼              │
+│                                  Google Gemini API        │
+│                                  (3.1 Flash Lite)        │
+│                                                           │
+│  ┌───────────────────────────────────────────────────┐   │
+│  │              PostgreSQL (Neon)                      │   │
+│  │  users │ job_applications │ resumes                │   │
+│  └───────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────┘
+```
+
+---
+
+## AI Integration
+
+All AI features use a single integration point: Google Gemini 3.1 Flash Lite via REST API.
+
+| Feature | What Gets Sent | What Comes Back |
+|---------|---------------|-----------------|
+| Match Score | resume_text + job_description | score, sub_scores, strengths, gaps, recommendations |
+| Interview Questions | job_title + description + resume | 10 questions with category + tip |
+| Answer Feedback | question + user_answer + job_title | score (1-10), strengths, improvements, suggested_answer |
+| Cover Letter | resume + job + user_name | formatted professional letter |
+| Referral Message | resume + job + user_name | email version + linkedin short version |
+
+**Design decisions:**
+- One API call per feature — no chaining, no multiple requests
+- `responseMimeType: "application/json"` — Gemini returns clean JSON, no markdown parsing needed
+- Fallback handling — if JSON parsing fails, returns a clear error to the user
+- Results cached in DB columns — subsequent page loads don't re-call the API
+- 500 free requests/day on Gemini — more than enough for personal use
 
 ---
 
 ## Database Schema
 
-### `users` Table
+```sql
+-- Users (JWT auth)
+users: id, email, full_name, hashed_password, is_active, created_at, updated_at
 
-| Column | Type | Description |
-|---|---|---|
-| `id` | Integer | Primary key |
-| `email` | String | Unique login email |
-| `full_name` | String | Display name |
-| `hashed_password` | String | bcrypt hash |
-| `is_active` | Boolean | Account status |
-| `created_at` | DateTime | Registration date |
-| `updated_at` | DateTime | Last update |
+-- Job Applications (core tracking + AI cache)
+job_applications: id, user_id, company_name, job_title, job_url, job_description,
+                  status, interview_date, applied_at, created_at, updated_at,
+                  ai_match_score (JSON), ai_interview_questions (JSON),
+                  ai_cover_letter (TEXT), ai_match_score_updated_at,
+                  ai_interview_questions_updated_at, ai_cover_letter_updated_at
 
-### `job_applications` Table
+-- Resumes (one per user, extracted text)
+resumes: id, user_id (unique), filename, extracted_text, uploaded_at
+```
 
-| Column | Type | Description |
-|---|---|---|
-| `id` | Integer | Primary key |
-| `user_id` | Integer | FK to users |
-| `company_name` | String | Company |
-| `job_title` | String | Role |
-| `job_url` | String | Posting link |
-| `job_description` | Text | Full JD (max 5000 chars) |
-| `status` | String | applied/interviewing/offered/rejected/withdrawn |
-| `interview_date` | DateTime | Scheduled interview |
-| `applied_at` | DateTime | Application date |
-| `ai_match_score` | JSON | Cached AI match result |
-| `ai_interview_questions` | JSON | Cached AI questions |
-| `ai_cover_letter` | Text | Cached cover letter |
-| `created_at` | DateTime | Entry creation |
-| `updated_at` | DateTime | Last modification |
-
-### `resumes` Table
-
-| Column | Type | Description |
-|---|---|---|
-| `id` | Integer | Primary key |
-| `user_id` | Integer | FK to users (unique) |
-| `filename` | String | Original PDF filename |
-| `extracted_text` | Text | Parsed resume content |
-| `uploaded_at` | DateTime | Upload timestamp |
+**Why cache AI results in the DB?** Because calling Gemini costs a request from your daily quota. Once you generate a match score, it's saved. Refreshing the page loads it from the database — no new API call. Users only spend a request when they explicitly click "Refresh Analysis" or "Regenerate."
 
 ---
 
-## API Endpoints
+## Tech Stack
 
-### Authentication
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/auth/register` | No | Create account |
-| POST | `/auth/login` | No | Get JWT token |
-| POST | `/auth/token` | No | OAuth2 token endpoint |
-| GET | `/auth/me` | Yes | Current user profile |
-
-### Job Applications
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/jobs/applications` | Yes | Create application |
-| GET | `/jobs/applications` | Yes | List all applications |
-| GET | `/jobs/applications/export` | Yes | Download CSV |
-| GET | `/jobs/applications/{id}` | Yes | Get application |
-| PUT | `/jobs/applications/{id}` | Yes | Update application |
-| DELETE | `/jobs/applications/{id}` | Yes | Delete application |
-
-### AI Features
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/jobs/applications/{id}/match-score` | Yes | AI resume match analysis |
-| POST | `/jobs/applications/{id}/interview-questions` | Yes | Generate interview questions |
-| POST | `/jobs/applications/{id}/cover-letter` | Yes | Generate cover letter |
-| POST | `/jobs/applications/{id}/answer-feedback` | Yes | AI feedback on practice answer |
-
-### Resume
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/resume/upload` | Yes | Upload PDF resume |
-| GET | `/resume` | Yes | Get resume data |
-| DELETE | `/resume` | Yes | Delete resume |
-
-### Dashboard
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | `/dashboard/stats` | Yes | Summary metrics |
-| GET | `/dashboard/recent-applications` | Yes | Latest 5 applications |
-| GET | `/dashboard/upcoming-interviews` | Yes | Future interviews |
+| Layer | Technology | Why |
+|-------|-----------|-----|
+| Frontend | React 19 + Vite 8 | Fast builds, modern React features |
+| Styling | Tailwind CSS v4 + Shadcn/UI | Utility-first, consistent dark theme |
+| State | React Context + localStorage | Auth state global, practice answers persist |
+| HTTP | Axios with interceptors | Auto-attaches JWT, handles 401 redirects |
+| Backend | FastAPI (Python) | Auto-validation, auto-docs, type-safe |
+| ORM | SQLAlchemy | Proven, flexible, works with Neon |
+| Auth | JWT + bcrypt | Stateless tokens, secure password hashing |
+| AI | Google Gemini 3.1 Flash Lite | Free tier, fast, good at structured JSON |
+| PDF | pypdf | Lightweight PDF text extraction |
+| Database | PostgreSQL (Neon) | Cloud-native, serverless-compatible, IPv4 pooler |
+| Deployment | Vercel | Both frontend and backend as serverless |
 
 ---
 
@@ -224,151 +293,187 @@
 hiretrack/
 ├── backend/
 │   ├── app/
-│   │   ├── core/
-│   │   │   ├── config.py              # Environment variables
-│   │   │   └── database.py            # SQLAlchemy engine & session
-│   │   ├── models/
-│   │   │   ├── user.py                # User model
-│   │   │   ├── job.py                 # JobApplication model
-│   │   │   └── resume.py             # Resume model
-│   │   ├── routes/
-│   │   │   ├── auth.py                # Registration & profile
-│   │   │   ├── login.py              # Login & tokens
-│   │   │   ├── job.py                # CRUD + CSV export
-│   │   │   ├── dashboard.py          # Analytics + upcoming interviews
-│   │   │   ├── resume.py             # Resume upload/delete
-│   │   │   └── ai.py                 # AI features (match, questions, cover letter, feedback)
-│   │   ├── schemas/                   # Pydantic request/response models
-│   │   ├── services/
-│   │   │   └── ai_service.py         # Gemini AI integration
-│   │   ├── utils/                     # Security & dependencies
-│   │   └── main.py                    # FastAPI app entry point
-│   ├── pyproject.toml                 # Dependencies + Vercel config
-│   └── .vercelignore
+│   │   ├── core/              # Config + database connection
+│   │   ├── models/            # SQLAlchemy models (user, job, resume)
+│   │   ├── routes/            # API endpoints (auth, job, dashboard, resume, ai)
+│   │   ├── schemas/           # Pydantic request/response models
+│   │   ├── services/          # AI service (Gemini integration)
+│   │   ├── utils/             # Security helpers + dependency injection
+│   │   └── main.py            # FastAPI app entry point
+│   └── pyproject.toml         # Dependencies + Vercel entrypoint config
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── ui/                    # Shadcn/UI components
-│   │   │   └── jobs/                  # AI feature components
-│   │   │       ├── MatchScoreCircle.jsx
-│   │   │       ├── QuestionAccordionItem.jsx
-│   │   │       ├── AnswerSandbox.jsx
-│   │   │       └── CoverLetterDocument.jsx
-│   │   ├── context/                   # AuthContext
-│   │   ├── layouts/                   # Dashboard layout + sidebar
-│   │   ├── pages/
-│   │   │   ├── auth/                  # Login, Register
-│   │   │   ├── dashboard/            # Dashboard, Resume
-│   │   │   ├── jobs/                  # Jobs, Add, Edit, Details
-│   │   │   └── landing/              # Landing page
-│   │   ├── services/
-│   │   │   ├── api.js                 # Axios instance
-│   │   │   ├── authService.js         # Auth API calls
-│   │   │   ├── jobService.js          # Job API calls
-│   │   │   ├── resumeService.js       # Resume API calls
-│   │   │   └── aiService.js           # AI feature API calls
-│   │   └── routes/                    # React Router config
-│   ├── package.json
-│   └── vite.config.js
+│   │   │   ├── ui/            # Shadcn/UI base components
+│   │   │   └── jobs/          # AI feature components (MatchScoreCircle, AnswerSandbox, etc.)
+│   │   ├── context/           # AuthContext (JWT state management)
+│   │   ├── layouts/           # Dashboard layout + sidebar + navbar
+│   │   ├── pages/             # Route pages (dashboard, jobs, resume, landing, auth)
+│   │   ├── services/          # API call functions (auth, job, resume, ai)
+│   │   └── routes/            # React Router configuration
+│   └── package.json
 │
 └── README.md
 ```
 
 ---
 
-## Getting Started
+## API Endpoints
 
-### 1. Clone the Repository
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/register` | Create account |
+| POST | `/auth/login` | Get JWT token |
+| GET | `/auth/me` | Current user profile |
 
-```bash
-git clone https://github.com/shouqatazeez/hiretrack.git
-cd hiretrack
-```
+### Job Applications
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/jobs/applications` | Create application |
+| GET | `/jobs/applications` | List all |
+| GET | `/jobs/applications/export` | Download CSV |
+| GET | `/jobs/applications/{id}` | Get one |
+| PUT | `/jobs/applications/{id}` | Update |
+| DELETE | `/jobs/applications/{id}` | Delete |
 
-### 2. Backend Setup
+### AI Features
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/jobs/applications/{id}/match-score` | Resume-job compatibility analysis |
+| POST | `/jobs/applications/{id}/interview-questions` | Generate 10 tailored questions |
+| POST | `/jobs/applications/{id}/answer-feedback` | AI feedback on practice answer |
+| POST | `/jobs/applications/{id}/cover-letter` | Generate professional cover letter |
+| POST | `/jobs/applications/{id}/referral-message` | Generate referral request messages |
+
+### Resume
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/resume/upload` | Upload PDF resume |
+| GET | `/resume` | Get resume data |
+| DELETE | `/resume` | Delete resume |
+
+### Dashboard
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/dashboard/stats` | Summary metrics |
+| GET | `/dashboard/recent-applications` | Latest 5 |
+| GET | `/dashboard/upcoming-interviews` | Future interviews |
+
+---
+
+## Setup
+
+### Prerequisites
+- Node.js 18+
+- Python 3.11+
+- PostgreSQL (or use Neon free tier)
+- Google Gemini API key (free at [aistudio.google.com](https://aistudio.google.com/apikey))
+
+### Backend
 
 ```bash
 cd backend
 python -m venv venv
-venv\Scripts\activate              # Windows
-# source venv/bin/activate         # macOS / Linux
+venv\Scripts\activate          # Windows
 pip install -r requirements.txt
 pip install pypdf httpx
 ```
 
-### 3. Backend Environment Variables
-
-Create a `.env` file in `backend/`:
-
+Create `backend/.env`:
 ```env
-DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
-SECRET_KEY=your_secret_key_here
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-GEMINI_API_KEY=your_gemini_api_key_here
+DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
+GEMINI_API_KEY=your_gemini_key
+SECRET_KEY=your_jwt_secret
 ```
-
-### 4. Run Backend
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-API docs at `http://127.0.0.1:8000/docs`
-
-### 5. Frontend Setup
+### Frontend
 
 ```bash
 cd frontend
 npm install
 ```
 
-### 6. Frontend Environment Variables
-
-Create `.env.local` in `frontend/`:
-
+Create `frontend/.env.local`:
 ```env
 VITE_API_BASE_URL=http://127.0.0.1:8000
 ```
-
-### 7. Run Frontend
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
-
 ---
 
 ## Deployment
 
-Both frontend and backend are deployed on **Vercel**:
+Both frontend and backend deploy on Vercel:
 
-- **Frontend:** Standard Vite deployment
-- **Backend:** FastAPI as Vercel Serverless Function via `pyproject.toml` with `[tool.vercel] entrypoint = "app.main:app"`
-- **Database:** Neon PostgreSQL (cloud, IPv4 pooler connection)
-- **AI:** Google Gemini API key set in Vercel Environment Variables
+- **Frontend:** Standard Vite build, auto-detected
+- **Backend:** FastAPI as serverless function via `pyproject.toml` → `[tool.vercel] entrypoint = "app.main:app"`
+- **Database:** Neon PostgreSQL with IPv4 transaction pooler (required for Vercel's serverless runtime)
+- **AI:** `GEMINI_API_KEY` set in Vercel Environment Variables
 
----
-
-
-## Contributing
-
-Contributions are welcome! Please feel free to open a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Push to main → Vercel builds and deploys automatically if Git integration is connected.
 
 ---
 
-## License
+## What This Is Not
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+HireTrack is not a job board. It doesn't scrape listings or auto-apply. It's not a CRM for recruiters.
+
+It's a personal workspace for job seekers who want to be organized AND prepared. Track what you've applied to, then use AI to actually prepare — match your fit, practice interviews, write cover letters, and request referrals. All in one place.
+
+---
+
+## Where This Can Go
+
+This is a working, deployed product — but there's room to grow:
+
+- **Email interview reminders** — Vercel Cron + Resend for 24-hour-before notifications
+- **PDF cover letter download** — jsPDF for properly formatted PDF output
+- **Resume file storage** — Supabase Storage for original PDF viewing/download
+- **AI answer memory** — save all practice answers to DB, track improvement over time
+- **Multi-resume support** — different resumes for different types of roles
+- **Application analytics** — response rate by company size, industry, resume version
+- **Browser extension** — auto-capture job details from LinkedIn/Indeed job pages
+
+The foundation is solid. The AI integration pattern is proven. Every new feature follows the same flow: user data + job data → Gemini → structured result → display.
+
+---
+
+## Screenshots
+
+<details>
+<summary>Click to view app screenshots</summary>
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Job Details + AI Workspace
+![Job Details](screenshots/job_details.png)
+
+### AI Match Score
+![Match Score](screenshots/match_score.png)
+
+### AI Interview Coach
+![Interview Coach](screenshots/interview_coach.png)
+
+### AI Cover Letter
+![Cover Letter](screenshots/cover_letter.png)
+
+### Resume Upload
+![Resume](screenshots/resume.png)
+
+### Landing Page
+![Landing](screenshots/landing.png)
+
+</details>
 
 ---
 
@@ -377,3 +482,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mdshouqatazeez@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shouqat-azeez-mohammad/)
 [![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=react&logoColor=61DAFB)](https://mohammadshouqatazeez.vercel.app/)
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
