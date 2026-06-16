@@ -148,10 +148,10 @@ export default function ResumePage() {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-2">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Profile</p>
           <CardTitle className="mt-1">Your Resume</CardTitle>
-          <CardDescription>
+          <CardDescription  className="mb-5">
             Upload your resume to enable AI-powered features like match scoring and interview prep.
           </CardDescription>
         </CardHeader>
