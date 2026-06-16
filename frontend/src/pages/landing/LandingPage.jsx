@@ -78,7 +78,7 @@ const valueProps = [
     icon: Sparkles,
     title: 'AI Resume Match Score',
     description:
-      'Get an instant compatibility score comparing your resume against any job description, with strengths, gaps, and actionable recommendations.',
+      'Upload your PDF resume and get an instant compatibility score against any job description, with sub-category breakdowns, strengths, gaps, and actionable recommendations.',
   },
   {
     icon: LayoutDashboard,
@@ -105,10 +105,10 @@ const valueProps = [
       'Get 10 tailored interview questions with AI feedback on your practice answers, scoring, and suggested improvements.',
   },
   {
-    icon: BarChart3,
-    title: 'Resume Upload & Analysis',
+    icon: Search,
+    title: 'AI Referral Message Generator',
     description:
-      'Upload your PDF resume once. AI extracts the text and uses it across all features — match scoring, cover letters, and interview prep.',
+      'Generate professional referral request messages for LinkedIn and email — personalized to the job and your resume, ready to send.',
   },
 ]
 
@@ -196,6 +196,7 @@ const benefits = [
   'AI interview coach with feedback',
   'Google Calendar interview reminders',
   'CSV export for your records',
+  'AI referral message generator',
   'Unlimited job application tracking',
 ]
 
