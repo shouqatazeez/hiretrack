@@ -1,7 +1,9 @@
 from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
 
 from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
@@ -12,10 +14,12 @@ from app.schemas.user_schema import UserLogin
 from app.utils.security import create_access_token, verify_password
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("/login", response_model=Token)
-def login(user: UserLogin, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+def login(request: Request, user: UserLogin, db: Session = Depends(get_db)):
 	user_in_db = db.query(UserModel).filter(UserModel.email == user.email).first()
 	if not user_in_db:
 		raise HTTPException(
@@ -38,7 +42,8 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 
 
 @router.post("/token", response_model=Token)
-def login_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+def login_token(request: Request, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
 	email = form_data.username
 	password = form_data.password
 

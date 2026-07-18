@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
 
 from app.core.config import GEMINI_API_KEY
@@ -11,6 +13,7 @@ from app.utils.dependencies import get_current_user
 
 
 router = APIRouter(prefix="/jobs/applications", tags=["ai"])
+limiter = Limiter(key_func=get_remote_address)
 
 
 def _get_job_or_404(job_id: int, user_id: int, db: Session) -> JobApplication:
@@ -43,7 +46,9 @@ def _check_ai_configured():
 
 
 @router.post("/{job_id}/match-score")
+@limiter.limit("5/minute")
 async def match_score(
+    request: Request,
     job_id: int,
     regenerate: bool = False,
     db: Session = Depends(get_db),
@@ -79,7 +84,9 @@ async def match_score(
 
 
 @router.post("/{job_id}/interview-questions")
+@limiter.limit("5/minute")
 async def interview_questions(
+    request: Request,
     job_id: int,
     regenerate: bool = False,
     db: Session = Depends(get_db),
@@ -116,7 +123,9 @@ async def interview_questions(
 
 
 @router.post("/{job_id}/cover-letter")
+@limiter.limit("5/minute")
 async def cover_letter(
+    request: Request,
     job_id: int,
     regenerate: bool = False,
     db: Session = Depends(get_db),
@@ -153,7 +162,9 @@ async def cover_letter(
 
 
 @router.post("/{job_id}/answer-feedback")
+@limiter.limit("5/minute")
 async def answer_feedback(
+    request: Request,
     job_id: int,
     question: str = Body(...),
     answer: str = Body(...),
@@ -180,7 +191,9 @@ async def answer_feedback(
 
 
 @router.post("/{job_id}/referral-message")
+@limiter.limit("5/minute")
 async def referral_message(
+    request: Request,
     job_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
