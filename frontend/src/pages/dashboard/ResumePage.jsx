@@ -186,17 +186,19 @@ export default function ResumePage() {
                 disabled={uploading}
                 onClick={() => fileInputRef.current?.click()}
               >
-                {uploading ? (<><Loader2 className="h-4 w-4 animate-spin mr-2" />Uploading...</>) : 'Choose File'}
+                Choose File
               </Button>
-              {uploading && (
-                <div className="mt-4 w-full max-w-xs">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                    <span>Uploading...</span>
-                    <span>{uploadProgress}%</span>
-                  </div>
-                  <Progress value={uploadProgress} className="h-2" />
-                </div>
-              )}
+              <div className="mt-4 w-full max-w-xs h-8">
+                {uploading && (
+                  <>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                      <span>Uploading...</span>
+                      <span>{uploadProgress}%</span>
+                    </div>
+                    <Progress value={uploadProgress} className="h-2" />
+                  </>
+                )}
+              </div>
               <input ref={fileInputRef} type="file" accept="application/pdf" className="hidden" onChange={onFileChange} />
             </div>
           </CardContent>
@@ -220,20 +222,29 @@ export default function ResumePage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
-                    {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Replace'}
+                  <Button variant="outline" size="sm" disabled={uploading || deleting} onClick={() => fileInputRef.current?.click()}>
+                    Replace
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    disabled={deleting}
+                    disabled={deleting || uploading}
                     onClick={() => setShowDeleteConfirm(true)}
                     className="text-destructive hover:text-destructive"
                   >
-                    {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
+              {uploading && (
+                <div className="w-full">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                    <span>Replacing resume...</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <Progress value={uploadProgress} className="h-2" />
+                </div>
+              )}
               <input ref={fileInputRef} type="file" accept="application/pdf" className="hidden" onChange={onFileChange} />
             </CardContent>
           </Card>
