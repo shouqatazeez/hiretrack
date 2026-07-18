@@ -97,23 +97,28 @@ function SkeletonTopCard() {
 	)
 }
 
-function JobCardMenu({ jobId, onDelete }) {
+function JobCardMenu({ jobId }) {
 	const navigate = useNavigate()
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+	const queryClient = useQueryClient()
 
 	const handleEditJob = () => {
 		navigate(`/dashboard/jobs/${jobId}/edit`)
 	}
 
 	const handleDeleteJob = async () => {
+		const previousJobs = queryClient.getQueryData(['jobs'])
+		queryClient.setQueryData(['jobs'], (old) =>
+			old ? old.filter((job) => job.id !== jobId) : []
+		)
+		setShowDeleteDialog(false)
+		toast.success('Job deleted successfully')
+
 		try {
 			await deleteJob(jobId)
-			onDelete(jobId)
-			toast.success('Job deleted successfully')
 		} catch (err) {
+			queryClient.setQueryData(['jobs'], previousJobs)
 			toast.error('Failed to delete job. Please try again.')
-		} finally {
-			setShowDeleteDialog(false)
 		}
 	}
 
@@ -203,13 +208,6 @@ export default function JobsPage() {
 	})
 
 	const error = queryError ? (queryError.response?.data?.detail ?? 'Failed to load jobs. Please try again.') : null
-
-	const handleDeleteJob = async (deletedId) => {
-		// Optimistically remove from cache
-		queryClient.setQueryData(['jobs'], (old) =>
-			old ? old.filter((job) => job.id !== deletedId) : []
-		)
-	}
 
 	const handleExportCSV = async () => {
 		try {
@@ -395,7 +393,7 @@ export default function JobsPage() {
 
 								<div className="flex shrink-0 items-center gap-2">
 									<StatusBadge status={job.status} />
-									<JobCardMenu jobId={job.id} onDelete={handleDeleteJob} />
+									<JobCardMenu jobId={job.id} />
 								</div>
 							</div>
 						))}
