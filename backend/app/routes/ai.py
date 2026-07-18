@@ -43,7 +43,7 @@ def _check_ai_configured():
 
 
 @router.post("/{job_id}/match-score")
-def match_score(
+async def match_score(
     job_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -59,7 +59,7 @@ def match_score(
 
     resume = _get_resume_or_400(current_user.id, db)
 
-    result = get_match_score(
+    result = await get_match_score(
         resume_text=resume.extracted_text,
         job_title=job.job_title,
         company_name=job.company_name,
@@ -75,7 +75,7 @@ def match_score(
 
 
 @router.post("/{job_id}/interview-questions")
-def interview_questions(
+async def interview_questions(
     job_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -92,7 +92,7 @@ def interview_questions(
     resume = db.query(Resume).filter(Resume.user_id == current_user.id).first()
     resume_text = resume.extracted_text if resume else ""
 
-    result = generate_interview_questions(
+    result = await generate_interview_questions(
         job_title=job.job_title,
         company_name=job.company_name,
         job_description=job.job_description,
@@ -108,7 +108,7 @@ def interview_questions(
 
 
 @router.post("/{job_id}/cover-letter")
-def cover_letter(
+async def cover_letter(
     job_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -124,7 +124,7 @@ def cover_letter(
 
     resume = _get_resume_or_400(current_user.id, db)
 
-    result = generate_cover_letter(
+    result = await generate_cover_letter(
         resume_text=resume.extracted_text,
         job_title=job.job_title,
         company_name=job.company_name,
@@ -141,7 +141,7 @@ def cover_letter(
 
 
 @router.post("/{job_id}/answer-feedback")
-def answer_feedback(
+async def answer_feedback(
     job_id: int,
     question: str = Body(...),
     answer: str = Body(...),
@@ -158,7 +158,7 @@ def answer_feedback(
             detail="Write an answer first before requesting feedback.",
         )
 
-    result = evaluate_answer(
+    result = await evaluate_answer(
         question=question,
         answer=answer,
         job_title=job.job_title,
@@ -168,7 +168,7 @@ def answer_feedback(
 
 
 @router.post("/{job_id}/referral-message")
-def referral_message(
+async def referral_message(
     job_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -184,7 +184,7 @@ def referral_message(
 
     resume = _get_resume_or_400(current_user.id, db)
 
-    result = generate_referral_message(
+    result = await generate_referral_message(
         resume_text=resume.extracted_text,
         job_title=job.job_title,
         company_name=job.company_name,

@@ -7,8 +7,8 @@ from app.core.config import GEMINI_API_KEY
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
 
 
-def _call_gemini(prompt: str) -> dict:
-    """Send a prompt to Gemini and return the parsed JSON response."""
+async def _call_gemini(prompt: str) -> dict:
+    """Send a prompt to Gemini and return the parsed JSON response (async)."""
     url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
 
     payload = {
@@ -25,7 +25,8 @@ def _call_gemini(prompt: str) -> dict:
         },
     }
 
-    response = httpx.post(url, json=payload, timeout=60.0)
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=payload, timeout=60.0)
 
     if response.status_code == 429:
         raise HTTPException(
@@ -69,17 +70,17 @@ def _call_gemini(prompt: str) -> dict:
         )
 
 
-def call_ai(prompt: str) -> dict:
-    """Call Gemini AI."""
+async def call_ai(prompt: str) -> dict:
+    """Call Gemini AI (async)."""
     if not GEMINI_API_KEY:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service is not configured.",
         )
-    return _call_gemini(prompt)
+    return await _call_gemini(prompt)
 
 
-def get_match_score(resume_text: str, job_title: str, company_name: str, job_description: str) -> dict:
+async def get_match_score(resume_text: str, job_title: str, company_name: str, job_description: str) -> dict:
     """Get a match score comparing resume against a job."""
     prompt = f"""You are a career advisor. Analyze how well this resume matches the job below.
 
@@ -107,10 +108,10 @@ Return a JSON object with exactly this structure:
 
 Be specific and reference actual skills/experience from the resume and requirements from the job description. Each recommendation should be a concise, actionable bullet point."""
 
-    return call_ai(prompt)
+    return await call_ai(prompt)
 
 
-def generate_interview_questions(job_title: str, company_name: str, job_description: str, resume_text: str = "") -> dict:
+async def generate_interview_questions(job_title: str, company_name: str, job_description: str, resume_text: str = "") -> dict:
     """Generate interview questions for a job."""
     resume_context = f"\nCANDIDATE RESUME:\n{resume_text}" if resume_text else ""
 
@@ -132,10 +133,10 @@ Return a JSON object with exactly this structure:
 
 Generate exactly 10 questions. Mix behavioral, technical, and situational questions relevant to the specific role and job description."""
 
-    return call_ai(prompt)
+    return await call_ai(prompt)
 
 
-def generate_cover_letter(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
+async def generate_cover_letter(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
     """Generate a professional cover letter for a job application."""
     prompt = f"""You are a professional career advisor writing a cover letter. Follow these rules strictly:
 
@@ -169,10 +170,10 @@ Return a JSON object with exactly this structure:
   "cover_letter": "<the full formatted cover letter text following the structure above>"
 }}"""
 
-    return call_ai(prompt)
+    return await call_ai(prompt)
 
 
-def evaluate_answer(question: str, answer: str, job_title: str, category: str = "") -> dict:
+async def evaluate_answer(question: str, answer: str, job_title: str, category: str = "") -> dict:
     """Evaluate a user's interview answer and provide coaching feedback."""
     category_context = f"\nQuestion Category: {category}" if category else ""
 
@@ -194,10 +195,10 @@ Evaluate the answer on clarity, relevance, depth, and structure. Return a JSON o
 
 Be encouraging but honest. Reference specific parts of their answer in your feedback."""
 
-    return call_ai(prompt)
+    return await call_ai(prompt)
 
 
-def generate_referral_message(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
+async def generate_referral_message(resume_text: str, job_title: str, company_name: str, job_description: str, user_name: str) -> dict:
     """Generate a professional referral request message."""
     prompt = f"""You are a career communication expert. Write a professional referral request message that a job seeker would send to someone who works at the target company.
 
@@ -226,4 +227,4 @@ Return a JSON object with exactly this structure:
   "linkedin_short": "<a VERY short version, MAXIMUM 280 characters total. This is for LinkedIn connection request which has a strict 300 char limit. Count carefully.>"
 }}"""
 
-    return call_ai(prompt)
+    return await call_ai(prompt)
