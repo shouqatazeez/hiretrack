@@ -1,5 +1,3 @@
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -22,10 +20,24 @@ from app.routes.ai import router as ai_router
 
 limiter = Limiter(key_func=get_remote_address)
 
+app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-@asynccontextmanager
-async def lifespan(app):
-    """Create tables and run migrations on startup."""
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://myhiretrack.vercel.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.on_event("startup")
+def create_tables() -> None:
     Base.metadata.create_all(bind=engine)
 
     # Dynamic migration for AI Workspace columns
@@ -46,24 +58,6 @@ async def lifespan(app):
                 conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_cover_letter TEXT NULL"))
             if "ai_cover_letter_updated_at" not in columns:
                 conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_cover_letter_updated_at TIMESTAMP NULL"))
-
-    yield  # App runs here
-
-
-app = FastAPI(lifespan=lifespan)
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://myhiretrack.vercel.app",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.get("/")
