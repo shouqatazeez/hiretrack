@@ -45,6 +45,7 @@ def _check_ai_configured():
 @router.post("/{job_id}/match-score")
 async def match_score(
     job_id: int,
+    regenerate: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -56,6 +57,9 @@ async def match_score(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Add a job description first to get a match score.",
         )
+
+    if job.ai_match_score and not regenerate:
+        return job.ai_match_score
 
     resume = _get_resume_or_400(current_user.id, db)
 
@@ -77,6 +81,7 @@ async def match_score(
 @router.post("/{job_id}/interview-questions")
 async def interview_questions(
     job_id: int,
+    regenerate: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -88,6 +93,9 @@ async def interview_questions(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Add a job description first to generate interview questions.",
         )
+
+    if job.ai_interview_questions and not regenerate:
+        return job.ai_interview_questions
 
     resume = db.query(Resume).filter(Resume.user_id == current_user.id).first()
     resume_text = resume.extracted_text if resume else ""
@@ -110,6 +118,7 @@ async def interview_questions(
 @router.post("/{job_id}/cover-letter")
 async def cover_letter(
     job_id: int,
+    regenerate: bool = False,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -121,6 +130,9 @@ async def cover_letter(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Add a job description first to generate a cover letter.",
         )
+
+    if job.ai_cover_letter and not regenerate:
+        return {"cover_letter": job.ai_cover_letter}
 
     resume = _get_resume_or_400(current_user.id, db)
 
