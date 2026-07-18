@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import {
 	Briefcase,
@@ -86,19 +87,14 @@ function formatDate(value) {
 
 export default function DashboardPage() {
 	const { user } = useAuth()
-	const [jobs, setJobs] = useState([])
-	const [loading, setLoading] = useState(true)
+
+	const { data: jobs = [], isLoading: loading } = useQuery({
+		queryKey: ['jobs'],
+		queryFn: fetchJobs,
+	})
 
 	const firstName = user?.full_name?.split(' ')[0] ?? 'there'
 
-	useEffect(() => {
-		fetchJobs()
-			.then(setJobs)
-			.catch(() => {})
-			.finally(() => setLoading(false))
-	}, [])
-
-	// Filter upcoming interviews from loaded jobs
 	const upcomingInterviews = jobs
 		.filter((j) => j.interview_date && new Date(j.interview_date) >= new Date())
 		.sort((a, b) => new Date(a.interview_date) - new Date(b.interview_date))

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { CirclePlus, Search, MoreVertical, Pencil, Trash2, Eye } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -191,29 +192,23 @@ function JobCardMenu({ jobId, onDelete }) {
 }
 
 export default function JobsPage() {
-	const [jobs, setJobs]       = useState([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError]     = useState(null)
 	const [searchQuery, setSearchQuery] = useState('')
 	const [statusFilter, setStatusFilter] = useState('all')
 	const navigate = useNavigate()
+	const queryClient = useQueryClient()
 
-	useEffect(() => {
-		async function loadJobs() {
-			try {
-				const data = await fetchJobs()
-				setJobs(data)
-			} catch (err) {
-				setError(err.response?.data?.detail ?? 'Failed to load jobs. Please try again.')
-			} finally {
-				setLoading(false)
-			}
-		}
-		loadJobs()
-	}, [])
+	const { data: jobs = [], isLoading: loading, error: queryError } = useQuery({
+		queryKey: ['jobs'],
+		queryFn: fetchJobs,
+	})
 
-	const handleDeleteJob = (deletedId) => {
-		setJobs((prev) => prev.filter((job) => job.id !== deletedId))
+	const error = queryError ? (queryError.response?.data?.detail ?? 'Failed to load jobs. Please try again.') : null
+
+	const handleDeleteJob = async (deletedId) => {
+		// Optimistically remove from cache
+		queryClient.setQueryData(['jobs'], (old) =>
+			old ? old.filter((job) => job.id !== deletedId) : []
+		)
 	}
 
 	const handleExportCSV = async () => {
