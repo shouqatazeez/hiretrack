@@ -16,6 +16,7 @@ dependencies = [
   "email-validator==2.3.0",
   "pypdf==5.4.0",
   "httpx==0.28.1",
+  "slowapi==0.1.10",
 ]
 
 [tool.vercel]
