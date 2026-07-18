@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -77,7 +79,7 @@ async def match_score(
 
     from datetime import datetime
     job.ai_match_score = result
-    job.ai_match_score_updated_at = datetime.utcnow()
+    job.ai_match_score_updated_at = datetime.now(timezone.utc)
     db.commit()
 
     return result
@@ -116,7 +118,7 @@ async def interview_questions(
 
     from datetime import datetime
     job.ai_interview_questions = result
-    job.ai_interview_questions_updated_at = datetime.utcnow()
+    job.ai_interview_questions_updated_at = datetime.now(timezone.utc)
     db.commit()
 
     return result
@@ -155,7 +157,7 @@ async def cover_letter(
 
     from datetime import datetime
     job.ai_cover_letter = result.get("cover_letter")
-    job.ai_cover_letter_updated_at = datetime.utcnow()
+    job.ai_cover_letter_updated_at = datetime.now(timezone.utc)
     db.commit()
 
     return result

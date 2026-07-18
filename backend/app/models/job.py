@@ -1,9 +1,13 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, JSON
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
+
+
+def _utc_now():
+	return datetime.now(timezone.utc)
 
 
 class JobApplication(Base):
@@ -17,12 +21,12 @@ class JobApplication(Base):
 	job_description = Column(Text, nullable=True)
 	status = Column(String, default="applied", nullable=False)
 	interview_date = Column(DateTime, nullable=True)
-	applied_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-	created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+	applied_at = Column(DateTime, default=_utc_now, nullable=False)
+	created_at = Column(DateTime, default=_utc_now, nullable=False)
 	updated_at = Column(
 		DateTime,
-		default=datetime.utcnow,
-		onupdate=datetime.utcnow,
+		default=_utc_now,
+		onupdate=_utc_now,
 		nullable=False,
 	)
 

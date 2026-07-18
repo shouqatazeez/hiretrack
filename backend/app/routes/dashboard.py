@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import func
@@ -20,7 +20,7 @@ def get_dashboard_stats(
 	db: Session = Depends(get_db),
 	current_user: UserModel = Depends(get_current_user),
 ):
-	seven_days_ago = datetime.utcnow() - timedelta(days=7)
+	seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
 
 	total_applications = (
 		db.query(func.count(JobApplicationModel.id))
@@ -73,7 +73,7 @@ def get_upcoming_interviews(
 	current_user: UserModel = Depends(get_current_user),
 ):
 	"""Get jobs with future interview dates, sorted by nearest first."""
-	now = datetime.utcnow()
+	now = datetime.now(timezone.utc)
 	return (
 		db.query(JobApplicationModel)
 		.filter(

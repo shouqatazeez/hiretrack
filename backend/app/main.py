@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -20,7 +22,35 @@ from app.routes.ai import router as ai_router
 
 limiter = Limiter(key_func=get_remote_address)
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app):
+    """Create tables and run migrations on startup."""
+    Base.metadata.create_all(bind=engine)
+
+    # Dynamic migration for AI Workspace columns
+    from sqlalchemy import inspect, text
+    inspector = inspect(engine)
+    if inspector.has_table("job_applications"):
+        columns = [col['name'] for col in inspector.get_columns("job_applications")]
+        with engine.begin() as conn:
+            if "ai_match_score" not in columns:
+                conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_match_score JSON NULL"))
+            if "ai_match_score_updated_at" not in columns:
+                conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_match_score_updated_at TIMESTAMP NULL"))
+            if "ai_interview_questions" not in columns:
+                conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_interview_questions JSON NULL"))
+            if "ai_interview_questions_updated_at" not in columns:
+                conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_interview_questions_updated_at TIMESTAMP NULL"))
+            if "ai_cover_letter" not in columns:
+                conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_cover_letter TEXT NULL"))
+            if "ai_cover_letter_updated_at" not in columns:
+                conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_cover_letter_updated_at TIMESTAMP NULL"))
+
+    yield  # App runs here
+
+
+app = FastAPI(lifespan=lifespan)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -34,32 +64,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-
-@app.on_event("startup")
-def create_tables() -> None:
-	Base.metadata.create_all(bind=engine)
-
-	# Dynamic migration for AI Workspace columns
-	from sqlalchemy import inspect, text
-	inspector = inspect(engine)
-	if inspector.has_table("job_applications"):
-		columns = [col['name'] for col in inspector.get_columns("job_applications")]
-		with engine.begin() as conn:
-			if "ai_match_score" not in columns:
-				conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_match_score JSON NULL"))
-			if "ai_match_score_updated_at" not in columns:
-				conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_match_score_updated_at TIMESTAMP NULL"))
-			if "ai_interview_questions" not in columns:
-				conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_interview_questions JSON NULL"))
-			if "ai_interview_questions_updated_at" not in columns:
-				conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_interview_questions_updated_at TIMESTAMP NULL"))
-			if "ai_cover_letter" not in columns:
-				conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_cover_letter TEXT NULL"))
-			if "ai_cover_letter_updated_at" not in columns:
-				conn.execute(text("ALTER TABLE job_applications ADD COLUMN ai_cover_letter_updated_at TIMESTAMP NULL"))
-
 
 
 @app.get("/")
