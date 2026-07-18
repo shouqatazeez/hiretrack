@@ -166,9 +166,9 @@ async def cover_letter(
 async def answer_feedback(
     request: Request,
     job_id: int,
-    question: str = Body(...),
-    answer: str = Body(...),
-    category: str = Body(""),
+    question: str = Body(..., max_length=1000),
+    answer: str = Body(..., max_length=5000),
+    category: str = Body("", max_length=100),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
