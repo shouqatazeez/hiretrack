@@ -3,6 +3,7 @@ import { FileText, Loader2, Trash2, Upload } from 'lucide-react'
 import { uploadResume, getResume, deleteResume } from '../../services/resumeService'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card'
+import { Progress } from '../../components/ui/progress'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -65,6 +66,7 @@ export default function ResumePage() {
   const [resume, setResume] = useState(null)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
   const [deleting, setDeleting] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [error, setError] = useState(null)
@@ -104,13 +106,15 @@ export default function ResumePage() {
     }
     try {
       setUploading(true)
+      setUploadProgress(0)
       setError(null)
-      const data = await uploadResume(file)
+      const data = await uploadResume(file, (percent) => setUploadProgress(percent))
       setResume(data)
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to upload resume.')
     } finally {
       setUploading(false)
+      setUploadProgress(0)
     }
   }
 
@@ -184,6 +188,15 @@ export default function ResumePage() {
               >
                 {uploading ? (<><Loader2 className="h-4 w-4 animate-spin mr-2" />Uploading...</>) : 'Choose File'}
               </Button>
+              {uploading && (
+                <div className="mt-4 w-full max-w-xs">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                    <span>Uploading...</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <Progress value={uploadProgress} className="h-2" />
+                </div>
+              )}
               <input ref={fileInputRef} type="file" accept="application/pdf" className="hidden" onChange={onFileChange} />
             </div>
           </CardContent>

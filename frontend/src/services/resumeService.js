@@ -1,6 +1,6 @@
 import api from './api'
 
-export async function uploadResume(file) {
+export async function uploadResume(file, onProgress) {
   const formData = new FormData()
   formData.append('file', file)
 
@@ -8,6 +8,12 @@ export async function uploadResume(file) {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    onUploadProgress: onProgress
+      ? (progressEvent) => {
+          const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1))
+          onProgress(percent)
+        }
+      : undefined,
   })
   return response.data
 }
