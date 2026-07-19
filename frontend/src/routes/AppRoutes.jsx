@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react'
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Navigate, Route, Routes, useParams, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import ProtectedRoute from '../components/ProtectedRoute.jsx'
+import PageTransition from '../components/PageTransition.jsx'
 
 const LandingPage = lazy(() => import('../pages/landing/LandingPage.jsx'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage.jsx'))
@@ -28,35 +30,39 @@ function LegacyJobDetailsRedirect() {
 }
 
 export default function AppRoutes() {
+	const location = useLocation()
+
 	return (
 		<Suspense fallback={<PageLoader />}>
-			<Routes>
-				<Route path="/" element={<LandingPage />} />
+			<AnimatePresence mode="wait">
+				<Routes location={location} key={location.pathname}>
+					<Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
 
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/register" element={<RegisterPage />} />
-				<Route
-					path="/dashboard"
-					element={
-						<ProtectedRoute>
-							<MainLayout />
-						</ProtectedRoute>
-					}
-				>
-					<Route index element={<DashboardPage />} />
-					<Route path="jobs" element={<JobsPage />} />
-					<Route path="jobs/new" element={<AddJobPage />} />
-					<Route path="jobs/:jobId" element={<JobDetailsPage />} />
-					<Route path="jobs/:jobId/edit" element={<EditJobPage />} />
-					<Route path="resume" element={<ResumePage />} />
-				</Route>
+					<Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+					<Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
+					<Route
+						path="/dashboard"
+						element={
+							<ProtectedRoute>
+								<MainLayout />
+							</ProtectedRoute>
+						}
+					>
+						<Route index element={<DashboardPage />} />
+						<Route path="jobs" element={<JobsPage />} />
+						<Route path="jobs/new" element={<AddJobPage />} />
+						<Route path="jobs/:jobId" element={<JobDetailsPage />} />
+						<Route path="jobs/:jobId/edit" element={<EditJobPage />} />
+						<Route path="resume" element={<ResumePage />} />
+					</Route>
 
-				<Route path="/jobs" element={<Navigate to="/dashboard/jobs" replace />} />
-				<Route path="/jobs/new" element={<Navigate to="/dashboard/jobs/new" replace />} />
-				<Route path="/jobs/:jobId" element={<LegacyJobDetailsRedirect />} />
+					<Route path="/jobs" element={<Navigate to="/dashboard/jobs" replace />} />
+					<Route path="/jobs/new" element={<Navigate to="/dashboard/jobs/new" replace />} />
+					<Route path="/jobs/:jobId" element={<LegacyJobDetailsRedirect />} />
 
-				<Route path="*" element={<Navigate to="/login" replace />} />
-			</Routes>
+					<Route path="*" element={<Navigate to="/login" replace />} />
+				</Routes>
+			</AnimatePresence>
 		</Suspense>
 	)
 }

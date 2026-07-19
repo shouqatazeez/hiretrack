@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import Navbar from './Navbar.jsx'
 import Sidebar from './Sidebar.jsx'
+import PageTransition from '../../components/PageTransition.jsx'
 
 export default function MainLayout() {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+	const location = useLocation()
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
@@ -24,7 +27,11 @@ export default function MainLayout() {
 				<Navbar onMenuClick={() => setIsSidebarOpen(true)} />
 				<main className="relative flex-1 px-4 py-6 sm:px-6 lg:px-8">
 					<div className="mx-auto w-full max-w-5xl">
-						<Outlet />
+						<AnimatePresence mode="wait">
+							<PageTransition key={location.pathname}>
+								<Outlet />
+							</PageTransition>
+						</AnimatePresence>
 					</div>
 				</main>
 			</div>
