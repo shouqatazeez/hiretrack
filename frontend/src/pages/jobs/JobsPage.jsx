@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { CirclePlus, Search, MoreVertical, Pencil, Trash2, Eye } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import { fetchJobs, deleteJob } from '../../services/jobService'
 
 import {

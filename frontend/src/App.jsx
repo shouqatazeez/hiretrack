@@ -1,21 +1,17 @@
 import { BrowserRouter } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from './components/ui/sonner.jsx'
 import AppRoutes from './routes/AppRoutes.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          className: 'bg-zinc-900 text-zinc-100 border border-zinc-800',
-          duration: 3000,
-        }}
-      />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AppRoutes />
+        <Toaster position="top-right" richColors closeButton />
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }
 
 export default App
-

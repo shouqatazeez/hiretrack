@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 import {
   ArrowLeft,
   Building2,
@@ -245,7 +246,7 @@ export default function JobDetailsPage() {
       setMatchError(null)
       const result = await getMatchScore(jobId)
       setMatchResult(result)
-      // Update local job state to keep timestamps current without full reload
+      toast.success('Match score generated')
       setJob(prev => prev ? {
         ...prev,
         ai_match_score: result,
@@ -264,6 +265,7 @@ export default function JobDetailsPage() {
       setQuestionsError(null)
       const result = await getInterviewQuestions(jobId)
       setQuestionsResult(result)
+      toast.success('Interview questions generated')
       setJob(prev => prev ? {
         ...prev,
         ai_interview_questions: result,
@@ -282,6 +284,7 @@ export default function JobDetailsPage() {
       setCoverError(null)
       const result = await getCoverLetter(jobId)
       setCoverResult(result)
+      toast.success('Cover letter ready')
       setJob(prev => prev ? {
         ...prev,
         ai_cover_letter: result.cover_letter,
@@ -300,6 +303,7 @@ export default function JobDetailsPage() {
       setReferralError(null)
       const result = await getReferralMessage(jobId)
       setReferralResult(result)
+      toast.success('Referral message generated')
       localStorage.setItem(`referral_${jobId}`, JSON.stringify(result))
     } catch (err) {
       setReferralError(err.response?.data?.detail || 'Failed to generate referral message.')
